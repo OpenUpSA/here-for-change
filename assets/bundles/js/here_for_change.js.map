@@ -1,0 +1,1 @@
+{"mappings":"AACEA,QAAQC,IAAI","sources":["assets/js/here_for_change.js"],"sourcesContent":["(function() {\n  console.log(\"hello world\");\n})();\n"],"names":["console","log"],"version":3,"file":"here_for_change.js.map"}

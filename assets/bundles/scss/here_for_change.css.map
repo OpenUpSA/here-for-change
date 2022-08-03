@@ -1,0 +1,1 @@
+{"mappings":"ACAA","sources":["scss/here_for_change.css","assets/scss/here_for_change.scss"],"sourcesContent":["body {\n  background-color: gray;\n}\n\n/*# sourceMappingURL=here_for_change.css.map */\n","body {\n    background-color: grey;\n}\n"],"names":[],"version":3,"file":"here_for_change.css.map"}
