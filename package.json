@@ -1,0 +1,16 @@
+{
+  "name": "here_for_change",
+  "version": "1.0.0",
+  "description": "A public participation platform at your local level.",
+  "main": "assets/js/index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "parcel watch assets/scss/here_for_change.scss assets/js/here_for_change.js --out-dir assets/bundles",
+    "build": "parcel build assets/scss/here_for_change.scss assets/js/here_for_change.js --out-dir assets/bundles --no-content-hash"
+  },
+  "dependencies": {
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.25.1-test.1"
+  }
+}
