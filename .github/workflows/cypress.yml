@@ -12,10 +12,9 @@ jobs:
         run: docker compose run --rm web python manage.py migrate
       - name: Load demo data
         run: docker compose run --rm web python manage.py loaddata demo-data
-      - name: Wait on
-        uses: iFaxity/wait-on-action@v1
+      - uses: cypress-io/github-action@v4
         with:
-          resource: http://localhost:8000
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        
+          start: echo "Hello"
+          wait-on: "http://localhost:8000"
+          browser: chrome
+          headless: true
