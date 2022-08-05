@@ -13,8 +13,3 @@ jobs:
       - name: Load demo data
         run: docker compose run --rm web python manage.py loaddata demo-data
       - uses: cypress-io/github-action@v4
-        with:
-          start: yarn test
-          wait-on: "http://localhost:8000"
-          browser: chrome
-          headless: true
