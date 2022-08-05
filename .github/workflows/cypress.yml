@@ -7,14 +7,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Docker compose
-        run: docker-compose build
+        run: docker-compose up -d
       - name: Migrate
         run: docker compose run --rm web python manage.py migrate
       - name: Load demo data
         run: docker compose run --rm web python manage.py loaddata demo-data
       - uses: cypress-io/github-action@v4
         with:
-          start: docker-compose up
+          start: docker-compose up -d
           wait-on: "http://localhost:8000"
           browser: chrome
           headless: true
