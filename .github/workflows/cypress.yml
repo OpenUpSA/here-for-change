@@ -12,7 +12,8 @@ jobs:
         run: docker compose run --rm web python manage.py migrate
       - name: Load demo data
         run: docker compose run --rm web python manage.py loaddata demo-data
-      - uses: ifaxity/wait-on-action
+      - name: Wait on
+        uses: iFaxity/wait-on-action@v1
         with:
           resource: http://localhost:8000
       - name: Cypress run
