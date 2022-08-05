@@ -6,9 +6,13 @@
   "private": false,
   "scripts": {
     "dev": "parcel watch assets/js/here_for_change.js assets/scss/here_for_change.scss --dist-dir assets/bundles",
-    "build": "parcel build assets/js/here_for_change.js assets/scss/here_for_change.scss --dist-dir assets/bundles --no-content-hash"
+    "build": "parcel build assets/js/here_for_change.js assets/scss/here_for_change.scss --dist-dir assets/bundles --no-content-hash",
+    "test": "cypress run"
   },
   "dependencies": {
     "parcel": "^2.6.2"
+  },
+  "devDependencies": {
+    "cypress": "^10.4.0"
   }
 }
