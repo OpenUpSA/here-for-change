@@ -10,9 +10,10 @@ jobs:
         run: docker-compose up -d
       - name: Load demo data
         run: docker compose run --rm web python manage.py loaddata demo-data
+      - name: Yarn
+        run: yarn
+      - name: Cypress Test
+        uses: ./
         with:
-          wait-on: 'http://localhost:8000'
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        with:
+          start: yarn test
           wait-on: 'http://localhost:8000'
