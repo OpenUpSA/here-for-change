@@ -1,0 +1,59 @@
+[
+  {
+    "model": "municipalities.municipality",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-08-05T14:47:48.520Z",
+      "updated_at": "2022-08-05T14:52:16.723Z",
+      "name": "City of Cape Town Metropolitan Municipality",
+      "municipality_code": "CPT",
+      "municipality_type": "Metropolitan",
+      "province": "WesternCape"
+    }
+  },
+  {
+    "model": "municipalities.municipality",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-08-05T14:52:04.633Z",
+      "updated_at": "2022-08-05T14:52:21.998Z",
+      "name": "Matzikama Local Municipality",
+      "municipality_code": "WC011",
+      "municipality_type": "Local",
+      "province": "WesternCape"
+    }
+  },
+  {
+    "model": "municipalities.ward",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-08-05T14:47:59.570Z",
+      "updated_at": "2022-08-05T14:47:59.570Z",
+      "name": "Ward 84",
+      "slug": "wc011-ward-84",
+      "municipality": 1
+    }
+  },
+  {
+    "model": "municipalities.ward",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-08-05T14:52:10.196Z",
+      "updated_at": "2022-08-05T14:52:10.196Z",
+      "name": "Ward 1",
+      "slug": "wc011-ward-1",
+      "municipality": 2
+    }
+  },
+  {
+    "model": "municipalities.ward",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-08-05T14:53:33.486Z",
+      "updated_at": "2022-08-05T14:53:33.486Z",
+      "name": "Ward 1",
+      "slug": "cpt-ward-1",
+      "municipality": 1
+    }
+  }
+]
