@@ -245,3 +245,6 @@ dist
 .DS_Store
 
 .vscode/
+
+cypress/videos
+cypress/screenshots
