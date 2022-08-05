@@ -1,5 +1,5 @@
 describe('empty spec', () => {
   it('passes', () => {
-    cy.visit('http://localhost:8000/municipalities/CPT/')
+    cy.visit('/municipalities/CPT/')
   })
 })

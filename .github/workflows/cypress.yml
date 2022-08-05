@@ -6,7 +6,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
+      - name: Docker compose
+        run: docker-compose up
+      - name: Load demo data
+        run: docker compose run --rm web python manage.py loaddata demo-data
       - name: Cypress run
         uses: cypress-io/github-action@v4
