@@ -1,43 +1,170 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     {% if TAG_MANAGER_ENABLED %}
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','{{ TAG_MANAGER_CONTAINER_ID }}');</script>
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(
+        window,
+        document,
+        "script",
+        "dataLayer",
+        "{{ TAG_MANAGER_CONTAINER_ID }}"
+      );
+    </script>
     <!-- End Google Tag Manager -->
-    {% endif %} 
+    {% endif %}
 
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>{% block title %}here_for_change{% endblock %}</title>
     {% block meta %}
-    <meta property="description" content="{% block description %}A public participation platform at your local level.{% endblock %}" />
-    <meta name="twitter:title" content="{% block twitter_title %}here_for_change{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}A public participation platform at your local level.{% endblock %}">
-    <meta name="twitter:card" content="summary">
-    <meta property="og:title" content="{% block og_title %}here_for_change{% endblock %}" />
-    <meta property="og:description" content="{% block og_description %}A public participation platform at your local level.{% endblock %}" />
+    <meta
+      property="description"
+      content="{% block description %}A public participation platform at your local level.{% endblock %}"
+    />
+    <meta
+      name="twitter:title"
+      content="{% block twitter_title %}here_for_change{% endblock %}"
+    />
+    <meta
+      name="twitter:description"
+      content="{% block twitter_description %}A public participation platform at your local level.{% endblock %}"
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta
+      property="og:title"
+      content="{% block og_title %}here_for_change{% endblock %}"
+    />
+    <meta
+      property="og:description"
+      content="{% block og_description %}A public participation platform at your local level.{% endblock %}"
+    />
     {% endblock %}
-
-    <link rel="stylesheet" href="{% static "scss/here_for_change.css" %}">
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+    />
   </head>
   <body>
-    {% if TAG_MANAGER_ENABLED %} 
+    {% if TAG_MANAGER_ENABLED %}
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ TAG_MANAGER_CONTAINER_ID }}"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id={{ TAG_MANAGER_CONTAINER_ID }}"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    {% endif %} 
+    {% endif %}
 
+    <nav class="shadow bg-hfc-green-900">
+      <div class="px-6 md:flex justify-between">
+        <div class="py-3 flex items-center justify-between">
+          <div>
+            <a class="text-2xl merriweather text-white lg:text-3xl" href="#"
+              >HereForChange</a
+            >
+          </div>
+
+          <!-- Mobile menu button -->
+          <div class="flex md:hidden">
+            <button
+              type="button"
+              class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600"
+              aria-label="toggle menu"
+            >
+              <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+                <path
+                  fill-rule="evenodd"
+                  d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <ul class="flex flex-col px-2 -mx-4 md:flex-row md:mx-0 items-center">
+          <li
+            class="px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+          >
+            <a
+              href="#"
+              class="text-sm font-medium text-white transition-colors duration-200 transform rounded md:mr-2"
+              >Learning</a
+            >
+            <i class="fa-solid fa-angle-down text-zinc-400"></i>
+          </li>
+          <li
+            class="px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+          >
+            <a
+              href="#"
+              class="text-sm font-medium text-white transition-colors duration-200 transform rounded md:mr-2"
+              >Tools</a
+            >
+            <i class="fa-solid fa-angle-down text-zinc-400"></i>
+          </li>
+          <li
+            class="px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+          >
+            <a
+              href="#"
+              class="text-sm font-medium text-white transition-colors duration-200 transform rounded md:mr-2"
+              >Guides</a
+            >
+            <i class="fa-solid fa-angle-down text-zinc-400"></i>
+          </li>
+        </ul>
+
+        <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+        <div class="md:flex md:items-center md:justify-between py-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+              <svg
+                class="w-5 h-5 text-gray-400"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </span>
+
+            <input
+              type="text"
+              class="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
+              placeholder="Search"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
     {% block content %}{% endblock %}
 
-    <script src="{% static "js/here_for_change.js" %}" async></script>
+    <script src="{% static 'js/here_for_change.js' %}" async></script>
   </body>
 </html>

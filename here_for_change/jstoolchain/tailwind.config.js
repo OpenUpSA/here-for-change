@@ -2,7 +2,14 @@
 module.exports = {
   content: ["../templates/**/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      colors:{
+        "hfc-green":{
+          800: "#303e3e",
+          900: "#192827"
+        }
+      }
+    },
   },
   plugins: [],
 }
