@@ -77,7 +77,7 @@
     {% endif %}
 
     <nav class="shadow bg-hfc-green-900">
-      <div class="px-6 md:flex justify-between">
+      <div class="w-1280 mx-auto md:flex justify-between">
         <div class="py-3 flex items-center justify-between">
           <div>
             <a class="text-2xl merriweather text-white lg:text-3xl" href="#"
@@ -136,35 +136,108 @@
         </ul>
 
         <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
-        <div class="md:flex md:items-center md:justify-between py-3">
+        <div
+          class="hidden md:flex md:items-center md:justify-between py-3 gap-3"
+        >
           <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-              <svg
-                class="w-5 h-5 text-gray-400"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path
-                  d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                ></path>
-              </svg>
+              <i class="fa-solid fa-magnifying-glass text-purple-700"></i>
             </span>
 
             <input
               type="text"
               class="w-full py-2 pl-10 pr-4 text-gray-700 bg-white border rounded-md focus:border-blue-400 focus:outline-none focus:ring focus:ring-opacity-40 focus:ring-blue-300"
-              placeholder="Search"
+              placeholder="Find your municipality..."
             />
           </div>
+          <!-- Dropdown below-->
+          <div class="relative inline-block text-left">
+            <div>
+              <button
+                type="button"
+                class="inline-flex justify-center items-center gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-800 text-sm font-medium text-white focus:outline-none"
+                id="menu-button"
+                aria-expanded="true"
+                aria-haspopup="true"
+              >
+                <span>EN</span>
+                <i class="fa-solid fa-caret-down"></i>
+              </button>
+            </div>
+
+            <div
+              class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="menu-button"
+              tabindex="-1"
+            >
+              <div class="py-1" role="none">
+                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                <a
+                  href="#"
+                  class="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="menu-item-0"
+                  >English</a
+                >
+                <a
+                  href="#"
+                  class="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="menu-item-1"
+                  >Africaans</a
+                >
+                <a
+                  href="#"
+                  class="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="menu-item-2"
+                  >isiZulu</a
+                >
+                <a
+                  href="#"
+                  class="text-gray-700 block px-4 py-2 text-sm"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="menu-item-2"
+                  >isiXhosa</a
+                >
+              </div>
+            </div>
+          </div>
+          <!-- End of dropdown -->
         </div>
       </div>
     </nav>
     {% block content %}{% endblock %}
 
-    <script src="{% static 'js/here_for_change.js' %}" async></script>
+    <!-- <script src="{% static 'js/here_for_change.js' %}" async></script> -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVpLtYRxUyADSJ6wBW9z7fwyZdPrh_0vc&callback=initMap&v=weekly"
+      defer
+    ></script>
+    <script>
+      // Initialize and add the map
+      function initMap() {
+        // The location of Uluru
+        const uluru = { lat: -25.344, lng: 131.031 };
+        // The map, centered at Uluru
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 4,
+          center: uluru,
+        });
+        // The marker, positioned at Uluru
+        const marker = new google.maps.Marker({
+          position: uluru,
+          map: map,
+        });
+      }
+
+      //window.initMap = initMap;
+    </script>
   </body>
 </html>

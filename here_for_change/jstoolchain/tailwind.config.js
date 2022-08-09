@@ -5,9 +5,13 @@ module.exports = {
     extend: {
       colors:{
         "hfc-green":{
+          100: "#5b8d8a",
           800: "#303e3e",
           900: "#192827"
         }
+      },
+      spacing:{
+        "1280": "1280px"
       }
     },
   },
