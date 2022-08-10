@@ -63,6 +63,7 @@ coverage.xml
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+staticfiles/
 
 # Flask stuff:
 instance/
@@ -248,3 +249,4 @@ dist
 
 cypress/videos
 cypress/screenshots
+
