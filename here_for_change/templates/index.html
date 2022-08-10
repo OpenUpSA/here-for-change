@@ -1,5 +1,6 @@
 
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
     {% include "includes/ward_notification.html" %}
@@ -74,12 +75,25 @@
       {% include "includes/map.html" %}
     </section>
     <section class="bg-hfc-green-900">
-      <div class="flex items-center w-1280 mx-auto py-10 gap-4">
+      <div class="flex justify-between items-center w-1280 mx-auto pt-9">
+        <p class="text-2xl merriweather text-white">Your ward councillior is:</p>
+        <div class="">
+          <div class="bg-hfc-green-700 rounded-md p-3 justify-self-end cursor-pointer hover:bg-hfc-green-600">
+            <span>
+              <i class="fa-solid fa-pen-to-square text-white text-xl"></i>
+            </span>
+            <span class="text-white">
+              Suggest an edit
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-start w-1280 mx-auto py-6 gap-4">
         <!-- left side -->
-        <div class="grow">
-          <p class="text-2xl merriweather text-white">Your ward councillior is:</p>
+        <div class="w-1/2">
           <!-- white card -->
-          <div class="bg-white rounded-lg p-4 mt-8">
+          <div class="bg-white rounded-lg p-4  text-base">
             <div class="flex gap-2 items-center">
               <img class="rounded-lg w-20 h-20" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"/>
               <div class="grow">
@@ -93,11 +107,267 @@
             </div>
             <div class="border-t-2 my-3 border-gray-100">
             </div>
+            <!-- tel row -->
+            <div class="flex items-center">
+              <div class="flex items-center grow">
+                <span class="mr-4 ml-2">
+                  <i class="fa-solid fa-phone-flip"></i>
+                </span>
+                <span class="mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md">
+                  028 425 5500
+                </span>
+                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+                  <span>
+                    <i class="fa-solid fa-thumbs-up text-green-600"></i>
+                  </span>
+                  <span>
+                    24
+                  </span>
+                </span>
+                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+                  <span>
+                    <i class="fa-solid fa-thumbs-down text-red-600"></i>
+                  </span>
+                  <span>
+                    24
+                  </span>
+                </span>
+              </div>
+              <div>
+                <i class="fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer"></i>
+              </div>
+            </div>
+            <!-- email row -->
+            <div class="flex items-center mt-2">
+              <div class="flex items-center grow">
+                <span class="mr-4 ml-2">
+                  <i class="fa-solid fa-envelope"></i>
+                </span>
+                <span class="mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer">
+                  info@capeagulhas.gov.za
+                </span>
+                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+                  <span>
+                    <i class="fa-solid fa-thumbs-up text-green-600"></i>
+                  </span>
+                  <span>
+                    5
+                  </span>
+                </span>
+                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+                  <span>
+                    <i class="fa-solid fa-thumbs-down text-red-600"></i>
+                  </span>
+                  <span>
+                    0
+                  </span>
+                </span>
+              </div>
+              <div>
+                <i class="fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer"></i>
+              </div>
+            </div>
           </div>
         </div>
         <!-- right side -->
-        <div>
-          
+        <div class="w-1/2">
+          <div>
+            <p class="text-white">Frequently asked questions:</p>
+            <div class="relative inline-block w-full mt-3">
+              <div>
+                <button
+                  type="button"
+                  class="flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+                  id="menu-button"
+                  aria-expanded="true"
+                  aria-haspopup="true"
+                >
+                  <span class="inline-block">What is a ward councillor?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+  
+              <div
+                class=" origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabindex="-1"
+              >
+                <div class="py-2 px-3" role="none">
+                  <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                  <a
+                    href="#"
+                    class="text-white block px-2 py-2 text-sm"
+                    role="menuitem"
+                    tabindex="-1"
+                    id="menu-item-0"
+                    >
+                    A ward councillor is an elected representative responsible for ensuring that the needs of their ward are represented and considered during a district or municipalities various planning and budgetary processes.
+                    </a
+                  >
+                  
+                </div>
+              </div>
+            </div>
+            <!-- second dropdown -->
+            <div class="relative inline-block w-full mt-3">
+              <div>
+                <button
+                  type="button"
+                  class="flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+                  id="menu-button"
+                  aria-expanded="true"
+                  aria-haspopup="true"
+                >
+                  <span class="inline-block">How are ward councillors elected?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+  
+              <div
+                class=" origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabindex="-1"
+              >
+                <div class="py-2 px-3" role="none">
+                  <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                  <a
+                    href="#"
+                    class="text-white block px-2 py-2 text-sm"
+                    role="menuitem"
+                    tabindex="-1"
+                    id="menu-item-0"
+                    >
+                    A ward councillor is an elected representative responsible for ensuring that the needs of their ward are represented and considered during a district or municipalities various planning and budgetary processes.
+                    </a
+                  >
+                  
+                </div>
+              </div>
+            </div>
+            <!-- third dropdown -->
+            <div class="relative inline-block w-full mt-3">
+              <div>
+                <button
+                  type="button"
+                  class="flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+                  id="menu-button"
+                  aria-expanded="true"
+                  aria-haspopup="true"
+                >
+                  <span class="inline-block">What is a ward?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+              </div>
+  
+              <div
+                class=" origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="menu-button"
+                tabindex="-1"
+              >
+                <div class="py-2 px-3" role="none">
+                  <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                  <a
+                    href="#"
+                    class="text-white block px-2 py-2 text-sm"
+                    role="menuitem"
+                    tabindex="-1"
+                    id="menu-item-0"
+                    >
+                    A ward councillor is an elected representative responsible for ensuring that the needs of their ward are represented and considered during a district or municipalities various planning and budgetary processes.
+                    </a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Summary section -->
+    <section class="pt-20">
+      <div class="flex gap-12 w-1280 mx-auto">
+        <!-- Left side bar -->
+        <div class="w-1/4">
+          <div class="bg-hfc-green-900 text-white flex items-center gap-5 p-4 rounded-lg mb-4 cursor-pointer">
+            <span>
+              <i class="fa-solid fa-bolt-lightning text-xl"></i>
+            </span>
+            <span class="font-medium text-lg">
+              Summary
+            </span>
+          </div>
+          <div class="text-black-700 bg-neutral-100 flex items-center gap-5 p-4 rounded-lg mb-4 cursor-pointer hover:bg-neutral-300">
+            <span>
+              <i class="fa-solid fa-phone-flip text-xl"></i>
+            </span>
+            <span class="font-medium text-lg">
+              Contact
+            </span>
+          </div>
+          <div class="text-black-700 bg-neutral-100 flex items-center gap-5 p-4 rounded-lg mb-4 cursor-pointer hover:bg-neutral-300">
+            <span>
+              <i class="fa-solid fa-coins text-lg"></i>
+            </span>
+            <span class="font-medium text-lg">
+              Spending
+            </span>
+          </div>
+          <div class="text-black-700 bg-neutral-100 flex items-center gap-5 p-4 rounded-lg mb-4 cursor-pointer hover:bg-neutral-300">
+            <span>
+              <i class="fa-solid fa-calendar-days text-lg"></i>
+            </span>
+            <span class="font-medium text-lg">
+              Participation
+            </span>
+          </div>
+          <div class="text-black-700 bg-neutral-100 flex items-center gap-5 p-4 rounded-lg mb-4 cursor-pointer hover:bg-neutral-300">
+            <span>
+              <i class="fa-solid fa-file-signature text-lg"></i>
+            </span>
+            <span class="font-medium text-lg">
+              Surveys
+            </span>
+          </div>
+          <div class="text-black-700 bg-neutral-100 flex items-center gap-5 p-4 rounded-lg mb-4 cursor-pointer hover:bg-neutral-300">
+            <span>
+              <i class="fa-solid fa-check-to-slot text-lg"></i>
+            </span>
+            <span class="font-medium text-lg">
+              Elections
+            </span>
+          </div>
+          <div class="text-black-700 bg-neutral-100 flex items-center gap-5 p-4 rounded-lg mb-4 cursor-pointer hover:bg-neutral-300">
+            <span>
+              <i class="fa-solid fa-comment-dots"></i>
+            </span>
+            <span class="font-medium text-lg">
+              Messages
+            </span>
+          </div>
+        </div>
+        <!-- Right side  -->
+        <div class="w-3/4">
+          <div>
+            <p class="merriweather text-4xl font-extrabold mb-4">Summary</p>
+            <p class="text-slate-400 font-medium">A summary of the different content available for this municipality and ward.</p>
+          </div>
+          <div class="flex items-center justify-between mt-4">
+            <p class="merriweather font-bold text-2xl">Contact information</p>
+            <div class="flex items-center gap-2 bg-neutral-100 p-4 rounded-md cursor-pointer hover:bg-neutral-300">
+              <span class="text-lg">
+                See all contacts
+              </span>
+              <span>
+                <i class="fa-solid fa-arrow-right text-xl"></i>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
