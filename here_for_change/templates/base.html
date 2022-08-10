@@ -214,29 +214,6 @@
       </div>
     </nav>
     {% block content %}{% endblock %}
-
     <!-- <script src="{% static 'js/here_for_change.js' %}" async></script> -->
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA&callback=initMap&v=weekly"
-      defer
-    ></script>
-    <script>
-      // Initialize and add the map
-      function initMap() {
-        // The location of Cape Town
-        const capeTown = { lat: -33.9249, lng: 18.4241 };
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 12,
-          center: capeTown,
-        });
-        // The marker, positioned at Cape Town
-        const marker = new google.maps.Marker({
-          position: capeTown,
-          map: map,
-        });
-      }
-
-      //window.initMap = initMap;
-    </script>
   </body>
 </html>

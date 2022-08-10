@@ -1,8 +1,31 @@
 {% extends "base.html" %} {% block content %}
 <div id="map"></div>
 <h2>
-  <a href="{% url 'municipality_detail' ward.municipality.municipality_code %}">{{ward.municipality.name}}</a>
-  - 
-  {{ward.name}}</h2>
-  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae at, porro rem iusto a velit ad tenetur. Deserunt nostrum explicabo possimus quam nihil, quo harum aperiam repellendus laboriosam. Quia, quam.</p>
+  <a href="{% url 'municipality_detail' ward.municipality.municipality_code %}"
+    >{{ward.municipality.name}}</a
+  >
+  - {{ward.name}}
+</h2>
+<p>
+  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae at, porro
+  rem iusto a velit ad tenetur. Deserunt nostrum explicabo possimus quam nihil,
+  quo harum aperiam repellendus laboriosam. Quia, quam.
+</p>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA&callback=initMap&v=weekly"
+  defer
+></script>
+<script>
+  function initMap() {
+    const location = { lat: {{ward.map_latitude}}, lng: {{ward.map_longitude}} };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: {{ward.map_default_zoom}},
+      center: location,
+    });
+    const marker = new google.maps.Marker({
+      position: location,
+      map: map,
+    });
+  }
+</script>
 {% endblock %}
