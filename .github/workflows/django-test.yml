@@ -9,6 +9,6 @@ jobs:
       - name: Docker compose up
         run: docker-compose up -d
       - name: Docker compose collecstatic
-        run: docker-compose run --rm web python collectstatic
+        run: docker-compose run --rm web python manage.py collectstatic
       - name: Docker compose test
         run: docker-compose run --rm web python manage.py test
