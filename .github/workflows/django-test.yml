@@ -1,0 +1,14 @@
+name: Django Tests
+on: [push]
+jobs:
+  django-test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Docker compose up
+        run: docker-compose up -d
+      - name: Docker compose collecstatic
+        run: docker-compose run --rm web python manage.py collectstatic --noinput
+      - name: Docker compose test
+        run: docker-compose run --rm web python manage.py test

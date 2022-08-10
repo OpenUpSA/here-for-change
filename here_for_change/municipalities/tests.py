@@ -6,9 +6,9 @@ import html5lib
 class IndexTestCase(TestCase):
     def test_index(self):
         c = Client()
-        response = c.get("/municipalities")
+        response = c.get("/")
         self.assertContains(
-            response, "index for municipalities in here_for_change",
+            response, "Here For Change",
         )
         assertValidHTML(response.content)
 
