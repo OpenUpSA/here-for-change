@@ -31,7 +31,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>{% block title %}here_for_change{% endblock %}</title>
+    <title>{% block title %}Here For Change{% endblock %}</title>
     {% block meta %}
     <meta
       property="description"
@@ -39,7 +39,7 @@
     />
     <meta
       name="twitter:title"
-      content="{% block twitter_title %}here_for_change{% endblock %}"
+      content="{% block twitter_title %}Here For Change{% endblock %}"
     />
     <meta
       name="twitter:description"
@@ -48,7 +48,7 @@
     <meta name="twitter:card" content="summary" />
     <meta
       property="og:title"
-      content="{% block og_title %}here_for_change{% endblock %}"
+      content="{% block og_title %}Here for Change{% endblock %}"
     />
     <meta
       property="og:description"
@@ -80,7 +80,7 @@
       <div class="w-1280 mx-auto md:flex justify-between">
         <div class="py-3 flex items-center justify-between">
           <div>
-            <a class="text-2xl merriweather text-white lg:text-3xl" href="#"
+            <a class="text-2xl merriweather text-white lg:text-3xl" href="/"
               >HereForChange</a
             >
           </div>
@@ -217,22 +217,21 @@
 
     <!-- <script src="{% static 'js/here_for_change.js' %}" async></script> -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVpLtYRxUyADSJ6wBW9z7fwyZdPrh_0vc&callback=initMap&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA&callback=initMap&v=weekly"
       defer
     ></script>
     <script>
       // Initialize and add the map
       function initMap() {
-        // The location of Uluru
-        const uluru = { lat: -25.344, lng: 131.031 };
-        // The map, centered at Uluru
+        // The location of Cape Town
+        const capeTown = { lat: -33.9249, lng: 18.4241 };
         const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 4,
-          center: uluru,
+          zoom: 12,
+          center: capeTown,
         });
-        // The marker, positioned at Uluru
+        // The marker, positioned at Cape Town
         const marker = new google.maps.Marker({
-          position: uluru,
+          position: capeTown,
           map: map,
         });
       }

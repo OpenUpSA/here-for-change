@@ -1,0 +1,7 @@
+{% extends "base.html" %} {% block content %}
+<h2>
+  <a href="{% url 'municipality_detail' ward.municipality.municipality_code %}">{{ward.municipality.name}}</a>
+  - 
+  {{ward.name}}</h2>
+  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae at, porro rem iusto a velit ad tenetur. Deserunt nostrum explicabo possimus quam nihil, quo harum aperiam repellendus laboriosam. Quia, quam.</p>
+{% endblock %}
