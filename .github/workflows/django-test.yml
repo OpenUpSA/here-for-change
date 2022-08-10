@@ -1,0 +1,10 @@
+name: Django Tests
+on: [push]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Docker compose
+        run: docker-compose run --rm web python manage.py test
