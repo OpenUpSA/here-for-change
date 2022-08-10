@@ -6,5 +6,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Docker compose
+      - name: Docker compose up
+        run: docker-compose up -d
+      - name: Docker compose test
         run: docker-compose run --rm web python manage.py test
