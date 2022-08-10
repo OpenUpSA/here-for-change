@@ -83,7 +83,7 @@ Demo/seed data can be loaded with:
 
 To dump data from your db for updating demo/seed data:
 
-     docker compose run --rm web python manage.py dumpdata --exclude=auth --exclude=contenttypes
+     docker compose run --rm web python manage.py dumpdata --exclude=auth --exclude=contenttypes --exclude=sessions --exclude=admin
 
 If you need to destroy and recreate your dev setup, e.g. if you've messed up your
 database data or want to switch to a branch with an incompatible database schema,
