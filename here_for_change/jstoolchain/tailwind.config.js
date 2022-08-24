@@ -15,9 +15,13 @@ module.exports = {
 
         }
       },
-      spacing:{
-        "1280": "1280px"
-      }
+      boxShadow:{
+        "btm": "0 2px grey",
+        "wide": "0 10px 13px 0 rgba(25, 40, 39, 0.2), 0 2px grey"
+      },
+      // borderWith:{
+      //   "1": "1px"
+      // }
     },
   },
   plugins: [],
