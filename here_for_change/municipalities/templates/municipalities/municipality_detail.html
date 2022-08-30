@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %}
+<div id="map"></div>
+<h2>{{municipality}}</h2>
+<h3>Wards</h3>
+<ul>
+  {% for ward in municipality.ward_set.all %}
+  <li>
+    <a href="{% url 'ward_detail' municipality.municipality_code ward.slug %}">
+      {{ ward.name }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA&callback=initMap&v=weekly"
+  defer
+></script>
+<script>
+  function initMap() {
+    const location = { lat: {{municipality.map_latitude}}, lng: {{municipality.map_longitude}} };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: {{municipality.map_default_zoom}},
+      center: location,
+    });
+    const marker = new google.maps.Marker({
+      position: location,
+      map: map,
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+[
+  {
+    "model": "municipalities.municipality",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-08-05T14:47:48.520Z",
+      "updated_at": "2022-08-10T10:44:52.493Z",
+      "name": "City of Cape Town Metropolitan Municipality",
+      "municipality_code": "CPT",
+      "municipality_type": "Metropolitan",
+      "province": "WesternCape",
+      "map_default_zoom": 10,
+      "map_latitude": "-33.9249000",
+      "map_longitude": "18.4241000"
+    }
+  },
+  {
+    "model": "municipalities.municipality",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-08-05T14:52:04.633Z",
+      "updated_at": "2022-08-10T10:43:55.687Z",
+      "name": "Matzikama Local Municipality",
+      "municipality_code": "WC011",
+      "municipality_type": "Local",
+      "province": "WesternCape",
+      "map_default_zoom": 10,
+      "map_latitude": "-31.6125000",
+      "map_longitude": "18.5226000"
+    }
+  },
+  {
+    "model": "municipalities.ward",
+    "pk": 1,
+    "fields": {
+      "created_at": "2022-08-05T14:47:59.570Z",
+      "updated_at": "2022-08-10T10:41:06.086Z",
+      "name": "Ward 84",
+      "slug": "cpt-ward-84",
+      "municipality": 1,
+      "map_default_zoom": 14,
+      "map_latitude": "-34.0757000",
+      "map_longitude": "18.8433000"
+    }
+  },
+  {
+    "model": "municipalities.ward",
+    "pk": 2,
+    "fields": {
+      "created_at": "2022-08-05T14:52:10.196Z",
+      "updated_at": "2022-08-10T10:44:14.402Z",
+      "name": "Ward 1",
+      "slug": "wc011-ward-1",
+      "municipality": 2,
+      "map_default_zoom": 12,
+      "map_latitude": "-31.5532000",
+      "map_longitude": "18.3475000"
+    }
+  },
+  {
+    "model": "municipalities.ward",
+    "pk": 3,
+    "fields": {
+      "created_at": "2022-08-05T14:53:33.486Z",
+      "updated_at": "2022-08-10T10:39:50.718Z",
+      "name": "Ward 1",
+      "slug": "cpt-ward-1",
+      "municipality": 1,
+      "map_default_zoom": 12,
+      "map_latitude": "-33.8654000",
+      "map_longitude": "18.5710000"
+    }
+  }
+]
