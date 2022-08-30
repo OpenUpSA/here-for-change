@@ -24,7 +24,7 @@
     </script>
     <!-- End Google Tag Manager -->
     {% endif %}
-
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta
@@ -76,9 +76,9 @@
     <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 
-    <nav class="shadow bg-hfc-green-900">
+    <nav class="shadow bg-hfc-green-900 relative z-20">
       <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto md:flex justify-between">
-        <div class="py-3 flex items-center justify-between">
+        <div class="py-3 flex items-center justify-between z-20">
           <div>
             <a class="text-lg merriweather text-white lg:text-2xl relative" href="#">
               <span>HereForChange</span>
@@ -88,37 +88,35 @@
               </div>
             </a>
           </div>
-
-          
         </div>
 
-        <ul class="hidden lg:flex px-2 -mx-4  lg:inline-block lg:flex-row md:mx-0 items-center">
+        <ul class="hidden lg:flex px-2 -mx-4  lg:inline-block lg:flex-row md:mx-0 items-center z-20">
           <li
-            class="px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+            class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
           >
             <a
               href="#"
-              class="text-sm font-medium text-white transition-colors duration-200 transform rounded md:mr-2"
+              class="text-sm font-medium text-white rounded md:mr-2"
               >Learning</a
             >
             <i class="fa-solid fa-angle-down text-zinc-400"></i>
           </li>
           <li
-            class="px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+            class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
           >
             <a
               href="#"
-              class="text-sm font-medium text-white transition-colors duration-200 transform rounded md:mr-2"
+              class="text-sm font-medium text-white rounded md:mr-2"
               >Tools</a
             >
             <i class="fa-solid fa-angle-down text-zinc-400"></i>
           </li>
           <li
-            class="px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+            class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
           >
             <a
               href="#"
-              class="text-sm font-medium text-white transition-colors duration-200 transform rounded md:mr-2"
+              class=" text-sm font-medium text-white rounded md:mr-2"
               >Guides</a
             >
             <i class="fa-solid fa-angle-down text-zinc-400"></i>
@@ -127,7 +125,7 @@
 
         <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
         <div
-          class="hidden md:flex md:items-center md:justify-between py-3 gap-3"
+          class="hidden md:flex md:items-center md:justify-between py-3 gap-3 z-20"
         >
           <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -141,12 +139,13 @@
             />
           </div>
           <!-- Dropdown below-->
-          <div class="relative inline-block text-left">
+          <div class="relative inline-block text-left" x-data="{open: false}">
             <div>
               <button
+                @click="open = !open"
                 type="button"
                 class="inline-flex justify-center items-center gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-800 text-sm font-medium text-white focus:outline-none"
-                id="menu-button"
+                id="lang-button"
                 aria-expanded="true"
                 aria-haspopup="true"
               >
@@ -156,44 +155,56 @@
             </div>
 
             <div
-              class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+              class="top-0 w-auto absolute right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="menu-button"
               tabindex="-1"
+              x-show="open" 
+              x-transition
+              @click.outside = "open = false"
+              @click="open = ! open"
             >
               <div class="py-1" role="none">
                 <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                 <a
                   href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
+                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-0"
+                  data-lang="EN"
+                  onclick="dropDownHandler(event, 'lang-button', true)"
                   >English</a
                 >
                 <a
                   href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
+                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-1"
+                  data-lang="AF"
+                  onclick="dropDownHandler(event, 'lang-button', true)"
                   >Africaans</a
                 >
                 <a
                   href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
+                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  data-lang="ISZ"
+                  onclick="dropDownHandler(event, 'lang-button', true)"
                   >isiZulu</a
                 >
                 <a
                   href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm"
+                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
                   role="menuitem"
                   tabindex="-1"
                   id="menu-item-2"
+                  data-lang="ISX"
+                  onclick="dropDownHandler(event, 'lang-button', true)"
                   >isiXhosa</a
                 >
               </div>
@@ -218,6 +229,35 @@
         </div>
       </div>
     </nav>
+    <div id="" class="hidden lg:block nav-tray py-7  absolute w-full top-[-50%] left-0 right-0 bg-hfc-green-900 z-10 border-t border-[#ffffff12]">
+      <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto w-full flex items-start">
+        <!-- from here blog section -->
+        <div class="flex flex-col text-sm text-white w-1/3 border-r border-[#ffffff12] pr-7">
+          <p class="text-hfc-green-100 mb-2 pb-2.5 pr-3 w-full">From our blog</p>
+          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">Find my ward councillor</a>
+          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">Find my municipalities contact information</a>
+          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">How does my municipaility earn and spend its money</a>
+          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">How my municipal and ward leadership was selected</a>
+        </div>
+        <!-- participation section -->
+        <div class="flex flex-col text-sm text-white w-1/3 border-r border-[#ffffff12] px-7">
+          <p class="text-hfc-green-100 mb-2 pb-2.5 px-3 w-full">Participation</p>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        </div>
+        <!-- understanding govt section -->
+        <div class="flex flex-col text-sm text-white w-1/3 px-7">
+          <p class="text-hfc-green-100 mb-2 pb-2.5 px-3 w-full">Understanding government</p>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        </div>
+      </div>   
+    </div>
+    
     {% block content %}{% endblock %}
     <footer class="bg-hfc-green-900 w-full py-12">
       <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
@@ -265,7 +305,8 @@
       </div>
     </footer>
 
-    <!-- <script src="{% static 'js/here_for_change.js' %}" async></script> -->
+    <script src="{% static 'js/here_for_change.js' %}" async></script>
+    
     <script
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVpLtYRxUyADSJ6wBW9z7fwyZdPrh_0vc&callback=initMap&v=weekly"
       defer

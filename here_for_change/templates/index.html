@@ -8,12 +8,13 @@
         <div class="p-4 md:p-8 max-w-screen-xl mx-auto flex flex-col align-items gap-3">
             <div class="md:flex items-center inline-block text-left">
                 <h1 class="w-full md:w-auto text-left merriweather text-[48px] font-extrabold md:pr-4">Cape Agulhas</h1>
-                <div class="relative">
+                <div class="relative" x-data="{open: false}">
                 <div class="">
                   <button
+                    @click="open = ! open"
                     type="button"
                     class="inline-flex justify-between items-center gap-2 w-full lg:w-40 rounded-md shadow-sm px-4 py-3 bg-hfc-green-100 text-sm font-medium text-white focus:outline-none hover:bg-teal-900"
-                    id="menu-button"
+                    id="ward-button"
                     aria-expanded="true"
                     aria-haspopup="true"
                   >
@@ -23,44 +24,52 @@
                 </div>
     
                 <div
-                  class="hidden origin-top-right absolute right-0 mt-2 w-full md:w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  class="w-full top-0 absolute right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="menu-button"
                   tabindex="-1"
+                  x-show="open" 
+                  x-transition
+                  @click.outside = "open = false"
+                  @click="open = ! open"
                 >
-                  <div class="py-1" role="none">
+                  <div class="pb-1" role="none">
                     <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                     <a
                       href="#"
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
                       role="menuitem"
                       tabindex="-1"
                       id="menu-item-0"
+                      onclick="dropDownHandler(event, 'ward-button')"
                       >Ward 1</a
                     >
                     <a
                       href="#"
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
                       role="menuitem"
                       tabindex="-1"
                       id="menu-item-1"
+                      onclick="dropDownHandler(event, 'ward-button')"
                       >Ward 2</a
                     >
                     <a
                       href="#"
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
                       role="menuitem"
                       tabindex="-1"
                       id="menu-item-2"
+                      onclick="dropDownHandler(event, 'ward-button')"
                       >Ward 3</a
                     >
                     <a
                       href="#"
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
                       role="menuitem"
                       tabindex="-1"
                       id="menu-item-2"
+                      onclick="dropDownHandler(event, 'ward-button')"
                       >Ward 4</a
                     >
                   </div>
@@ -76,7 +85,7 @@
       {% include "includes/map.html" %}
     </section>
     <section class="bg-hfc-green-900">
-      <div class="md:flex justify-between items-center px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto pt-9">
+      <div class="md:flex justify-between items-center px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto pt-9 pb-4">
         <h2 class="text-2xl md:text-3xl merriweather font-bold text-white text-center">
           Your 
           <span class="relative">
@@ -95,11 +104,16 @@
         </div>
       </div>
 
-      <div class="md:flex items-start px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto py-6 gap-4">
+      <div class="lg:flex items-start px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto py-6 gap-4">
         <!-- left side -->
-        <div class="md:w-1/2">
+        <div class="lg:w-1/2">
           <!-- white card -->
-          <div class="bg-white rounded-lg p-4  text-base">
+          <div class="bg-white rounded-lg p-4 text-base relative">
+            <!-- big rotating star -->
+            <div class="start-transition flex items-center justify-center cursor-default absolute -top-9 -left-6  lg:-left-10 w-16 h-16 lg:w-[84px] lg:h-[84px]">
+              <img style="animation-duration:8s;" class="animate-spin" src="{% static 'assets/big-star.svg' %}"/>
+              <p class="text-white text-[16.8px] leading-[13.44px] lg:text-[22.4px] lg:leading-[17.92px] merriweather text-center absolute rotate-[-12deg] hover:rotate-[-32deg]">Start<br/>here!</p>
+            </div>
             <div class="flex gap-2 items-center">
               <img class="rounded-lg w-20 h-20" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"/>
               <div class="grow">
@@ -178,25 +192,26 @@
           </div>
         </div>
         <!-- right side -->
-        <div class="md:w-1/2">
+        <div class="lg:w-1/2">
           <div>
-            <p class="text-white text-sm text-center md:text-left pt-6 md:pt-0">Frequently asked questions:</p>
-            <div class="relative inline-block w-full mt-3">
+            <p class="text-white text-sm text-center md:text-left pt-6 lg:pt-0">Frequently asked questions:</p>
+            <div 
+              class="relative inline-block w-full mt-3">
               <div>
                 <button
                   type="button"
-                  class="flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
-                  id="menu-button"
+                  class="menu-buttons flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+                  id="menu-buttons"
                   aria-expanded="true"
                   aria-haspopup="true"
                 >
                   <span class="inline-block">What is a ward councillor?</span>
-                  <i class="fa-solid fa-chevron-down"></i>
+                  <i class="fa-solid fa-chevron-down tab-caret"></i>
                 </button>
               </div>
   
               <div
-                class=" origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="hidden panel origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
@@ -219,22 +234,23 @@
               </div>
             </div>
             <!-- second dropdown -->
-            <div class="relative inline-block w-full mt-3">
+            <div 
+              class="relative inline-block w-full mt-3">
               <div>
                 <button
                   type="button"
-                  class="flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+                  class="menu-buttons flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
                   id="menu-button"
                   aria-expanded="true"
                   aria-haspopup="true"
                 >
                   <span class="inline-block">How are ward councillors elected?</span>
-                  <i class="fa-solid fa-chevron-down"></i>
+                  <i class="fa-solid fa-chevron-down tab-caret"></i>
                 </button>
               </div>
   
               <div
-                class=" origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="hidden panel origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
@@ -257,22 +273,23 @@
               </div>
             </div>
             <!-- third dropdown -->
-            <div class="relative inline-block w-full mt-3">
+            <div 
+              class="relative inline-block w-full mt-3">
               <div>
                 <button
                   type="button"
-                  class="flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+                  class="menu-buttons flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
                   id="menu-button"
                   aria-expanded="true"
                   aria-haspopup="true"
                 >
                   <span class="inline-block">What is a ward?</span>
-                  <i class="fa-solid fa-chevron-down"></i>
+                  <i class="fa-solid fa-chevron-down tab-caret"></i>
                 </button>
               </div>
   
               <div
-                class=" origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+                class="hidden panel origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="menu-button"
@@ -301,7 +318,7 @@
     <section class="pt-20 bg-neutral-100">
       <div class="md:flex gap-7 lg:gap-12 px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
         <!-- Left side bar -->
-        <div class="md:w-1/4 flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-scroll text-sm md:text-base">
+        <div class="md:w-1/4 flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto text-sm md:text-base">
           <div class="md:w-auto md:h-12 bg-hfc-green-900 text-white md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer">
             <span>
               <i class="fa-solid fa-bolt-lightning"></i>
@@ -754,40 +771,40 @@
             </p>
             <!-- Tags container -->
             <div class="flex flex-wrap items-center text-center w-full mx-auto justify-center gap-x-3 text-sm">
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Unemployment
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Waste removal
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Dirty streets
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Sports or recreational spaces
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Social services
               </div>
             </div>
             <!-- second tags container  -->
             <div class="flex flex-wrap items-center text-center w-full mx-auto justify-center gap-x-3 text-sm">
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Drug or alcohol abuse
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Housing
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Domestic violence
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Crime
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Electricity supply
               </div>
-              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-neutral-300 mb-3">
+              <div class="md:flex md:items-center bg-neutral-200 p-3 rounded-lg cursor-pointer hover:bg-purple-300 mb-3">
                 Water supply
               </div>
               <div class="md:flex md:items-center bg-neutral-200 hover:bg-purple-300 p-3 rounded-lg cursor-pointer mb-3">
@@ -1185,9 +1202,9 @@
           <p class="text-slate-400 font-medium text-sm pb-7">Designed to help residents take action and influence change in their community</p>
         </div>
       
-        <div class="mx-auto flex  w-full flex-col gap-7 md:flex-row items-center flex-wrap justify-center">
+        <div class="mx-auto flex  w-full flex-col gap-5 md:flex-row items-center flex-wrap justify-between">
           <!-- action card -->
-          <div class="rounded-lg w-full md:w-[48%] lg:w-[23.3%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
+          <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
             <div class="w-full h-24 relative overflow-hidden rounded-lg">
               <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
               <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a714b84f3db51574f2f788_your-representative.jpg"/>
@@ -1221,7 +1238,7 @@
             </div>
           </div>
           <!-- second action card -->
-          <div class="rounded-lg w-full md:w-[48%] lg:w-[23.3%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
+          <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
             <div class="w-full h-24 relative overflow-hidden rounded-lg">
               <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
               <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a719da17013bb1cdd7e7a9_image%2053.jpg"/>
@@ -1255,7 +1272,7 @@
             </div>
           </div>
           <!-- third action card -->
-          <div class="rounded-lg w-full md:w-[48%] lg:w-[23.3%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
+          <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
             <div class="w-full h-24 relative overflow-hidden rounded-lg">
               <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
               <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a724522ad31c59960658bf_budget-spending.jpg"/>
@@ -1289,7 +1306,7 @@
             </div>
           </div>
           <!-- fourth action card -->
-          <div class="rounded-lg w-full md:w-[48%] lg:w-[23.3%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
+          <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
             <div class="w-full h-24 relative overflow-hidden rounded-lg">
               <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
               <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a722fba44a202e751b93b3_elections.jpg"/>
