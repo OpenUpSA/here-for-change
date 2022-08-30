@@ -14,29 +14,32 @@
       const trayTabs = document.getElementsByClassName("tray-tabs");
       const tray = document.getElementsByClassName("nav-tray")[0];
       tray.addEventListener("mouseover", ()=>{
-        tray.classList.add("top-[68px]")
+        tray.classList.remove("top-[-50%]")
+        tray.classList.add("toggle-tray")
       })
 
       tray.addEventListener("mouseout", ()=>{
-        tray.classList.remove("top-[68px]")
+        tray.classList.remove("toggle-tray")
+        tray.classList.add("top-[-50%]")
       })
 
       for(let i=0; i<trayTabs.length; i++){
         trayTabs[i].addEventListener("mouseover", ()=>{
           const tray = document.getElementsByClassName("nav-tray")[0];
-          tray.classList.add("top-[68px]")
+          tray.classList.remove("top-[-50%]")
+          tray.classList.add("toggle-tray")
           
         
         })
         trayTabs[i].addEventListener("mouseout", ()=>{
           const trayMenu = document.getElementsByClassName("nav-tray")[0];
-          trayMenu.classList.remove("top-[68px]")
+          trayMenu.classList.remove("toggle-tray")
           trayMenu.classList.add("top-[-50%]")
         })
       }
 
     //for accordions
-      const btns = document.getElementsByClassName("menu-buttons");
+      const btns = document.getElementsByClassName("tab-button");
       const panels = document.getElementsByClassName("panel");
       const icons = document.getElementsByClassName("tab-caret")
       for(let i=0; i<btns.length; i++){
@@ -52,4 +55,42 @@
             }
         })
       }
+
+    
+    //Survey container toggle
+    const showResultBtn = document.getElementsByClassName("show-results")[0];
+    const surveyContainer1 = document.getElementsByClassName("survey-container-1")[0];
+    const surveyContainer2 = document.getElementsByClassName("survey-container-2")[0];
+    const hideResultBtn = document.getElementsByClassName("hide-results")[0];
+
+    showResultBtn.addEventListener("click", ()=>{
+        surveyContainer1.style.display = "none";
+        surveyContainer2.style.display = "block";
+    })
+
+    hideResultBtn.addEventListener("click", ()=>{
+        surveyContainer1.style.display = "block";
+        surveyContainer2.style.display = "none";
+    })
+
+
+//other survey answer toggle
+const otherBtn = document.getElementsByClassName("other-button")[0];
+const otherInput = document.getElementsByClassName("other-input")[0];
+
+otherBtn.addEventListener("click", ()=>{
+    if(otherInput.style.maxWidth){
+        otherInput.style.maxWidth = null;
+        otherInput.style.padding = null;
+    }
+    else{
+        otherInput.style.display = "block";
+        otherInput.style.padding = "12px";
+        otherInput.style.maxWidth = otherInput.scrollWidth + "px";
+    }
+})
+
+
+
+
     
