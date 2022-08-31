@@ -5,7 +5,7 @@
     <section>
         <div class="p-4 md:p-8 max-w-screen-xl mx-auto flex flex-col align-items gap-3">
             <div class="md:flex items-center inline-block text-left">
-                <h1 class="w-full md:w-auto text-left merriweather text-[48px] font-extrabold md:pr-4">Cape Agulhas</h1>
+                <h1 class="w-full md:w-auto text-left merriweather text-[48px] font-extrabold md:pr-4">{{ ward.municipality.name }}</h1>
                 <div class="relative" x-data="{open: false}">
                 <div class="">
                   <button
@@ -16,7 +16,7 @@
                     aria-expanded="true"
                     aria-haspopup="true"
                   >
-                    <span>Ward 3</span>
+                    <span>{{ward}}</span>
                     <i class="fa-solid fa-chevron-down"></i>
                   </button>
                 </div>
@@ -34,48 +34,27 @@
                 >
                   <div class="pb-1" role="none">
                     <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                    {% for ward_item in ward.municipality.ward_set.all %}
                     <a
-                      href="#"
+                      href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
                       class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
                       role="menuitem"
                       tabindex="-1"
                       id="menu-item-0"
                       onclick="dropDownHandler(event, 'ward-button')"
-                      >Ward 1</a
+                      >{{ward_item}}</a
                     >
-                    <a
-                      href="#"
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="menu-item-1"
-                      onclick="dropDownHandler(event, 'ward-button')"
-                      >Ward 2</a
-                    >
-                    <a
-                      href="#"
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="menu-item-2"
-                      onclick="dropDownHandler(event, 'ward-button')"
-                      >Ward 3</a
-                    >
-                    <a
-                      href="#"
-                      class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
-                      role="menuitem"
-                      tabindex="-1"
-                      id="menu-item-2"
-                      onclick="dropDownHandler(event, 'ward-button')"
-                      >Ward 4</a
-                    >
+                    {% endfor %}
                   </div>
                 </div>
               </div>
               </div>
             <div>
-              <p class="leading-[2.5rem]"><a href="{% url 'municipality_detail' ward.municipality.municipality_code %}" class="underline">{{ward.name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipaility. A <a href="#" class="underline">local municipaility</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">Overberg</span>, Western Cape.</p>
+              <p class="leading-[2.5rem]"><a href="#" class="underline">{{ward.name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipality. A <a href="#" class="underline">{{ward.municipality.municipality_type.lower}} municipality</a> within 
+                {% if ward.municipality.district %}
+                 <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.district}}</span>, 
+                {% endif %}
+                {{ward.municipality.get_province_display}}.</p>
             </div>
         </div>
     </section>

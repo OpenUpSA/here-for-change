@@ -3,7 +3,6 @@ from django.db import models
 
 class MunicipalityTypes(models.TextChoices):
     METRO = 'Metropolitan'
-    DISTRICT = 'District'
     LOCAL = 'Local'
 
 
