@@ -24,6 +24,7 @@ class Municipality(BaseModel):
     province = models.CharField(
         max_length=25, choices=Provinces.choices, null=False, blank=False
     )
+    district = models.CharField(max_length=255, null=True, blank=True)
 
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
     map_latitude = models.DecimalField(
