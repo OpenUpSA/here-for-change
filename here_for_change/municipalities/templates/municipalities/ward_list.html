@@ -1,9 +1,0 @@
-{% extends "base.html" %} {% block content %}
-<div id="map"></div>
-<h2>Wards</h2>
-<ul>
-  {% for ward in object_list %}
-  <li>{{ ward.name }} ({{ward.municipality}})</li>
-  {% endfor %}
-</ul>
-{% endblock %}
