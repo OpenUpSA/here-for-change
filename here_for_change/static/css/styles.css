@@ -73,3 +73,17 @@
     overflow: hidden;
     transition: max-width 0.3s ease;
 }
+
+.btn-active{
+    background-color: #192827;
+    color: white;
+}
+
+.btn-inactive{
+    background-color: #e5e5e5;
+    color: black;
+}
+
+.btn-inactive:hover {
+    background-color: #d4d4d4;
+}
