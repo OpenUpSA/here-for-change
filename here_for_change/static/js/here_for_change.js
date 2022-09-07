@@ -79,11 +79,6 @@ if (hideResultBtn) {
   });
 }
 
-hideResultBtn.addEventListener("click", () => {
-  surveyContainer1.style.display = "block";
-  surveyContainer2.style.display = "none";
-});
-
 //other survey answer toggle
 const otherBtn = document.getElementsByClassName("other-button")[0];
 const otherInput = document.getElementsByClassName("other-input")[0];
