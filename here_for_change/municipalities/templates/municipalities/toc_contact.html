@@ -20,7 +20,7 @@
   <div class="mt-6 flex flex-col md:mt-8 lg:flex-row lg:gap-4">
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full items-center justify-between overflow-x-auto rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
     >
       <div class="flex items-center">
         <span class="ml-3"
@@ -32,19 +32,32 @@
       </div>
       <div class="flex items-center">
         <i
-          class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-        ></i>
-        <span
-          class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          class="tooltip fa-solid fa-circle-exclamation mr-2 ml-2.5 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
         >
+          <span class="tooltipText">
+            Report a problem
+            <span class="triangle-down"></span>
+          </span>
+        </i>
+        <span
+          class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+        >
+          <span class="voteTooltipText">
+            This was helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-up text-green-600"></i>
           </span>
           <span> 5 </span>
         </span>
         <span
-          class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+          class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
         >
+          <span class="voteTooltipText">
+            This was not helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-down text-red-600"></i>
           </span>
@@ -54,7 +67,7 @@
     </div>
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full items-center justify-between overflow-x-auto rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
     >
       <div class="flex items-center">
         <span class="ml-3"
@@ -66,19 +79,32 @@
       </div>
       <div class="flex items-center">
         <i
-          class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-        ></i>
-        <span
-          class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          class="tooltip fa-solid fa-circle-exclamation mr-2 ml-2.5 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
         >
+          <span class="tooltipText">
+            Report a problem
+            <span class="triangle-down"></span>
+          </span>
+        </i>
+        <span
+          class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+        >
+          <span class="voteTooltipText">
+            This was helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-up text-green-600"></i>
           </span>
           <span> 5 </span>
         </span>
         <span
-          class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+          class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
         >
+          <span class="voteTooltipText">
+            This was not helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-down text-red-600"></i>
           </span>
@@ -91,31 +117,44 @@
   <div class="flex flex-col lg:flex-row lg:gap-4">
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full items-center justify-between overflow-x-auto rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
     >
       <div class="flex items-center">
         <span class="ml-3"
           ><i class="fa-solid fa-envelope text-sm md:text-base"></i
         ></span>
-        <span class="mx-2 rounded-lg p-2 hover:bg-neutral-100"
+        <span class="mx-2 break-all rounded-lg p-2 hover:bg-neutral-100"
           >pauls@capeagulhas.gov.za</span
         >
       </div>
       <div class="flex items-center">
         <i
-          class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-        ></i>
-        <span
-          class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          class="tooltip fa-solid fa-circle-exclamation mr-2 ml-2.5 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
         >
+          <span class="tooltipText">
+            Report a problem
+            <span class="triangle-down"></span>
+          </span>
+        </i>
+        <span
+          class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+        >
+          <span class="voteTooltipText">
+            This was helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-up text-green-600"></i>
           </span>
           <span> 5 </span>
         </span>
         <span
-          class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+          class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
         >
+          <span class="voteTooltipText">
+            This was not helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-down text-red-600"></i>
           </span>
@@ -125,7 +164,7 @@
     </div>
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full items-center justify-between overflow-x-auto rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
     >
       <div class="flex items-center">
         <span class="ml-3"
@@ -137,19 +176,32 @@
       </div>
       <div class="flex items-center">
         <i
-          class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-        ></i>
-        <span
-          class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          class="tooltip fa-solid fa-circle-exclamation mr-2 ml-2.5 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
         >
+          <span class="tooltipText">
+            Report a problem
+            <span class="triangle-down"></span>
+          </span>
+        </i>
+        <span
+          class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+        >
+          <span class="voteTooltipText">
+            This was helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-up text-green-600"></i>
           </span>
           <span> 5 </span>
         </span>
         <span
-          class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+          class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
         >
+          <span class="voteTooltipText">
+            This was not helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-down text-red-600"></i>
           </span>
@@ -162,7 +214,7 @@
   <div class="flex flex-col lg:flex-row">
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full items-center justify-between overflow-x-auto rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
     >
       <div class="flex items-center gap-2">
         <span class="ml-3"
@@ -174,19 +226,32 @@
       </div>
       <div class="flex items-center">
         <i
-          class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-        ></i>
-        <span
-          class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          class="tooltip fa-solid fa-circle-exclamation mr-2 ml-2.5 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
         >
+          <span class="tooltipText">
+            Report a problem
+            <span class="triangle-down"></span>
+          </span>
+        </i>
+        <span
+          class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+        >
+          <span class="voteTooltipText">
+            This was helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-up text-green-600"></i>
           </span>
           <span> 5 </span>
         </span>
         <span
-          class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+          class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
         >
+          <span class="voteTooltipText">
+            This was not helpful
+            <span class="triangle-down"></span>
+          </span>
           <span>
             <i class="fa-solid fa-thumbs-down text-red-600"></i>
           </span>
@@ -218,12 +283,21 @@
       <div class="flex items-center gap-2">
         <span>
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-sm text-neutral-300 hover:text-hfc-green-900 md:mr-4 md:text-base"
-          ></i>
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-sm text-neutral-300 hover:text-hfc-green-900 md:mr-4 md:text-base"
+          >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
         </span>
         <span
-          class="mr-2 flex items-center gap-2 rounded-lg bg-neutral-100 p-1 hover:bg-green-100"
+          class="voteTooltip mr-2 flex items-center gap-2 rounded-lg bg-neutral-100 p-1 hover:bg-green-100"
         >
+          <span class="voteTooltipText">
+            This was helpful
+            <span class="triangle-down"></span>
+          </span>
           <span
             ><i
               class="fa-solid fa-thumbs-up text-sm text-green-600 md:text-base"
@@ -232,8 +306,12 @@
           <span class="">0</span>
         </span>
         <span
-          class="flex items-center gap-2 rounded-lg bg-neutral-100 p-1 hover:bg-red-200"
+          class="voteTooltip flex items-center gap-2 rounded-lg bg-neutral-100 p-1 hover:bg-red-200"
         >
+          <span class="voteTooltipText">
+            This was helpful
+            <span class="triangle-down"></span>
+          </span>
           <span
             ><i
               class="fa-solid fa-thumbs-down text-sm text-red-600 md:text-base"
@@ -355,7 +433,7 @@
   <div
     class="mt-6 flex flex-col gap-3 pb-6 md:mt-8 lg:flex-row lg:items-center"
   >
-    <!-- Office mayor card -->
+    <!-- mayor card -->
     <div class="my-4 w-full rounded-lg bg-white px-6 pt-6 shadow-btm lg:w-1/2">
       <div class="flex items-center justify-between">
         <p class="text-sm font-bold">Mayor/Executive Mayor</p>
@@ -363,29 +441,42 @@
       <!-- horizontal divide line -->
       <div class="my-2 w-full border-t border-gray-100 md:my-4"></div>
       <div
-        class="flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-user"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">Mr P Swart</span>
+          <span class="ml-3 break-all">Mr P Swart</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -394,29 +485,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">028 425 5513</span>
+          <span class="ml-3 break-all">028 425 5513</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -425,29 +529,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-envelope"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">pauls@capeagulhas.gov.za</span>
+          <span class="ml-3 break-all">pauls@capeagulhas.gov.za</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -456,7 +573,7 @@
         </div>
       </div>
     </div>
-    <!-- Second deputy mayor card -->
+    <!-- Second mayor card -->
     <div class="my-4 w-full rounded-lg bg-white px-6 pt-6 shadow-btm lg:w-1/2">
       <div class="flex items-center justify-between">
         <p class="text-sm font-bold">Secretary to the Mayor/Executive Mayor</p>
@@ -464,29 +581,42 @@
       <!-- horizontal divide line -->
       <div class="my-2 w-full border-t border-gray-100 md:my-4"></div>
       <div
-        class="flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-user"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">Mr W Arendse</span>
+          <span class="ml-3 break-all">Mr W Arendse</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -495,29 +625,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">028 425 5513</span>
+          <span class="ml-3 break-all">028 425 5513</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -526,29 +669,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-envelope"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">pauls@capeagulhas.gov.za</span>
+          <span class="ml-3 break-all">pauls@capeagulhas.gov.za</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -662,7 +818,7 @@
   <div
     class="mt-6 flex flex-col gap-3 pb-6 md:mt-8 lg:flex-row lg:items-center"
   >
-    <!-- Office mayor card -->
+    <!-- Deputy mayor card -->
     <div class="my-4 w-full rounded-lg bg-white px-6 pt-6 shadow-btm lg:w-1/2">
       <div class="flex items-center justify-between">
         <p class="text-sm font-bold">Deputy Mayor</p>
@@ -670,29 +826,42 @@
       <!-- horizontal divide line -->
       <div class="my-2 w-full border-t border-gray-100 md:my-4"></div>
       <div
-        class="flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-user"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">Mr P Swart</span>
+          <span class="ml-3 break-all">Ms Zukiswa Tonisi</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -701,29 +870,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">028 425 5513</span>
+          <span class="ml-3 break-all">028 425 5513</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -732,29 +914,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-envelope"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">pauls@capeagulhas.gov.za</span>
+          <span class="ml-3 break-all">pauls@capeagulhas.gov.za</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -771,29 +966,42 @@
       <!-- horizontal divide line -->
       <div class="my-2 w-full border-t border-gray-100 md:my-4"></div>
       <div
-        class="flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-user"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">Mr W Arendse</span>
+          <span class="ml-3 break-all">Mr P Valentine</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -802,29 +1010,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">028 425 5513</span>
+          <span class="ml-3 break-all">028 425 5513</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>
@@ -833,29 +1054,42 @@
         </div>
       </div>
       <div
-        class="my-2 flex items-center justify-between overflow-x-auto text-sm md:text-base"
+        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
             <i class="fa-solid fa-envelope"></i>
           </span>
-          <span class="ml-3 whitespace-nowrap">pauls@capeagulhas.gov.za</span>
+          <span class="ml-3 break-all">pauls@capeagulhas.gov.za</span>
         </div>
         <div class="flex items-center">
           <i
-            class="fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-          ></i>
-          <span
-            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
+            <span class="tooltipText">
+              Report a problem
+              <span class="triangle-down"></span>
+            </span>
+          </i>
+          <span
+            class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+          >
+            <span class="voteTooltipText">
+              This was helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-up text-green-600"></i>
             </span>
             <span> 5 </span>
           </span>
           <span
-            class="flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
           >
+            <span class="voteTooltipText">
+              This was not helpful
+              <span class="triangle-down"></span>
+            </span>
             <span>
               <i class="fa-solid fa-thumbs-down text-red-600"></i>
             </span>

@@ -27,7 +27,7 @@
                   aria-orientation="vertical"
                   aria-labelledby="menu-button"
                   tabindex="-1"
-                  x-show="open" 
+                  x-show="open"
                   x-transition
                   @click.outside = "open = false"
                   @click="open = ! open"
@@ -96,7 +96,10 @@
               <div class="grow">
                 <div class="flex items-center justify-between">
                   <p class="font-bold">Danny Europa</p>
-                  <i class="fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer mr-2 md:mr-4"></i>
+                  <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer mr-2 md:mr-4"><span class="tooltipText">
+                    Report a problem                    
+                    <span class="triangle-down"></span> </span
+                  ></i>
                 </div>
                 <p>African National Congress (ANC)</p>
                 <p class="font-semibold text-neutral-400">Elected 8 January 2021</p>
@@ -105,7 +108,7 @@
             <div class="border-t-2 my-3 border-gray-100">
             </div>
             <!-- tel row -->
-            <div class="flex items-center text-sm overflow-x-auto">
+            <div class="flex items-center text-sm flex-wrap">
               <div class="flex items-center grow">
                 <span class="mr-4 ml-2">
                   <i class="fa-solid fa-phone-flip"></i>
@@ -116,16 +119,29 @@
                 
               </div>
               <div class="flex items-center">
-                <i class="fa-solid fa-circle-exclamation text-neutral-300 mr-4 hover:text-hfc-green-900 cursor-pointer"></i>
-                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+                <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 mx-2 hover:text-hfc-green-900 cursor-pointer">
+                  <span class="tooltipText">
+                  Report a problem
+                  <span class="triangle-down"></span> </span
+              ></i>
+                <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+                  <span class="voteTooltipText">
+                    This was helpful
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
-                    <i class="fa-solid fa-thumbs-up text-green-600"></i>
+                    <i class="fa-solid fa-thumbs-up text-green-600">
+                    </i>
                   </span>
                   <span>
                     24
                   </span>
                 </span>
-                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+                <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+                  <span class="voteTooltipText">
+                    This was not helpful
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-thumbs-down text-red-600"></i>
                   </span>
@@ -136,19 +152,29 @@
               </div>
             </div>
             <!-- email row -->
-            <div class="flex shrink-0 items-center mt-2 text-sm overflow-x-auto">
+            <div class="flex shrink-0 items-center mt-2 text-sm flex-wrap">
               <div class="flex flex-nowrap items-center grow">
                 <span class="mr-4 ml-2">
                   <i class="fa-solid fa-envelope"></i>
                 </span>
-                <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer whitespace-nowrap">
+                <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer break-all">
                   info@capeagulhas.gov.za
                 </span>
                 
               </div>
               <div class="flex items-center">
-                <i class="fa-solid fa-circle-exclamation text-neutral-300 mr-4 hover:text-hfc-green-900 cursor-pointer"></i>
-                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+                <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 mx-2 hover:text-hfc-green-900 cursor-pointer">
+                  <span class="tooltipText">
+                    Report a problem
+                    <span class="triangle-down"></span>
+                  </span>
+                </i>
+                <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+                  <span class="voteTooltipText">
+                    This was helpful
+                    <span class="triangle-down"></span>
+                  </span>
+                  
                   <span>
                     <i class="fa-solid fa-thumbs-up text-green-600"></i>
                   </span>
@@ -156,7 +182,11 @@
                     5
                   </span>
                 </span>
-                <span class="flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+                <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+                  <span class="voteTooltipText">
+                    This was not helpful
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-thumbs-down text-red-600"></i>
                   </span>
@@ -295,7 +325,7 @@
     <section class="pt-20 bg-neutral-100">
       <div class="md:flex gap-7 lg:gap-12 px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
         <!-- Left side bar -->
-        <div class="sticky py-6 md:py-0 bg-neutral-100 top-0 md:top-16  md:w-1/4 md:h-[446px] z-50 flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto text-sm md:text-base ">
+        <div class="sticky py-6 md:py-0 bg-neutral-100 top-0 md:top-16  md:w-1/4 md:h-[446px] z-20 flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto text-sm md:text-base ">
           <div onclick="openToc(event, 'summary')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
             <span>
               <i class="fa-solid fa-bolt-lightning"></i>
@@ -410,14 +440,22 @@
                 </span>
                 <span>20 sec</span>
               </div>
-              <div class="flex items-center gap-x-6">
-                <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2">
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-heart"></i>
                   </span>
                   <span>142</span>
                 </div>
-                <div class="flex items-center gap-x-2">
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-share"></i>
                   </span>
@@ -438,20 +476,30 @@
             <!-- horizontal divide line -->
             <div class="border-gray-100 w-full border-t mb-2 md:mb-4"></div>
             <div class="flex items-center justify-between text-slate-400">
-              <div class="flex items-center gap-x-2">
+              <div class=" flex items-center gap-x-2">
                 <span>
                   <i class="fa-solid fa-stopwatch"></i>
                 </span>
                 <span>20 sec</span>
               </div>
-              <div class="flex items-center gap-x-6">
-                <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2">
+               
+                </span>
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-heart"></i>
                   </span>
                   <span>123</span>
                 </div>
-                <div class="flex items-center gap-x-2">
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-share"></i>
                   </span>
@@ -478,14 +526,22 @@
                 </span>
                 <span>20 sec</span>
               </div>
-              <div class="flex items-center gap-x-6">
-                <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2">
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-heart"></i>
                   </span>
                   <span>68</span>
                 </div>
-                <div class="flex items-center gap-x-2">
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-share"></i>
                   </span>
@@ -512,14 +568,22 @@
                 </span>
                 <span>20 sec</span>
               </div>
-              <div class="flex items-center gap-x-6">
-                <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2">
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-heart"></i>
                   </span>
                   <span>241</span>
                 </div>
-                <div class="flex items-center gap-x-2">
+                <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+                  <span class="smTooltipText">
+                    Like this
+                    <span class="triangle-down"></span>
+                  </span>
                   <span>
                     <i class="fa-solid fa-share"></i>
                   </span>
@@ -530,7 +594,7 @@
           </div>
         </div>
         <div class="w-full flex justify-center align-items mt-7 mb-12">
-          <div class="w-full md:w-[167px] justify-between h-[50px] font-medium flex items-center bg-neutral-200 px-4 rounded-md cursor-pointer hover:bg-neutral-300">
+          <div class="w-full md:w-[174px] justify-between h-[50px] font-medium flex items-center bg-neutral-200 px-4 rounded-md cursor-pointer hover:bg-neutral-300">
             <span class="text-sm whitespace-nowrap">
               Explore more tools
             </span>
