@@ -325,63 +325,68 @@
     <section class="pt-20 bg-neutral-100">
       <div class="md:flex gap-7 lg:gap-12 px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
         <!-- Left side bar -->
-        <div class="sticky py-6 md:py-0 bg-neutral-100 top-0 md:top-16  md:w-1/4 md:h-[446px] z-20 flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto text-sm md:text-base ">
-          <div onclick="openToc(event, 'summary')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-            <span>
-              <i class="fa-solid fa-bolt-lightning"></i>
-            </span>
-            <span class="font-medium">
-              Summary
-            </span>
-          </div>
-          <div onclick="openToc(event, 'contact')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-            <span>
-              <i class="fa-solid fa-phone-flip"></i>
-            </span>
-            <span class="font-medium">
-              Contact
-            </span>
-          </div>
-          <div onclick="openToc(event, 'spending')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-            <span>
-              <i class="fa-solid fa-coins"></i>
-            </span>
-            <span class="font-medium">
-              Spending
-            </span>
-          </div>
-          <div onclick="openToc(event, 'participation')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-            <span>
-              <i class="fa-solid fa-calendar-days"></i>
-            </span>
-            <span class="font-medium">
-              Participation
-            </span>
-          </div>
-          <div onclick="openToc(event, 'surveys')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-            <span>
-              <i class="fa-solid fa-file-signature"></i>
-            </span>
-            <span class="font-medium">
-              Surveys
-            </span>
-          </div>
-          <div onclick="openToc(event, 'elections')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-            <span>
-              <i class="fa-solid fa-check-to-slot"></i>
-            </span>
-            <span class="font-medium">
-              Elections
-            </span>
-          </div>
-          <div onclick="openToc(event, 'messages')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-            <span>
-              <i class="fa-solid fa-comment-dots"></i>
-            </span>
-            <span class="font-medium">
-              Messages
-            </span>
-          </div>
+        <div id="toc" class="sticky py-6 md:py-0 bg-neutral-100 top-0 md:top-16  md:w-1/4 md:h-[446px] z-20  text-sm md:text-base ">
+          <div id="side-anime" class="relative flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-x-visible md:border-solid md:border-4 border-[#9333ea00] md:rounded-3xl md:p-2">
+            <p id="side-anime-banner" class="hidden md:block opacity-0 text-white absolute top-[-10%] left-[-20%] bg-[#7f00ff] p-2 rounded-md benfritz">
+              Choose a category to explore!
+            </p>
+            <div onclick="openToc(event, 'summary')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-bolt-lightning"></i>
+              </span>
+              <span class="font-medium">
+                Summary
+              </span>
+            </div>
+            <div onclick="openToc(event, 'contact')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-phone-flip"></i>
+              </span>
+              <span class="font-medium">
+                Contact
+              </span>
+            </div>
+            <div onclick="openToc(event, 'spending')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-coins"></i>
+              </span>
+              <span class="font-medium">
+                Spending
+              </span>
+            </div>
+            <div onclick="openToc(event, 'participation')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-calendar-days"></i>
+              </span>
+              <span class="font-medium">
+                Participation
+              </span>
+            </div>
+            <div onclick="openToc(event, 'surveys')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-file-signature"></i>
+              </span>
+              <span class="font-medium">
+                Surveys
+              </span>
+            </div>
+            <div onclick="openToc(event, 'elections')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-check-to-slot"></i>
+              </span>
+              <span class="font-medium">
+                Elections
+              </span>
+            </div>
+            <div onclick="openToc(event, 'messages')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-comment-dots"></i>
+              </span>
+              <span class="font-medium">
+                Messages
+              </span>
+            </div>
+          </div> 
         </div>
         <!-- Right side  -->
         <div id="summary" class="toc md:w-3/4">

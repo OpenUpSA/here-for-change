@@ -122,7 +122,6 @@
 .tooltip:hover .tooltipText,
 .smTooltip:hover .smTooltipText,
 .voteTooltip:hover .voteTooltipText {
-  /* visibility: visible; */
   display: inline-block;
   top: -33px;
 }
@@ -143,7 +142,6 @@
 }
 
 .barTooltipText {
-  /* visibility: hidden; */
   display: none;
   background-color: black;
   color: #fff;
@@ -159,7 +157,62 @@
 }
 
 .barTooltip:hover .barTooltipText {
-  /* visibility: visible; */
   display: inline-block;
   top: -29px;
+}
+
+@keyframes left-side-animate {
+  0% {
+    border: 4px solid rgba(127, 0, 255, 0);
+  }
+  25% {
+    border: 4px solid rgba(127, 0, 255, 0.4);
+  }
+  50% {
+    border: 4px solid rgba(127, 0, 255, 0.6);
+  }
+  100% {
+    border: 4px solid rgba(127, 0, 255, 1);
+  }
+}
+
+@keyframes banner-animate {
+  0% {
+    opacity: 0;
+    transform-origin: right;
+  }
+  7% {
+    opacity: 1;
+    transform: rotate(-15deg);
+    transform-origin: left;
+    top: 5px;
+  }
+  93% {
+    opacity: 1;
+    transform: rotate(-15deg);
+    transform-origin: left;
+    top: 5px;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(5deg);
+    top: 5px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .side-anime {
+    animation-name: left-side-animate;
+    animation-delay: 1s;
+    animation-duration: 1.5s;
+    animation-iteration-count: 6;
+    animation-direction: alternate;
+  }
+
+  .side-anime-banner {
+    animation-name: banner-animate;
+    animation-delay: 2s;
+    animation-duration: 9s;
+    animation-timing-function: ease-in-out;
+  }
 }
