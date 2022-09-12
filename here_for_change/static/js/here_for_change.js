@@ -63,32 +63,38 @@
     const surveyContainer2 = document.getElementsByClassName("survey-container-2")[0];
     const hideResultBtn = document.getElementsByClassName("hide-results")[0];
 
-    showResultBtn.addEventListener("click", ()=>{
-        surveyContainer1.style.display = "none";
-        surveyContainer2.style.display = "block";
-    })
+    if (showResultBtn) {
+      showResultBtn.addEventListener("click", ()=>{
+          surveyContainer1.style.display = "none";
+          surveyContainer2.style.display = "block";
+      })
+    }
 
-    hideResultBtn.addEventListener("click", ()=>{
-        surveyContainer1.style.display = "block";
-        surveyContainer2.style.display = "none";
-    })
+    if (hideResultBtn) {
+      hideResultBtn.addEventListener("click", ()=>{
+          surveyContainer1.style.display = "block";
+          surveyContainer2.style.display = "none";
+      })
+    }
 
 
 //other survey answer toggle
 const otherBtn = document.getElementsByClassName("other-button")[0];
 const otherInput = document.getElementsByClassName("other-input")[0];
 
-otherBtn.addEventListener("click", ()=>{
-    if(otherInput.style.maxWidth){
-        otherInput.style.maxWidth = null;
-        otherInput.style.padding = null;
-    }
-    else{
-        otherInput.style.display = "block";
-        otherInput.style.padding = "12px";
-        otherInput.style.maxWidth = otherInput.scrollWidth + "px";
-    }
-})
+if (otherBtn) {
+  otherBtn.addEventListener("click", ()=>{
+      if(otherInput.style.maxWidth){
+          otherInput.style.maxWidth = null;
+          otherInput.style.padding = null;
+      }
+      else{
+          otherInput.style.display = "block";
+          otherInput.style.padding = "12px";
+          otherInput.style.maxWidth = otherInput.scrollWidth + "px";
+      }
+  })
+}
 
 
 

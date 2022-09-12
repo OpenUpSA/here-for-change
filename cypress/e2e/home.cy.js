@@ -1,4 +1,4 @@
-describe('empty spec', () => {
+describe('index spec', () => {
   it('passes', () => {
     cy.visit('/')
   })
