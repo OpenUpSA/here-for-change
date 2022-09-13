@@ -14,6 +14,11 @@ class WardDetail(DetailView):
     page_content = {
         'ward': {
             'councillor': {
+                'toc': {
+                    'title': 'Ward Councillor',
+                    'icon': 'fa-solid fa-person-half-dress',
+                    'show': False
+                },
                 'name': {
                     'value': 'Danny Europa',
                     'type': 'string',
@@ -40,6 +45,55 @@ class WardDetail(DetailView):
                         'updated': '2022/09/12 16:57',
                         'feedback': {'positive': 5, 'negative': 0}},
                 }
+            },
+            'summary': {
+                'toc': {
+                    'title': 'Summary',
+                    'icon': 'fa-solid fa-bolt-lightning',
+                    'show': True
+                },
+            },
+            'contacts': {
+                'toc': {
+                    'title': 'Contact',
+                    'icon': 'fa-solid fa-phone-flip',
+                    'show': True
+                },
+            },
+            'spending': {
+                'toc': {
+                    'title': 'Spending',
+                    'icon': 'fa-solid fa-coins',
+                    'show': True
+                },
+            },
+            'participation': {
+                'toc': {
+                    'title': 'Participation',
+                    'icon': 'fa-solid fa-calendar-days',
+                    'show': True
+                },
+            },
+            'surveys': {
+                'toc': {
+                    'title': 'Surveys',
+                    'icon': 'fa-solid fa-file-signature',
+                    'show': True
+                },
+            },
+            'elections': {
+                'toc': {
+                    'title': 'Elections',
+                    'icon': 'fa-solid fa-check-to-slot',
+                    'show': True
+                },
+            },
+            'messages': {
+                'toc': {
+                    'title': 'Messages',
+                    'icon': 'fa-solid fa-comment-dots',
+                    'show': True
+                },
             }
         }
     }
