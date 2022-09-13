@@ -96,14 +96,14 @@
           <img class="rounded-lg w-20 h-20" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"/>
           <div class="grow">
             <div class="flex items-center justify-between">
-              <p class="font-bold">{{content.councillor.name.value}}</p>
+              <p class="font-bold">{{content.ward.councillor.name.value}}</p>
               <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer mr-2 md:mr-4"><span class="tooltipText">
                 Report a problem                    
                 <span class="triangle-down"></span> </span
               ></i>
             </div>
-            <p>{{content.councillor.political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">Elected {{content.councillor.elected_date.value}}</p>
+            <p>{{content.ward.councillor.political_party.value}}</p>
+            <p class="font-semibold text-neutral-400">Elected {{content.ward.councillor.elected_date.value}}</p>
           </div>
         </div>
         <div class="border-t-2 my-3 border-gray-100">
@@ -159,7 +159,7 @@
               <i class="fa-solid fa-envelope"></i>
             </span>
             <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer whitespace-nowrap">
-              {{content.councillor.contacts.email.primary.value}}
+              {{content.ward.councillor.contacts.email.primary.value}}
             </span>
             
           </div>
