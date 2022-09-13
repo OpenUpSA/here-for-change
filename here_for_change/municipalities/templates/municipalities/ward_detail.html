@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
 {% load static %}
+{% block title %}{{ward}} - {{ ward.municipality.name }} - Here For Change{% endblock %}
 {% block content %}
 {% include "./ward_notification.html" %}
     <section>
