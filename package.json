@@ -7,12 +7,17 @@
   "scripts": {
     "dev": "parcel watch assets/js/here_for_change.js assets/scss/here_for_change.scss --dist-dir assets/bundles",
     "build": "parcel build assets/js/here_for_change.js assets/scss/here_for_change.scss --dist-dir assets/bundles --no-content-hash",
-    "test": "cypress run"
+    "test": "cypress run",
+    "tailwind-watch": "tailwindcss -i ./here_for_change/static/css/input.css -o ./here_for_change/static/css/output.css --watch",
+    "tailwind-build": "tailwindcss -i ./here_for_change/static/css/input.css -o ./here_for_change/static/css/output.css --minify"
   },
   "dependencies": {
     "parcel": "^2.6.2"
   },
   "devDependencies": {
-    "cypress": "^10.4.0"
+    "cypress": "^10.4.0",
+    "prettier": "^2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.13",
+    "tailwindcss": "^3.1.7"
   }
 }
