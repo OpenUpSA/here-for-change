@@ -95,11 +95,11 @@
               <img class="rounded-lg w-20 h-20" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"/>
               <div class="grow">
                 <div class="flex items-center justify-between">
-                  <p class="font-bold">Danny Europa</p>
+                  <p class="font-bold">{{content.councillor.name.value}}</p>
                   <i class="fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer mr-2 md:mr-4"></i>
                 </div>
-                <p>African National Congress (ANC)</p>
-                <p class="font-semibold text-neutral-400">Elected 8 January 2021</p>
+                <p>{{content.councillor.political_party.value}}</p>
+                <p class="font-semibold text-neutral-400">Elected {{content.councillor.elected_date.value}}</p>
               </div>
             </div>
             <div class="border-t-2 my-3 border-gray-100">
@@ -142,7 +142,7 @@
                   <i class="fa-solid fa-envelope"></i>
                 </span>
                 <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer whitespace-nowrap">
-                  info@capeagulhas.gov.za
+                  {{content.councillor.contacts.email.primary.value}}
                 </span>
                 
               </div>
