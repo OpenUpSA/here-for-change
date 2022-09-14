@@ -103,7 +103,7 @@
               ></i>
             </div>
             <p>{{content.councillor.political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">Elected {{content.councillor.elected_date.value}}</p>
+            <p class="font-semibold text-neutral-400">Elected {{content.councillor.elected_date.value|date:"j F Y"}}</p>
           </div>
         </div>
         <div class="border-t-2 my-3 border-gray-100">
@@ -114,8 +114,9 @@
             <span class="mr-4 ml-2">
               <i class="fa-solid fa-phone-flip"></i>
             </span>
-            <span class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
-              028 425 5500
+            <span id="councillor-phone" class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
+             <!-- formatted phone number would be added by JS -->
+             {{content.councillor.contacts.phone.value}}
             </span>
             
           </div>
@@ -626,5 +627,16 @@
       map: map,
     });
   }
+</script>
+
+
+<script src="https://unpkg.com/libphonenumber-js@1.9.9/bundle/libphonenumber-min.js"></script>
+<script>
+//Councillor phone number formatting
+const phone = document.getElementById("councillor-phone");
+const councillorPhoneDjango = "{{content.councillor.contacts.phone.value}}";
+if (phone) {
+  phone.innerHTML = libphonenumber.parsePhoneNumber(councillorPhoneDjango).formatNational();
+}
 </script>
 {% endblock %}
