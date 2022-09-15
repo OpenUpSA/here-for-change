@@ -331,15 +331,39 @@
         <p id="side-anime-banner" class="hidden md:block opacity-0 text-white absolute top-[-10%] left-[-20%] bg-[#7f00ff] p-2 rounded-md benfritz">
           Choose a category to explore!
         </p>
-        <div onclick="openToc(event, 'summary')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        {% for key, value in content.items %}
+          {% if value.toc.show == True  %}
+            {% if key == "summary" %}
+            <div onclick="openToc(event, '{{value.toc.title|lower}}')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="fa-solid fa-bolt-lightning"></i>
+              </span>
+              <span class="font-medium">
+                {{value.toc.title}}
+              </span>
+            </div>
+            {% else %}
+            <div onclick="openToc(event, '{{value.toc.title|lower}}')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="{{value.toc.icon}}"></i>
+              </span>
+              <span class="font-medium">
+                {{value.toc.title}}
+              </span>
+            </div>
+            {% endif %}
+            
+          {% endif %}
+        {% endfor %}
+        <!-- <div onclick="openToc(event, 'summary')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
           <span>
             <i class="fa-solid fa-bolt-lightning"></i>
           </span>
           <span class="font-medium">
             Summary
           </span>
-        </div>
-        <div onclick="openToc(event, 'contact')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        </div> -->
+        <!-- <div onclick="openToc(event, 'contact')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
@@ -386,7 +410,7 @@
           <span class="font-medium">
             Messages
           </span>
-        </div>
+        </div> -->
       </div> 
     </div>
     <!-- Right side  -->
