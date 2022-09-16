@@ -1,144 +1,176 @@
 {% extends "base.html" %} 
-{% load static %}
-{% block title %}{{ward}} - {{ ward.municipality.name }} - Here For Change{% endblock %}
-{% block content %}
+{% load static %} 
+{% block title %}{{ward}} - {{ward.municipality.name }} - Here For Change{% endblock %} 
+{% block content %} 
 {% include "./ward_notification.html" %}
 <section>
-    <div class="p-4 md:p-8 max-w-screen-xl mx-auto flex flex-col align-items gap-3">
-        <div class="md:flex items-center inline-block text-left">
-            <h1 class="w-full md:w-auto text-left benfritz text-[48px] md:pr-4">{{ ward.municipality.name }}</h1>
-            <div class="relative" x-data="{open: false}">
-            <div class="">
-              <button
-                @click="open = ! open"
-                type="button"
-                class="inline-flex justify-between items-center gap-2 w-full lg:w-40 rounded-md shadow-sm px-4 py-3 bg-hfc-green-100 text-sm font-medium text-white focus:outline-none hover:bg-teal-900"
-                id="ward-button"
-                aria-expanded="true"
-                aria-haspopup="true"
-              >
-                <span>{{ward}}</span>
-                <i class="fa-solid fa-chevron-down"></i>
-              </button>
-            </div>
-
-            <div
-              class="dropdown-panel z-[2] w-full top-0 absolute right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="menu-button"
-              tabindex="-1"
-              x-show="open"
-              x-transition
-              @click.outside = "open = false"
-              @click="open = ! open"
-            >
-              <div class="pb-1" role="none">
-                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                {% for ward_item in ward.municipality.ward_set.all %}
-                <a
-                  href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
-                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-0"
-                  onclick="dropDownHandler(event, 'ward-button')"
-                  >{{ward_item}}</a
-                >
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-          </div>
-        <div>
-          <p class="leading-[2.5rem]"><a href="#" class="underline">{{ward.name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipality. A <a href="#" class="underline">{{ward.municipality.municipality_type.lower}} municipality</a> within 
-            {% if ward.municipality.district %}
-              <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.district}}</span>, 
-            {% endif %}
-            {{ward.municipality.get_province_display}}.</p>
+  <div
+    class="align-items mx-auto flex max-w-screen-xl flex-col gap-3 p-4 md:p-8"
+  >
+    <div class="inline-block items-center text-left md:flex">
+      <h1 class="benfritz w-full text-left text-[48px] md:w-auto md:pr-4">
+        {{ ward.municipality.name }}
+      </h1>
+      <div class="relative" x-data="{open: false}">
+        <div class="">
+          <button
+            @click="open = ! open"
+            type="button"
+            class="inline-flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-100 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-teal-900 focus:outline-none lg:w-40"
+            id="ward-button"
+            aria-expanded="true"
+            aria-haspopup="true"
+          >
+            <span>{{ward}}</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
         </div>
+
+        <div
+          class="dropdown-panel absolute top-0 right-0 z-[2] w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabindex="-1"
+          x-show="open"
+          x-transition
+          @click.outside="open = false"
+          @click="open = ! open"
+        >
+          <div class="pb-1" role="none">
+            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+            {% for ward_item in ward.municipality.ward_set.all %}
+            <a
+              href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
+              class="ward-dropdown block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
+              tabindex="-1"
+              id="menu-item-0"
+              onclick="dropDownHandler(event, 'ward-button')"
+              >{{ward_item}}</a
+            >
+            {% endfor %}
+          </div>
+        </div>
+      </div>
     </div>
+    <div>
+      <p class="leading-[2.5rem]"><a href="#" class="underline">{{ward.name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipality. A <a href="#" class="underline">{{ward.municipality.municipality_type.lower}} municipality</a> within 
+        {% if ward.municipality.district %}
+          <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.district}}</span>, 
+        {% endif %}
+        {{ward.municipality.get_province_display}}.</p>
+    </div>
+  </div>
 </section>
 <section>
   <div id="map"></div>
 </section>
 <section class="bg-hfc-green-900">
-  <div class="md:flex justify-between items-center px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto pt-9 pb-4">
-    <h2 class="text-2xl md:text-3xl benfritz text-white text-center">
-      Your 
+  <div
+    class="mx-auto max-w-screen-xl items-center justify-between px-4 pt-9 pb-4 md:flex md:px-8 xl:px-4"
+  >
+    <h2 class="benfritz text-center text-2xl text-white md:text-3xl">
+      Your
       <span class="relative">
-        ward councillior<img class="absolute w-full left-0" src="{% static 'assets/basic-underline.svg' %}"/>
-      </span> is:
+        ward councillior<img
+          class="absolute left-0 w-full"
+          src="{% static 'assets/basic-underline.svg' %}"
+        />
+      </span>
+      is:
     </h2>
     <div class="">
-      <div class="hidden md:block bg-hfc-green-700 rounded-md p-3 justify-self-end cursor-pointer hover:bg-hfc-green-600">
+      <div
+        class="hidden cursor-pointer justify-self-end rounded-md bg-hfc-green-700 p-3 hover:bg-hfc-green-600 md:block"
+      >
         <span>
-          <i class="fa-solid fa-pen-to-square text-white text-xl"></i>
+          <i class="fa-solid fa-pen-to-square text-xl text-white"></i>
         </span>
-        <span class="text-white">
-          Suggest an edit
-        </span>
+        <span class="text-white"> Suggest an edit </span>
       </div>
     </div>
   </div>
 
-  <div class="lg:flex items-start px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto py-6 gap-4">
+  <div
+    class="mx-auto max-w-screen-xl items-start gap-4 px-4 py-6 md:px-8 lg:flex xl:px-4"
+  >
     <!-- left side -->
     <div class="lg:w-1/2">
       <!-- white card -->
-      <div class="bg-white rounded-lg p-4 text-base relative">
+      <div class="relative rounded-lg bg-white p-4 text-base">
         <!-- big rotating star -->
-        <div class="start-transition flex items-center justify-center cursor-default absolute -top-9 -left-6  lg:-left-10 w-16 h-16 lg:w-[84px] lg:h-[84px]">
-          <img style="animation-duration:8s;" class="animate-spin" src="{% static 'assets/big-star.svg' %}"/>
-          <p class="text-white text-[16.8px] leading-[13.44px] lg:text-[22.4px] lg:leading-[17.92px] benfritz text-center absolute rotate-[-12deg] hover:rotate-[-32deg]">Start<br/>here!</p>
+        <div
+          class="start-transition absolute -top-9 -left-6 flex h-16 w-16 cursor-default items-center justify-center lg:-left-10 lg:h-[84px] lg:w-[84px]"
+        >
+          <img
+            style="animation-duration: 8s"
+            class="animate-spin"
+            src="{% static 'assets/big-star.svg' %}"
+          />
+          <p
+            class="benfritz absolute rotate-[-12deg] text-center text-[16.8px] leading-[13.44px] text-white hover:rotate-[-32deg] lg:text-[22.4px] lg:leading-[17.92px]"
+          >
+            Start<br />here!
+          </p>
         </div>
-        <div class="flex gap-2 items-center">
-          <img class="rounded-lg w-20 h-20" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"/>
+        <div class="flex items-center gap-2">
+          <img
+            class="h-20 w-20 rounded-lg"
+            src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"
+          />
           <div class="grow">
             <div class="flex items-center justify-between">
               <p class="font-bold">{{content.councillor.name.value}}</p>
-              <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer mr-2 md:mr-4"><span class="tooltipText">
-                Report a problem                    
-                <span class="triangle-down"></span> </span
+              <i
+                class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
+                ><span class="tooltipText">
+                  Report a problem
+                  <span class="triangle-down"></span> </span
               ></i>
             </div>
             <p>{{content.councillor.political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">Elected {{content.councillor.elected_date.value}}</p>
+            <p class="font-semibold text-neutral-400">
+              Elected {{content.councillor.elected_date.value}}
+            </p>
           </div>
         </div>
-        <div class="border-t-2 my-3 border-gray-100">
-        </div>
+        <div class="my-3 border-t-2 border-gray-100"></div>
         <!-- tel row -->
-        <div class="flex items-center text-sm flex-wrap">
-          <div class="flex items-center grow">
+        <div class="flex flex-wrap items-center text-sm">
+          <div class="flex grow items-center">
             <span class="mr-4 ml-2">
               <i class="fa-solid fa-phone-flip"></i>
             </span>
-            <span class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
+            <span
+              class="mr-5 cursor-pointer whitespace-nowrap rounded-md p-2 text-sm hover:bg-gray-200"
+            >
               028 425 5500
             </span>
-            
           </div>
           <div class="flex items-center">
-            <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 mx-2 hover:text-hfc-green-900 cursor-pointer">
+            <i
+              class="tooltip fa-solid fa-circle-exclamation mx-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900"
+            >
               <span class="tooltipText">
-              Report a problem
-              <span class="triangle-down"></span> </span
-          ></i>
-            <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+                Report a problem
+                <span class="triangle-down"></span> </span
+            ></i>
+            <span
+              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            >
               <span class="voteTooltipText">
                 This was helpful
                 <span class="triangle-down"></span>
               </span>
               <span>
-                <i class="fa-solid fa-thumbs-up text-green-600">
-                </i>
+                <i class="fa-solid fa-thumbs-up text-green-600"> </i>
               </span>
-              <span>
-                24
-              </span>
+              <span> 24 </span>
             </span>
-            <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+            <span
+              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            >
               <span class="voteTooltipText">
                 This was not helpful
                 <span class="triangle-down"></span>
@@ -146,44 +178,47 @@
               <span>
                 <i class="fa-solid fa-thumbs-down text-red-600"></i>
               </span>
-              <span>
-                24
-              </span>
+              <span> 24 </span>
             </span>
           </div>
         </div>
         <!-- email row -->
-        <div class="flex shrink-0 items-center mt-2 text-sm flex-wrap">
-          <div class="flex flex-nowrap items-center grow">
+        <div class="mt-2 flex shrink-0 flex-wrap items-center text-sm">
+          <div class="flex grow flex-nowrap items-center">
             <span class="mr-4 ml-2">
               <i class="fa-solid fa-envelope"></i>
             </span>
-            <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer whitespace-nowrap">
+            <span
+              class="mr-1 cursor-pointer whitespace-nowrap rounded-md p-2 text-sm hover:bg-gray-200 md:mr-5"
+            >
               {{content.councillor.contacts.email.primary.value}}
             </span>
-            
           </div>
           <div class="flex items-center">
-            <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 mx-2 hover:text-hfc-green-900 cursor-pointer">
+            <i
+              class="tooltip fa-solid fa-circle-exclamation mx-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900"
+            >
               <span class="tooltipText">
                 Report a problem
                 <span class="triangle-down"></span>
               </span>
             </i>
-            <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 mr-2 cursor-pointer hover:bg-green-100">
+            <span
+              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+            >
               <span class="voteTooltipText">
                 This was helpful
                 <span class="triangle-down"></span>
               </span>
-              
+
               <span>
                 <i class="fa-solid fa-thumbs-up text-green-600"></i>
               </span>
-              <span>
-                5
-              </span>
+              <span> 5 </span>
             </span>
-            <span class="voteTooltip flex gap-3 items-center rounded-md bg-neutral-100 p-2 cursor-pointer hover:bg-red-200">
+            <span
+              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+            >
               <span class="voteTooltipText">
                 This was not helpful
                 <span class="triangle-down"></span>
@@ -191,9 +226,7 @@
               <span>
                 <i class="fa-solid fa-thumbs-down text-red-600"></i>
               </span>
-              <span>
-                0
-              </span>
+              <span> 0 </span>
             </span>
           </div>
         </div>
@@ -202,13 +235,14 @@
     <!-- right side -->
     <div class="lg:w-1/2">
       <div>
-        <p class="text-white text-sm text-center md:text-left pt-6 lg:pt-0">Frequently asked questions:</p>
-        <div 
-          class="relative inline-block w-full mt-3">
+        <p class="pt-6 text-center text-sm text-white md:text-left lg:pt-0">
+          Frequently asked questions:
+        </p>
+        <div class="relative mt-3 inline-block w-full">
           <div>
             <button
               type="button"
-              class="tab-button flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+              class="tab-button flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-hfc-green-500 focus:outline-none"
               id="tab-button"
               aria-expanded="true"
               aria-haspopup="true"
@@ -219,7 +253,7 @@
           </div>
 
           <div
-            class="hidden panel origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+            class="panel right-0 left-0 mt-0 hidden w-full origin-top-right rounded-md bg-hfc-green-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"
@@ -229,36 +263,38 @@
               <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
               <a
                 href="#"
-                class="text-white block px-2 py-2 text-sm"
+                class="block px-2 py-2 text-sm text-white"
                 role="menuitem"
                 tabindex="-1"
                 id="menu-item-0"
-                >
-                A ward councillor is an elected representative responsible for ensuring that the needs of their ward are represented and considered during a district or municipalities various planning and budgetary processes.
-                </a
               >
-              
+                A ward councillor is an elected representative responsible for
+                ensuring that the needs of their ward are represented and
+                considered during a district or municipalities various planning
+                and budgetary processes.
+              </a>
             </div>
           </div>
         </div>
         <!-- second dropdown -->
-        <div 
-          class="relative inline-block w-full mt-3">
+        <div class="relative mt-3 inline-block w-full">
           <div>
             <button
               type="button"
-              class="tab-button flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+              class="tab-button flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-hfc-green-500 focus:outline-none"
               id="menu-button"
               aria-expanded="true"
               aria-haspopup="true"
             >
-              <span class="inline-block">How are ward councillors elected?</span>
+              <span class="inline-block"
+                >How are ward councillors elected?</span
+              >
               <i class="fa-solid fa-chevron-down tab-caret"></i>
             </button>
           </div>
 
           <div
-            class="hidden panel origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+            class="panel right-0 left-0 mt-0 hidden w-full origin-top-right rounded-md bg-hfc-green-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"
@@ -268,25 +304,25 @@
               <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
               <a
                 href="#"
-                class="text-white block px-2 py-2 text-sm"
+                class="block px-2 py-2 text-sm text-white"
                 role="menuitem"
                 tabindex="-1"
                 id="menu-item-0"
-                >
-                A ward councillor is an elected representative responsible for ensuring that the needs of their ward are represented and considered during a district or municipalities various planning and budgetary processes.
-                </a
               >
-              
+                A ward councillor is an elected representative responsible for
+                ensuring that the needs of their ward are represented and
+                considered during a district or municipalities various planning
+                and budgetary processes.
+              </a>
             </div>
           </div>
         </div>
         <!-- third dropdown -->
-        <div 
-          class="relative inline-block w-full mt-3">
+        <div class="relative mt-3 inline-block w-full">
           <div>
             <button
               type="button"
-              class="tab-button flex items-center justify-between gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-600 hover:bg-hfc-green-500 text-sm font-medium text-white focus:outline-none"
+              class="tab-button flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-600 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-hfc-green-500 focus:outline-none"
               id="menu-button"
               aria-expanded="true"
               aria-haspopup="true"
@@ -297,7 +333,7 @@
           </div>
 
           <div
-            class="hidden panel origin-top-right right-0 left-0 mt-0 w-full rounded-md shadow-lg bg-hfc-green-700 ring-1 ring-black ring-opacity-5 focus:outline-none"
+            class="panel right-0 left-0 mt-0 hidden w-full origin-top-right rounded-md bg-hfc-green-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"
@@ -307,14 +343,16 @@
               <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
               <a
                 href="#"
-                class="text-white block px-2 py-2 text-sm"
+                class="block px-2 py-2 text-sm text-white"
                 role="menuitem"
                 tabindex="-1"
                 id="menu-item-0"
-                >
-                A ward councillor is an elected representative responsible for ensuring that the needs of their ward are represented and considered during a district or municipalities various planning and budgetary processes.
-                </a
               >
+                A ward councillor is an elected representative responsible for
+                ensuring that the needs of their ward are represented and
+                considered during a district or municipalities various planning
+                and budgetary processes.
+              </a>
             </div>
           </div>
         </div>
@@ -323,131 +361,179 @@
   </div>
 </section>
 <!-- Summary section -->
-<section class="pt-20 bg-neutral-100">
-  <div class="md:flex gap-7 lg:gap-12 px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
+<section class="bg-neutral-100 pt-20">
+  <div
+    class="mx-auto max-w-screen-xl gap-7 px-4 md:flex md:px-8 lg:gap-12 xl:px-4"
+  >
     <!-- Left side bar -->
-    <div id="toc" class="sticky py-6 md:py-0 bg-neutral-100 top-0 md:top-16  md:w-1/4 md:h-[446px] z-20  text-sm md:text-base ">
-      <div id="side-anime" class="relative flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-x-visible md:border-solid md:border-4 border-[#9333ea00] md:rounded-3xl md:p-2">
-        <p id="side-anime-banner" class="hidden md:block opacity-0 text-white absolute top-[-10%] left-[-20%] bg-[#7f00ff] p-2 rounded-md benfritz">
+    <div
+      id="toc"
+      class="sticky top-0 z-20 bg-neutral-100 py-6 text-sm md:top-16 md:h-[446px] md:w-1/4 md:py-0 md:text-base"
+    >
+      <div
+        id="side-anime"
+        class="relative flex flex-row gap-2 overflow-x-auto border-[#9333ea00] md:flex-col md:gap-0 md:overflow-x-visible md:rounded-3xl md:border-4 md:border-solid md:p-2"
+      >
+        <p
+          id="side-anime-banner"
+          class="benfritz absolute top-[-10%] left-[-20%] hidden rounded-md bg-[#7f00ff] p-2 text-white opacity-0 md:block"
+        >
           Choose a category to explore!
         </p>
-        <div onclick="openToc(event, 'summary')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        <div
+          onclick="openToc(event, 'summary')"
+          class="btn-active toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
+        >
           <span>
             <i class="fa-solid fa-bolt-lightning"></i>
           </span>
-          <span class="font-medium">
-            Summary
-          </span>
+          <span class="font-medium"> Summary </span>
         </div>
-        <div onclick="openToc(event, 'contact')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        <div
+          onclick="openToc(event, 'contact')"
+          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
+        >
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span class="font-medium">
-            Contact
-          </span>
+          <span class="font-medium"> Contact </span>
         </div>
-        <div onclick="openToc(event, 'spending')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        <div
+          onclick="openToc(event, 'spending')"
+          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
+        >
           <span>
             <i class="fa-solid fa-coins"></i>
           </span>
-          <span class="font-medium">
-            Spending
-          </span>
+          <span class="font-medium"> Spending </span>
         </div>
-        <div onclick="openToc(event, 'participation')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        <div
+          onclick="openToc(event, 'participation')"
+          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
+        >
           <span>
             <i class="fa-solid fa-calendar-days"></i>
           </span>
-          <span class="font-medium">
-            Participation
-          </span>
+          <span class="font-medium"> Participation </span>
         </div>
-        <div onclick="openToc(event, 'surveys')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        <div
+          onclick="openToc(event, 'surveys')"
+          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
+        >
           <span>
             <i class="fa-solid fa-file-signature"></i>
           </span>
-          <span class="font-medium">
-            Surveys
-          </span>
+          <span class="font-medium"> Surveys </span>
         </div>
-        <div onclick="openToc(event, 'elections')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        <div
+          onclick="openToc(event, 'elections')"
+          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
+        >
           <span>
             <i class="fa-solid fa-check-to-slot"></i>
           </span>
-          <span class="font-medium">
-            Elections
-          </span>
+          <span class="font-medium"> Elections </span>
         </div>
-        <div onclick="openToc(event, 'messages')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+        <div
+          onclick="openToc(event, 'messages')"
+          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
+        >
           <span>
             <i class="fa-solid fa-comment-dots"></i>
           </span>
-          <span class="font-medium">
-            Messages
-          </span>
+          <span class="font-medium"> Messages </span>
         </div>
-      </div> 
+      </div>
     </div>
     <!-- Right side  -->
     <div id="summary" class="toc md:w-3/4">
       {% include "./toc_summary.html" %}
     </div>
-    <div id="contact" class="hidden toc md:w-3/4">
+    <div id="contact" class="toc hidden md:w-3/4">
       {% include "./toc_contact.html" %}
     </div>
-    <div id="spending" class="hidden toc md:w-3/4">
+    <div id="spending" class="toc hidden md:w-3/4">
       {% include "./toc_spending.html" %}
     </div>
-    <div id="participation" class="hidden toc md:w-3/4">
+    <div id="participation" class="toc hidden md:w-3/4">
       {% include "./toc_participation.html" %}
     </div>
-    <div id="surveys" class="hidden toc md:w-3/4">
+    <div id="surveys" class="toc hidden md:w-3/4">
       {% include "./toc_surveys.html" %}
     </div>
-    <div id="elections" class="hidden toc md:w-3/4">
+    <div id="elections" class="toc hidden md:w-3/4">
       {% include "./toc_elections.html" %}
     </div>
-    <div id="messages" class="hidden toc md:w-3/4">
+    <div id="messages" class="toc hidden md:w-3/4">
       {% include "./toc_messages.html" %}
     </div>
-
   </div>
 </section>
 <!-- Take action section -->
-<section class=" bg-white mt-10">
-  <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
+<section class="mt-10 bg-white">
+  <div class="mx-auto max-w-screen-xl px-4 md:px-8 xl:px-4">
     <div class="w-full text-center">
-      <p class="benfritz text-2xl pb-5 md:text-3xl">...or 
+      <p class="benfritz pb-5 text-2xl md:text-3xl">
+        ...or
         <span class="relative">
           take action
-          <img class="absolute w-full left-0" src="{% static 'assets/basic-underline.svg' %}"/>
+          <img
+            class="absolute left-0 w-full"
+            src="{% static 'assets/basic-underline.svg' %}"
+          />
         </span>
-          with our participation tools!</p>
-      <p class="text-slate-400 font-medium text-sm pb-7">Designed to help residents take action and influence change in their community</p>
+        with our participation tools!
+      </p>
+      <p class="pb-7 text-sm font-medium text-slate-400">
+        Designed to help residents take action and influence change in their
+        community
+      </p>
     </div>
-  
-    <div class="mx-auto flex  w-full flex-col gap-5 md:flex-row items-center flex-wrap justify-between">
+
+    <div
+      class="mx-auto flex w-full flex-col flex-wrap items-center justify-between gap-5 md:flex-row"
+    >
       <!-- action card -->
-      <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
-        <div class="w-full h-24 relative overflow-hidden rounded-lg">
-          <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
-          <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a714b84f3db51574f2f788_your-representative.jpg"/>
+      {% for item in content.participation.items %}
+
+      <a
+        href="{{item.url}}"
+        class="hover-card-img relative block w-full cursor-pointer rounded-lg px-2 pb-3 text-sm shadow-wide transition-all duration-300 ease-in-out hover:-translate-y-1.5 md:w-[48%] lg:w-[23%]"
+      >
+        {% if item.popular %}
+        <p
+          class="popular-banner benfritz absolute top-[-5px] left-[-8px] z-40 rotate-[-25deg] rounded-md bg-[#7f00ff] p-2 text-white"
+        >
+          Popular!
+        </p>
+        {% endif %}
+        <div class="relative h-[182px] w-full overflow-hidden rounded-lg">
+          <div
+            class="absolute top-0 left-0 bottom-0 right-0 z-10 rounded-lg bg-[#7f00ff] opacity-20"
+          ></div>
+          <img
+            class="z-2 h-[182px] w-full rounded-lg object-cover transition-all duration-300 ease-in-out"
+            src="{{item.image}}"
+          />
         </div>
-        <div class="w-full text-center h-[52px] flex items-center justify-center">
-          <span class="font-bold text-[#192827]">Find your ward councillor</span>
+        <div
+          class="flex h-[52px] w-full items-center justify-center text-center"
+        >
+          <span class="font-bold text-[#192827]">{{item.title}}</span>
         </div>
         <!-- horizontal divide line -->
-        <div class="border-gray-100 w-full border-t mb-2 md:mb-4"></div>
+        <div class="mb-2 w-full border-t border-gray-100 md:mb-4"></div>
         <div class="flex items-center justify-between text-slate-400">
           <div class="flex items-center gap-x-2">
             <span>
               <i class="fa-solid fa-stopwatch"></i>
             </span>
-            <span>20 sec</span>
+            <span>{{item.length}} sec</span>
           </div>
           <div class="flex items-center gap-x-2">
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+            <div
+              class="smTooltip flex cursor-pointer items-center gap-x-2 rounded-lg p-2 hover:bg-neutral-200 hover:text-[#7f00ff]"
+            >
               <span class="smTooltipText">
                 Like this
                 <span class="triangle-down"></span>
@@ -455,156 +541,31 @@
               <span>
                 <i class="fa-solid fa-heart"></i>
               </span>
-              <span>142</span>
+              <span>{{item.likes}}</span>
             </div>
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
+            <div
+              class="smTooltip flex cursor-pointer items-center gap-x-2 rounded-lg p-2 hover:bg-neutral-200 hover:text-[#7f00ff]"
+            >
               <span class="smTooltipText">
-                Like this
+                Share this
                 <span class="triangle-down"></span>
               </span>
               <span>
                 <i class="fa-solid fa-share"></i>
               </span>
-              <span>184</span>
+              <span>{{item.replies}}</span>
             </div>
           </div>
         </div>
-      </div>
-      <!-- second action card -->
-      <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
-        <div class="w-full h-24 relative overflow-hidden rounded-lg">
-          <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
-          <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a719da17013bb1cdd7e7a9_image%2053.jpg"/>
-        </div>
-        <div class="w-full text-center h-[52px] flex items-center justify-center">
-          <span class="font-bold text-[#192827]">Find your municipalities contact information</span>
-        </div>
-        <!-- horizontal divide line -->
-        <div class="border-gray-100 w-full border-t mb-2 md:mb-4"></div>
-        <div class="flex items-center justify-between text-slate-400">
-          <div class=" flex items-center gap-x-2">
-            <span>
-              <i class="fa-solid fa-stopwatch"></i>
-            </span>
-            <span>20 sec</span>
-          </div>
-          <div class="flex items-center gap-x-2">
-            
-            </span>
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
-              <span class="smTooltipText">
-                Like this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-heart"></i>
-              </span>
-              <span>123</span>
-            </div>
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
-              <span class="smTooltipText">
-                Like this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-share"></i>
-              </span>
-              <span>1083</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- third action card -->
-      <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
-        <div class="w-full h-24 relative overflow-hidden rounded-lg">
-          <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
-          <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a724522ad31c59960658bf_budget-spending.jpg"/>
-        </div>
-        <div class="w-full text-center h-[52px] flex items-center justify-center">
-          <span class="font-bold text-[#192827]">How does your municipality earn and spend its money</span>
-        </div>
-        <!-- horizontal divide line -->
-        <div class="border-gray-100 w-full border-t mb-2 md:mb-4"></div>
-        <div class="flex items-center justify-between text-slate-400">
-          <div class="flex items-center gap-x-2">
-            <span>
-              <i class="fa-solid fa-stopwatch"></i>
-            </span>
-            <span>20 sec</span>
-          </div>
-          <div class="flex items-center gap-x-2">
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
-              <span class="smTooltipText">
-                Like this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-heart"></i>
-              </span>
-              <span>68</span>
-            </div>
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
-              <span class="smTooltipText">
-                Like this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-share"></i>
-              </span>
-              <span>103</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- fourth action card -->
-      <div class="rounded-lg w-full md:w-[48%] lg:w-[23%] cursor-pointer px-2 pb-3 text-sm shadow-wide transition-all ease-in-out duration-300 hover:-translate-y-1.5 hover-card-img">
-        <div class="w-full h-24 relative overflow-hidden rounded-lg">
-          <div class="z-10 bg-[#7f00ff] opacity-20 absolute top-0 left-0 bottom-0 right-0 rounded-lg"></div>
-          <img class="w-full h-24 object-cover rounded-lg z-2 transition-all ease-in-out duration-300" src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61a722fba44a202e751b93b3_elections.jpg"/>
-        </div>
-        <div class="w-full text-center h-[52px] flex items-center justify-center">
-          <span class="font-bold text-[#192827]">How your municipal and ward leadership was elected</span>
-        </div>
-        <!-- horizontal divide line -->
-        <div class="border-gray-100 w-full border-t mb-2 md:mb-4"></div>
-        <div class="flex items-center justify-between text-slate-400">
-          <div class="flex items-center gap-x-2">
-            <span>
-              <i class="fa-solid fa-stopwatch"></i>
-            </span>
-            <span>20 sec</span>
-          </div>
-          <div class="flex items-center gap-x-2">
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
-              <span class="smTooltipText">
-                Like this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-heart"></i>
-              </span>
-              <span>241</span>
-            </div>
-            <div class="smTooltip flex items-center gap-x-2 hover:bg-neutral-200 hover:text-[#7f00ff] cursor-pointer rounded-lg p-2">
-              <span class="smTooltipText">
-                Like this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-share"></i>
-              </span>
-              <span>205</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      </a>
+      {% endfor %}
     </div>
-    <div class="w-full flex justify-center align-items mt-7 mb-12">
-      <div class="w-full md:w-[174px] justify-between h-[50px] font-medium flex items-center bg-neutral-200 px-4 rounded-md cursor-pointer hover:bg-neutral-300">
-        <span class="text-sm whitespace-nowrap">
-          Explore more tools
-        </span>
-          <i class="fa-solid fa-arrow-right text-xl pl-2"></i>
+    <div class="align-items mt-7 mb-12 flex w-full justify-center">
+      <div
+        class="flex h-[50px] w-full cursor-pointer items-center justify-between rounded-md bg-neutral-200 px-4 font-medium hover:bg-neutral-300 md:w-[174px]"
+      >
+        <span class="whitespace-nowrap text-sm"> Explore more tools </span>
+        <i class="fa-solid fa-arrow-right pl-2 text-xl"></i>
       </div>
     </div>
   </div>
