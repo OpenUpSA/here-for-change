@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    'django.contrib.gis', # postgis
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,8 @@ WSGI_APPLICATION = "here_for_change.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
+
+DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis" # engine used for postgis
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 

@@ -38,7 +38,8 @@ class WardDetail(DetailView):
                         'value': '+27(0)284255500',
                         'type': 'phone',
                         'updated': '2022/09/12 16:57',
-                        'feedback': {'positive': 5, 'negative': 0}},
+                        'feedback': {'positive': 5, 'negative': 0}
+                    },
                 }
             }
         }
