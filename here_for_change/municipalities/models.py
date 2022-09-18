@@ -3,6 +3,7 @@ from .enums import MunicipalityTypes, Provinces
 from autoslug import AutoSlugField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import MultiPolygon,Point
 
 
 
@@ -63,3 +64,14 @@ class Ward(BaseModel):
 
     def __str__(self):
         return self.name
+    @property
+    def longitude(self):
+        
+        return self.boundary.centroid.coords[0]
+    @property
+    def latitude(self):
+        return self.boundary.centroid.coords[1]
+
+    @property
+    def map_geoJson(self):
+        return self.boundary.geojson

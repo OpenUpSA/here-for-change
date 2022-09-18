@@ -42,7 +42,16 @@ class WardDetail(DetailView):
                     },
                 }
             }
-        }
+        },
+        
+
     }
 
-    extra_context = {'content': page_content['ward']}
+    def get_context_data(self, **kwargs):
+        ctx= super().get_context_data(**kwargs)
+        ctx['content']={}
+        ctx['content']['ward']=self.page_content['ward']
+        object=self.get_object()
+        ctx['neighbours']=Ward.objects.filter(municipality=object.municipality).exclude(pk=object.pk)
+        return ctx
+
