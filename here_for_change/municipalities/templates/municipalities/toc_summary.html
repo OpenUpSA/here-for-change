@@ -1383,7 +1383,10 @@
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span id="deputy-mayor-phone" class="ml-3 break-all">{{content.municipality.office_of_the_deputy_mayor.deputy_mayor.contacts.phone.value}}</span>
+          <span id="deputy-mayor-phone" class="ml-3 break-all">
+            <!-- phone number formatted with libphonenumber  -->
+            {{content.municipality.office_of_the_deputy_mayor.deputy_mayor.contacts.phone.value|json_script:"deputy-mayor-num"}}
+          </span>
         </div>
         <div class="flex items-center">
           <i
@@ -1525,7 +1528,7 @@
           </span>
           <span id="sec-dep-mayor-phone" class="ml-3 break-all">
             <!-- phone number formatted with libphonenumber  -->
-            {{content.municipality.office_of_the_deputy_mayor.secretary_deputy_mayor.contacts.phone.value}}
+            {{content.municipality.office_of_the_deputy_mayor.secretary_deputy_mayor.contacts.phone.value|json_script:"sec-dep-mayor-num"}}
           </span>
         </div>
         <div class="flex items-center">
@@ -1610,17 +1613,3 @@
     </div>
   </div>
 </div>
-<script>
-//Deputy mayor phone number formatting
-const deputyMayorPhone = document.getElementById("deputy-mayor-phone");
-const dmPhoneDjango = "{{content.municipality.office_of_the_deputy_mayor.deputy_mayor.contacts.phone.value}}";
-const secDepMayorPhone = document.getElementById("sec-dep-mayor-phone");
-const secDepPhoneDjango = "{{content.municipality.office_of_the_deputy_mayor.secretary_deputy_mayor.contacts.phone.value}}"
-if (deputyMayorPhone) {
-  deputyMayorPhone.innerHTML = libphonenumber.parsePhoneNumber(dmPhoneDjango).formatNational();
-}
-
-if (secDepMayorPhone){
-  secDepMayorPhone.innerHTML = libphonenumber.parsePhoneNumber(secDepPhoneDjango).formatNational();
-}
-</script>
