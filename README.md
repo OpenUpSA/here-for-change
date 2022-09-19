@@ -92,6 +92,28 @@ the above again:
 
     docker compose down --volumes
 
+Tailwind setup
+-----------------
+
+To install all dependencies, run:
+  
+    yarn install
+
+## for development
+
+while you're coding, run:
+
+    yarn run tailwind-watch
+
+This will ensure that your output.css file is regenerated as soon as you add a new tailwind class to your code. 
+
+## for production
+
+Before deployment, run:
+
+    yarn run tailwind-build
+    
+This will build the output and remove unused classes to ensure a lower file size.
 
 Running tests
 -------------
