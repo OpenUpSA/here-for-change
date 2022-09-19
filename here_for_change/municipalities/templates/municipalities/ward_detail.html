@@ -140,7 +140,7 @@
             </span>
             <span id="councillor-phone" class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
              <!-- formatted phone number would be added by JS -->
-             {{content.ward.councillor.contacts.phone.value}}
+             {{ content.ward.councillor.contacts.phone.value|json_script:"council-num" }}
             </span>
           </div>
           <div class="flex items-center">
@@ -580,13 +580,5 @@
       map: map,
     });
   }
-</script>
-<script>
-//Councillor phone number formatting
-const phone = document.getElementById("councillor-phone");
-const councillorPhoneDjango = "{{content.ward.councillor.contacts.phone.value}}";
-if (phone) {
-  phone.innerHTML = libphonenumber.parsePhoneNumber(councillorPhoneDjango).formatNational();
-}
 </script>
 {% endblock %}
