@@ -8,7 +8,7 @@
     class="align-items mx-auto flex max-w-screen-xl flex-col gap-3 p-4 md:p-8"
   >
     <div class="inline-block items-center text-left md:flex">
-      <h1 class="benfritz w-full text-left text-[48px] md:w-auto md:pr-4">
+      <h1 class="fvs-250 benfritz w-full text-left text-[48px] leading-[1.2] md:w-auto md:pr-4">
         {{ ward.municipality.name }}
       </h1>
       <div class="relative" x-data="{open: false}">
@@ -16,7 +16,7 @@
           <button
             @click="open = ! open"
             type="button"
-            class="inline-flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-100 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-teal-900 focus:outline-none lg:w-40"
+            class="inline-flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-100 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-teal-900 focus:outline-none md:w-40"
             id="ward-button"
             aria-expanded="true"
             aria-haspopup="true"
@@ -38,7 +38,6 @@
           @click="open = ! open"
         >
           <div class="pb-1" role="none">
-            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
             {% for ward_item in ward.municipality.ward_set.all %}
             <a
               href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
@@ -70,7 +69,7 @@
   <div
     class="mx-auto max-w-screen-xl items-center justify-between px-4 pt-9 pb-4 md:flex md:px-8 xl:px-4"
   >
-    <h2 class="benfritz text-center text-2xl text-white md:text-3xl">
+    <h2 class="benfritz fvs-100 text-center text-2xl text-white md:text-3xl">
       Your
       <span class="relative">
         ward councillior<img
