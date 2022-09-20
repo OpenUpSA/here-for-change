@@ -333,8 +333,8 @@
         </p>
         {% for key, value in content.items %}
           {% if value.toc.show == True  %}
-            {% if key == "summary" %}
-            <div onclick="openToc(event, '{{value.toc.title|lower}}')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+            {% if forloop.counter0 == 1 %}
+            <div class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
               <span>
                 <i class="fa-solid fa-bolt-lightning"></i>
               </span>
@@ -343,7 +343,7 @@
               </span>
             </div>
             {% else %}
-            <div onclick="openToc(event, '{{value.toc.title|lower}}')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+            <div class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
               <span>
                 <i class="{{value.toc.icon}}"></i>
               </span>
@@ -352,65 +352,8 @@
               </span>
             </div>
             {% endif %}
-            
           {% endif %}
         {% endfor %}
-        <!-- <div onclick="openToc(event, 'summary')" class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-          <span>
-            <i class="fa-solid fa-bolt-lightning"></i>
-          </span>
-          <span class="font-medium">
-            Summary
-          </span>
-        </div> -->
-        <!-- <div onclick="openToc(event, 'contact')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-          <span>
-            <i class="fa-solid fa-phone-flip"></i>
-          </span>
-          <span class="font-medium">
-            Contact
-          </span>
-        </div>
-        <div onclick="openToc(event, 'spending')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-          <span>
-            <i class="fa-solid fa-coins"></i>
-          </span>
-          <span class="font-medium">
-            Spending
-          </span>
-        </div>
-        <div onclick="openToc(event, 'participation')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-          <span>
-            <i class="fa-solid fa-calendar-days"></i>
-          </span>
-          <span class="font-medium">
-            Participation
-          </span>
-        </div>
-        <div onclick="openToc(event, 'surveys')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-          <span>
-            <i class="fa-solid fa-file-signature"></i>
-          </span>
-          <span class="font-medium">
-            Surveys
-          </span>
-        </div>
-        <div onclick="openToc(event, 'elections')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-          <span>
-            <i class="fa-solid fa-check-to-slot"></i>
-          </span>
-          <span class="font-medium">
-            Elections
-          </span>
-        </div>
-        <div onclick="openToc(event, 'messages')" class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-          <span>
-            <i class="fa-solid fa-comment-dots"></i>
-          </span>
-          <span class="font-medium">
-            Messages
-          </span>
-        </div> -->
       </div> 
     </div>
     <!-- Right side  -->

@@ -97,21 +97,28 @@ if (otherBtn) {
 }
 
 //Toc section
-function openToc(event, toc_name) {
-  const toc_btns = document.getElementsByClassName("toc-btn");
-  const toc_sections = document.getElementsByClassName("toc");
+const toc_btns = document.getElementsByClassName("toc-btn");
+const toc_sections = document.getElementsByClassName("toc");
 
-  for (let i = 0; i < toc_sections.length; i++) {
-    toc_sections[i].style.display = "none";
-  }
-  document.getElementById(toc_name).style.display = "block";
+if (toc_btns) {
+  for (let i = 0; i < toc_btns.length; i++) {
+    toc_btns[i].addEventListener("click", (e) => {
+      for (let i = 0; i < toc_sections.length; i++) {
+        toc_sections[i].style.display = "none";
+      }
+      let toc_name = e.currentTarget.children[1].textContent
+        .trim()
+        .toLowerCase();
+      document.getElementById(toc_name).style.display = "block";
 
-  for (i = 0; i < toc_btns.length; i++) {
-    toc_btns[i].classList.remove("btn-active");
-    toc_btns[i].classList.add("btn-inactive");
+      for (j = 0; j < toc_btns.length; j++) {
+        toc_btns[j].classList.remove("btn-active");
+        toc_btns[j].classList.add("btn-inactive");
+      }
+      e.currentTarget.classList.remove("btn-inactive");
+      e.currentTarget.classList.add("btn-active");
+    });
   }
-  event.currentTarget.classList.remove("btn-inactive");
-  event.currentTarget.classList.add("btn-active");
 }
 
 // bar tooltips positioning
