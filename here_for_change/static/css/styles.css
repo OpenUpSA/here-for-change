@@ -6,6 +6,10 @@
   src: url(../fonts/Benfritz.ttf);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .benfritz {
   font-family: Benfritz, serif;
 }

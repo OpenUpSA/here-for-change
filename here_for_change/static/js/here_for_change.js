@@ -198,3 +198,12 @@ if (document) {
     }
   }
 }
+
+function Scrolldown() {
+  const anchorId = window.location.href.split("#")[1];
+  if(anchorId){
+    window.location.hash = `#${anchorId}`
+  }
+}
+
+window.onload = Scrolldown;
