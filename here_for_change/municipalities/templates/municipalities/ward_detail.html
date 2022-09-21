@@ -128,7 +128,7 @@
               ></i>
             </div>
             <p>{{content.ward.councillor.political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">Elected {{content.ward.councillor.elected_date.value}}</p>
+            <p class="font-semibold text-neutral-400">Elected {{content.ward.councillor.elected_date.value|date:"j F Y"}}</p>
           </div>
         </div>
         <div class="my-3 border-t-2 border-gray-100"></div>
@@ -138,10 +138,9 @@
             <span class="mr-4 ml-2">
               <i class="fa-solid fa-phone-flip"></i>
             </span>
-            <span
-              class="mr-5 cursor-pointer whitespace-nowrap rounded-md p-2 text-sm hover:bg-gray-200"
-            >
-              028 425 5500
+            <span id="councillor-phone" class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
+             <!-- formatted phone number would be added by JS -->
+             {{ content.ward.councillor.contacts.phone.value|json_script:"council-num" }}
             </span>
           </div>
           <div class="flex items-center">

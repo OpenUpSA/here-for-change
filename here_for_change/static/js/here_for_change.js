@@ -192,6 +192,13 @@ if (document) {
   }
 }
 
+//Councillor phone number formatting
+const phone = document.getElementById("councillor-phone");
+const councillorPhoneDjango = JSON.parse(document.getElementById('council-num').textContent);
+if (phone && councillorPhoneDjango) {
+  phone.innerHTML = libphonenumber.parsePhoneNumber(councillorPhoneDjango).formatNational();
+}
+
 //Deputy mayor phone number formatting
 const deputyMayorPhone = document.getElementById("deputy-mayor-phone");
 const dmPhoneDjango = JSON.parse(document.getElementById('deputy-mayor-num').textContent);
