@@ -616,7 +616,7 @@
 ></script>
 <script>
   function initMap() {
-    const location = { lat: {{object.latitude}}, lng: {{object.longitude}} };
+    const location = { lat: {{object.map_latitude}}, lng: {{object.map_longitude}} };
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: {{object.map_default_zoom}},
       center: location,
@@ -624,6 +624,23 @@
     });
 
     {% autoescape off %}
+    const current_ward={
+      "geometry":{{ object.map_geoJson }},
+      "url":"{{ object.get_absolute_url }}",
+      "name":"{{ object.name }}",
+      "municipality":"{{ object.municipality }}",
+      "url":"{{object.get_absolute_url}}"
+    }
+    const neighboring_wards=[
+    {% for neighbour in neighbours %}
+    {
+      "geometry":{{ neighbour.map_geoJson }},
+      "url":"{{ neighbour.get_absolute_url }}",
+      "name":"{{ neighbour.name }}",
+      "municipality":"{{ neighbour.municipality.name }}",
+    },
+    {% endfor %}
+    ]
     map.data.addGeoJson(
       { "type": "FeatureCollection",
       "features": [

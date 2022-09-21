@@ -1,9 +1,22 @@
-from django.contrib.auth.models import User
 from .enums import MunicipalityTypes, Provinces
 from autoslug import AutoSlugField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.db import models
-from django.contrib.gis.geos import MultiPolygon,Point
+from django.urls import reverse
+from django.contrib.gis.geos import Point
+
+class WardManager(models.Manager):
+
+    def closest(self,pt:Point):
+        qs=self.get_queryset()
+        ward_and_distance=[]
+        for ward in qs:
+            ward_pt=Point((ward.map_longitude,ward.map_latitude))
+            ward_and_distance.append((ward,pt.distance(ward_pt)*100))
+
+        ward_and_distance=sorted(ward_and_distance,key=lambda x:x[1])
+    
+        return ward_and_distance[0][0]
 
 
 
@@ -55,23 +68,23 @@ class Ward(BaseModel):
         Municipality, on_delete=models.CASCADE, null=False, blank=False
     )
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
-    map_latitude = models.DecimalField(
-        default=-33.9249, max_digits=10, decimal_places=7, null=False, blank=False)
-    map_longitude = models.DecimalField(
-        default=18.4241, max_digits=10, decimal_places=7, null=False, blank=False)
     # GeoDjango-specific: a geometry field (MultiPolygonField)
     boundary = models.MultiPolygonField(_("Ward Boundary data"),null=True)
+    objects=WardManager()
 
     def __str__(self):
         return self.name
     @property
-    def longitude(self):
-        
+    def map_longitude(self):     
         return self.boundary.centroid.coords[0]
     @property
-    def latitude(self):
+    def map_latitude(self):
         return self.boundary.centroid.coords[1]
 
     @property
     def map_geoJson(self):
         return self.boundary.geojson
+
+    def get_absolute_url(self):
+        return reverse("ward_detail", kwargs={"municipality_code":self.municipality.municipality_code,"slug": self.slug})
+    

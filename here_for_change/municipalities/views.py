@@ -1,10 +1,13 @@
 from django.views.generic import ListView, DetailView
 from .models import Municipality, Ward
 from datetime import datetime
-
+from .decorators import redirect_to_closest_ward
 
 class MunicipalityList(ListView):
     model = Municipality
+    @redirect_to_closest_ward
+    def get(self,request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class WardDetail(DetailView):
