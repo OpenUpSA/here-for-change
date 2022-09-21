@@ -121,18 +121,14 @@
           />
           <div class="grow">
             <div class="flex items-center justify-between">
-              <p class="font-bold">{{content.councillor.name.value}}</p>
-              <i
-                class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
-                ><span class="tooltipText">
-                  Report a problem
-                  <span class="triangle-down"></span> </span
+              <p class="font-bold">{{content.ward.councillor.name.value}}</p>
+              <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer mr-2 md:mr-4"><span class="tooltipText">
+                Report a problem                    
+                <span class="triangle-down"></span> </span
               ></i>
             </div>
-            <p>{{content.councillor.political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">
-              Elected {{content.councillor.elected_date.value}}
-            </p>
+            <p>{{content.ward.councillor.political_party.value}}</p>
+            <p class="font-semibold text-neutral-400">Elected {{content.ward.councillor.elected_date.value}}</p>
           </div>
         </div>
         <div class="my-3 border-t-2 border-gray-100"></div>
@@ -188,10 +184,8 @@
             <span class="mr-4 ml-2">
               <i class="fa-solid fa-envelope"></i>
             </span>
-            <span
-              class="mr-1 cursor-pointer whitespace-nowrap rounded-md p-2 text-sm hover:bg-gray-200 md:mr-5"
-            >
-              {{content.councillor.contacts.email.primary.value}}
+            <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer whitespace-nowrap">
+              {{content.ward.councillor.contacts.email.primary.value}}
             </span>
           </div>
           <div class="flex items-center">
