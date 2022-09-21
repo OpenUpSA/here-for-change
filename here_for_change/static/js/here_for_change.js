@@ -198,3 +198,16 @@ const councillorPhoneDjango = JSON.parse(document.getElementById('council-num').
 if (phone && councillorPhoneDjango) {
   phone.innerHTML = libphonenumber.parsePhoneNumber(councillorPhoneDjango).formatNational();
 }
+
+//Deputy mayor phone number formatting
+const deputyMayorPhone = document.getElementById("deputy-mayor-phone");
+const dmPhoneDjango = JSON.parse(document.getElementById('deputy-mayor-num').textContent);
+const secDepMayorPhone = document.getElementById("sec-dep-mayor-phone");
+const secDepPhoneDjango = JSON.parse(document.getElementById('sec-dep-mayor-num').textContent);
+if (deputyMayorPhone && dmPhoneDjango) {
+  deputyMayorPhone.innerHTML = libphonenumber.parsePhoneNumber(dmPhoneDjango).formatNational();
+}
+
+if (secDepMayorPhone && secDepPhoneDjango){
+  secDepMayorPhone.innerHTML = libphonenumber.parsePhoneNumber(secDepPhoneDjango).formatNational();
+}
