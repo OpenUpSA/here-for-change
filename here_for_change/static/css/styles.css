@@ -19,6 +19,10 @@
   font-weight: bold;
 }
 
+.fvs-200 {
+  font-variation-settings: "wght" 200, "wdth" 100;
+}
+
 .fvs-100 {
   font-variation-settings: "wght" 100, "wdth" 100;
   font-weight: bold;
@@ -26,7 +30,7 @@
 
 #map {
   width: 100%;
-  height: 400px;
+  height: 270px;
 }
 
 .hover-card-img:hover img {
