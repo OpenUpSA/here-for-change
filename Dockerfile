@@ -32,9 +32,5 @@ COPY . /app
 
 WORKDIR /app
 
-RUN set -ex; \
-  yarn; \
-  yarn build
-
 EXPOSE 5000
 CMD /app/bin/start.sh
