@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import logging.config
 import environ
 
 ROOT_DIR = environ.Path(__file__) - 2
@@ -93,9 +94,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator", },
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator", },
 ]
 
 
@@ -125,14 +126,11 @@ STATICFILES_FINDERS = [
 ]
 STATICFILES_DIRS = [
     str(PROJ_DIR.path("static")),
-    str(ROOT_DIR.path("assets/bundles")),
 ]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 WHITENOISE_AUTOREFRESH = env.bool("DJANGO_WHITENOISE_AUTOREFRESH", False)
 
-
-import logging.config
 
 LOGGING_CONFIG = None
 logging.config.dictConfig(
@@ -147,11 +145,11 @@ logging.config.dictConfig(
             },
         },
         "handlers": {
-            "console": {"class": "logging.StreamHandler", "formatter": "console",},
+            "console": {"class": "logging.StreamHandler", "formatter": "console", },
         },
         "loggers": {
             # root logger
-            "": {"level": "INFO", "handlers": ["console"],},
+            "": {"level": "INFO", "handlers": ["console"], },
         },
     }
 )
