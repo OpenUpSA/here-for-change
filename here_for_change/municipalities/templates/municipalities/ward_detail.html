@@ -383,23 +383,23 @@
         {% for key, value in content.items %}
           {% if value.toc.show == True  %}
             {% if forloop.counter0 == 1 %}
-            <div class="btn-active toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-              <span>
-                <i class="fa-solid fa-bolt-lightning"></i>
-              </span>
-              <span class="font-medium">
-                {{value.toc.title}}
-              </span>
-            </div>
-            {% else %}
-            <div class="btn-inactive toc-btn md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+            <a href="#{{value.toc.title|lower}}" class="btn-active toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
               <span>
                 <i class="{{value.toc.icon}}"></i>
               </span>
               <span class="font-medium">
                 {{value.toc.title}}
               </span>
-            </div>
+            </a>
+            {% else %}
+            <a href="#{{value.toc.title|lower}}" class="btn-inactive toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="{{value.toc.icon}}"></i>
+              </span>
+              <span class="font-medium">
+                {{value.toc.title}}
+              </span>
+            </a>
             {% endif %}
           {% endif %}
         {% endfor %}
@@ -408,24 +408,6 @@
     <!-- Right side  -->
     <div id="summary" class="toc md:w-3/4">
       {% include "./toc_summary.html" %}
-    </div>
-    <div id="contact" class="toc hidden md:w-3/4">
-      {% include "./toc_contact.html" %}
-    </div>
-    <div id="spending" class="toc hidden md:w-3/4">
-      {% include "./toc_spending.html" %}
-    </div>
-    <div id="participation" class="toc hidden md:w-3/4">
-      {% include "./toc_participation.html" %}
-    </div>
-    <div id="surveys" class="toc hidden md:w-3/4">
-      {% include "./toc_surveys.html" %}
-    </div>
-    <div id="elections" class="toc hidden md:w-3/4">
-      {% include "./toc_elections.html" %}
-    </div>
-    <div id="messages" class="toc hidden md:w-3/4">
-      {% include "./toc_messages.html" %}
     </div>
   </div>
 </section>

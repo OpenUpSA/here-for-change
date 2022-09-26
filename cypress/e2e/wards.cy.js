@@ -30,11 +30,3 @@ describe('ward selector dropdown', () => {
     cy.get('.dropdown-panel').first().should('be.visible')
   })
 })
-
-describe('test toc sections visibility', () => {
-  it('passes', () => {
-    cy.visit('/municipalities/CPT/wards/cpt-ward-1/')
-    cy.get('.toc-btn').eq(1).click()
-    cy.get('#contact').contains('Municipaility contacts')
-  })
-})
