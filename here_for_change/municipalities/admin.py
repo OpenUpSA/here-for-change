@@ -3,7 +3,8 @@ from django.contrib import admin
 
 from .models import (
     Municipality,
-    Ward)
+    Ward,
+    WardDetail)
 
 
 class MunicipalityAdmin(admin.ModelAdmin):
@@ -21,3 +22,4 @@ class WardAdmin(admin.ModelAdmin):
 
 admin.site.register(Municipality, MunicipalityAdmin)
 admin.site.register(Ward, WardAdmin)
+admin.site.register(WardDetail)

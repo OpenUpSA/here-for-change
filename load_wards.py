@@ -10,8 +10,7 @@ import json
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'here_for_change.settings')
 django.setup()
 
-from here_for_change.municipalities.models import Ward
-from here_for_change.municipalities.models import Municipality
+from here_for_change.municipalities.models import (Ward,Municipality)
 
 SOURCE_URL="https://mapit.openup.org.za/area/"
 

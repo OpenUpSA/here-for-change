@@ -1,9 +1,11 @@
+from email.policy import default
 from .enums import MunicipalityTypes, Provinces
 from autoslug import AutoSlugField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.db import models
 from django.urls import reverse
 from django.contrib.gis.geos import Point
+
 
 class WardManager(models.Manager):
 
@@ -87,4 +89,39 @@ class Ward(BaseModel):
 
     def get_absolute_url(self):
         return reverse("ward_detail", kwargs={"municipality_code":self.municipality.municipality_code,"slug": self.slug})
-    
+
+
+
+
+class WardDetail(BaseModel):
+    STAGING="staging"
+    PRODUCTION="production"
+    VERSION_CHOICES=[
+    (STAGING, _("Staging version")),
+    (PRODUCTION, _("Production version"))]
+
+    STRING="string"
+    INT="int"
+    FLOAT="float"
+    DATE="date"
+    EMAIL="email"
+    PHONE="phone"
+    JSON="json"
+    FIELD_TYPES_CHOICES=[
+        (STRING,_("String")),
+        (INT,_("Integer")),
+        (FLOAT,_("Float")),
+        (JSON,_("Json")),
+        (DATE,_("Date")),
+        (EMAIL,_("Email")),
+        (PHONE,_("Phone")),
+    ]
+    ward=models.ForeignKey(Ward,on_delete=models.CASCADE)
+    field_name=models.CharField(max_length=90,null=False,blank=False) 
+    field_type=models.CharField(max_length=40,default=STRING,choices=FIELD_TYPES_CHOICES)
+    field_value=models.CharField(max_length=90,null=False,blank=False)
+    stage=models.CharField(max_length=40,default=STAGING,choices=VERSION_CHOICES)
+    feedback=models.JSONField(null=True)
+
+    def __str__(self):
+        return f"{self.field_name} - {self.stage} - {self.ward}"
