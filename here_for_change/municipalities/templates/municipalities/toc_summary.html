@@ -1338,7 +1338,7 @@
           <span>
             <i class="fa-solid fa-user"></i>
           </span>
-          <span class="ml-3 break-all">Ms Zukiswa Tonisi</span>
+          <span class="ml-3 break-all">{{content.municipality.office_of_the_deputy_mayor.deputy_mayor.name.value}}</span>
         </div>
         <div class="flex items-center">
           <i
@@ -1382,7 +1382,10 @@
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span class="ml-3 break-all">028 425 5513</span>
+          <span id="deputy-mayor-phone" class="ml-3 break-all">
+            <!-- phone number formatted with libphonenumber  -->
+            {{content.municipality.office_of_the_deputy_mayor.deputy_mayor.contacts.phone.value|json_script:"deputy-mayor-num"}}
+          </span>
         </div>
         <div class="flex items-center">
           <i
@@ -1426,7 +1429,7 @@
           <span>
             <i class="fa-solid fa-envelope"></i>
           </span>
-          <span class="ml-3 break-all">pauls@capeagulhas.gov.za</span>
+          <span class="ml-3 break-all">{{content.municipality.office_of_the_deputy_mayor.deputy_mayor.contacts.email.primary.value}}</span>
         </div>
         <div class="flex items-center">
           <i
@@ -1478,7 +1481,7 @@
           <span>
             <i class="fa-solid fa-user"></i>
           </span>
-          <span class="ml-3 break-all">Mr P Valentine</span>
+          <span class="ml-3 break-all">{{content.municipality.office_of_the_deputy_mayor.secretary_deputy_mayor.name.value}}</span>
         </div>
         <div class="flex items-center">
           <i
@@ -1522,7 +1525,10 @@
           <span>
             <i class="fa-solid fa-phone-flip"></i>
           </span>
-          <span class="ml-3 break-all">028 425 5513</span>
+          <span id="sec-dep-mayor-phone" class="ml-3 break-all">
+            <!-- phone number formatted with libphonenumber  -->
+            {{content.municipality.office_of_the_deputy_mayor.secretary_deputy_mayor.contacts.phone.value|json_script:"sec-dep-mayor-num"}}
+          </span>
         </div>
         <div class="flex items-center">
           <i
@@ -1566,7 +1572,7 @@
           <span>
             <i class="fa-solid fa-envelope"></i>
           </span>
-          <span class="ml-3 break-all">pauls@capeagulhas.gov.za</span>
+          <span class="ml-3 break-all">{{content.municipality.office_of_the_deputy_mayor.secretary_deputy_mayor.contacts.email.primary.value}}</span>
         </div>
         <div class="flex items-center">
           <i

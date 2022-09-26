@@ -132,8 +132,54 @@ class WardDetail(DetailView):
                     'icon': 'fa-solid fa-comment-dots',
                     'show': True
                 },
+            },
+        },
+        'municipality': {
+            'office_of_the_deputy_mayor': {
+                'deputy_mayor': {
+                    'name': {
+                        'value': 'Ms Zukiswa Tonisi',
+                        'type': 'string',
+                        'updated': '2022/09/12 16:57',
+                        'feedback': {'positive': 5, 'negative': 0}},
+                    'contacts': {
+                        'email': {
+                            'primary': {
+                                'type': 'email',
+                                'value': 'pauls@capeagulhas.co.za',
+                                'updated': '2022/09/12 16:57',
+                                'feedback': {'positive': 5, 'negative': 0}}
+                        },
+                        'phone': {
+                            'value': '+27(0)284255513',
+                            'type': 'phone',
+                            'updated': '2022/09/12 16:57',
+                            'feedback': {'positive': 5, 'negative': 0}},
+                    }
+                },
+                'secretary_deputy_mayor': {
+                    'name': {
+                        'value': 'Mr P Valentine',
+                        'type': 'string',
+                        'updated': '2022/09/12 16:57',
+                        'feedback': {'positive': 5, 'negative': 0}},
+                    'contacts': {
+                        'email': {
+                            'primary': {
+                                'type': 'email',
+                                'value': 'pauls@capeagulhas.co.za',
+                                'updated': '2022/09/12 16:57',
+                                'feedback': {'positive': 5, 'negative': 0}}
+                        },
+                        'phone': {
+                            'value': '+27(0)284255513',
+                            'type': 'phone',
+                            'updated': '2022/09/12 16:57',
+                            'feedback': {'positive': 5, 'negative': 0}},
+                    }
+                },
             }
         }
     }
 
-    extra_context = {'content': page_content['ward']}
+    extra_context = {'content': page_content}
