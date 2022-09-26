@@ -219,20 +219,24 @@ def create_detail(ward:Ward,data:dict,stage:str="staging"):
         for field_key in data[data_key].keys():
             field=data[data_key][field_key]
             print(field)
-            if field_key!="contacts":
-                detail=WardDetail(ward=ward,field_name=f"{data_key}.{field_key}",field_type=field.get("type"),field_value=field.get("value"),updated_at=datetime.strptime(field.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=field.get("feedback"))
+            if field_key=="elected_date":
+                detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}",field_type=field.get("type"),field_value=datetime.strftime(field.get("value"),r"%Y/%m/%d"),updated_at=datetime.strptime(field.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=field.get("feedback"))
+                detail.save()
+                
+            elif field_key!="contacts":
+                detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}",field_type=field.get("type"),field_value=field.get("value"),updated_at=datetime.strptime(field.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=field.get("feedback"))
                 detail.save()
             else:
                 for contact_key in field.keys():
 
                     contact=field[contact_key]
                     if contact_key!="email":
-                        detail=WardDetail(ward=ward,field_name=f"{data_key}.{field_key}.{contact_key}",field_type=contact.get("type"),field_value=contact.get("value"),updated_at=datetime.strptime(contact.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=contact.get("feedback"))
+                        detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}_{contact_key}",field_type=contact.get("type"),field_value=contact.get("value"),updated_at=datetime.strptime(contact.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=contact.get("feedback"))
                         detail.save()
                     else:
                         for email_type in contact.keys():
                             email=contact[email_type]
-                            detail=WardDetail(ward=ward,field_name=f"{data_key}.{field_key}.{contact_key}.{email_type}",field_type=email.get("type"),field_value=email.get("value"),updated_at=datetime.strptime(email.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=email.get("feedback"))
+                            detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}_{contact_key}_{email_type}",field_type=email.get("type"),field_value=email.get("value"),updated_at=datetime.strptime(email.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=email.get("feedback"))
                             detail.save()
 
 
