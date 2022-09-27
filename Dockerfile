@@ -34,7 +34,7 @@ WORKDIR /app
 
 RUN set -ex; \
   yarn; \
-  yarn build
+  yarn tailwind-build
 
 EXPOSE 5000
 CMD /app/bin/start.sh
