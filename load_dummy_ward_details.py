@@ -209,7 +209,7 @@ DUMMY_DATA=[
 
 def create_detail(ward:Ward,data:dict,stage:str="staging"):
     """
-    Creates ward deatils for ward from data
+    Creates ward details for ward from data
     :param Ward ward: ward for which details should be created
     :param dict data: Dictionary containing fields to be added as ward detail
     :param dict stage: Version of details
