@@ -194,20 +194,34 @@ if (document) {
 
 //Councillor phone number formatting
 const phone = document.getElementById("councillor-phone");
-const councillorPhoneDjango = JSON.parse(document.getElementById('council-num').textContent);
-if (phone && councillorPhoneDjango) {
-  phone.innerHTML = libphonenumber.parsePhoneNumber(councillorPhoneDjango).formatNational();
+const councilNum = document.getElementById("council-num");
+if (councilNum) {
+  const councillorPhoneDjango = JSON.parse(councilNum.textContent);
+  if (phone && councillorPhoneDjango) {
+    phone.innerHTML = libphonenumber
+      .parsePhoneNumber(councillorPhoneDjango)
+      .formatNational();
+  }
 }
 
 //Deputy mayor phone number formatting
-const deputyMayorPhone = document.getElementById("deputy-mayor-phone");
-const dmPhoneDjango = JSON.parse(document.getElementById('deputy-mayor-num').textContent);
-const secDepMayorPhone = document.getElementById("sec-dep-mayor-phone");
-const secDepPhoneDjango = JSON.parse(document.getElementById('sec-dep-mayor-num').textContent);
-if (deputyMayorPhone && dmPhoneDjango) {
-  deputyMayorPhone.innerHTML = libphonenumber.parsePhoneNumber(dmPhoneDjango).formatNational();
-}
+const deputyMayorNum = document.getElementById("deputy-mayor-num");
+if (deputyMayorNum) {
+  const dmPhoneDjango = JSON.parse(deputyMayorNum.textContent);
+  const deputyMayorPhone = document.getElementById("deputy-mayor-phone");
+  const secDepMayorPhone = document.getElementById("sec-dep-mayor-phone");
+  const secDepPhoneDjango = JSON.parse(
+    document.getElementById("sec-dep-mayor-num").textContent
+  );
+  if (deputyMayorPhone && dmPhoneDjango) {
+    deputyMayorPhone.innerHTML = libphonenumber
+      .parsePhoneNumber(dmPhoneDjango)
+      .formatNational();
+  }
 
-if (secDepMayorPhone && secDepPhoneDjango){
-  secDepMayorPhone.innerHTML = libphonenumber.parsePhoneNumber(secDepPhoneDjango).formatNational();
+  if (secDepMayorPhone && secDepPhoneDjango) {
+    secDepMayorPhone.innerHTML = libphonenumber
+      .parsePhoneNumber(secDepPhoneDjango)
+      .formatNational();
+  }
 }
