@@ -373,7 +373,7 @@
         >
           Choose a category to explore!
         </p>
-        {% for key, value in content.items %}
+        {% for key, value in content.ward.items %}
           {% if value.toc.show == True  %}
             {% if forloop.counter0 == 1 %}
             <a href="#{{value.toc.title|lower}}" class="btn-active toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
