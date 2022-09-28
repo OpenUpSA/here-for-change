@@ -64,7 +64,31 @@
   </div>
 </section>
 <section>
-  <div id="map"></div>
+  <!-- <div id="map"></div> -->
+  <h1><span class="data-municipality-name"></span> Municipality</h1>
+    <iframe class="data-src-wardid data-src-municipalityid" src="/map" frameborder="0"></iframe>
+    <div>
+      <div class="row">
+        <div class="column">
+          <ul class="data-has-children">
+            <li>
+              <a class="data-href-municipality-id" href="?"><span class="data-municipality-name"></span> Municipality </a>
+            </li>
+            <li class="is-hidden data-template data-municipal-child">
+              <a href=""></a>
+            </li>
+          </ul>
+        </div>
+        <div class="column">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
+            beatae eos pariatur assumenda, fuga sit quasi a natus minima quae
+            eligendi perspiciatis necessitatibus exercitationem ipsam, non amet
+            architecto quo. Laudantium?
+          </p>
+        </div>
+      </div>
+    </div>
 </section>
 <section class="bg-hfc-green-900">
   <div
@@ -563,7 +587,7 @@
     </div>
   </div>
 </section>
-
+<!-- 
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA&callback=initMap&v=weekly"
   defer
@@ -580,5 +604,5 @@
       map: map,
     });
   }
-</script>
+</script> -->
 {% endblock %}
