@@ -1,22 +1,17 @@
-from django.test import Client, TestCase
-
-import html5lib
-
-
-class IndexTestCase(TestCase):
-    def test_index(self):
-        c = Client()
-        response = c.get("/")
-        self.assertContains(
-            response, "Here For Change",
-        )
-        assertValidHTML(response.content)
+from django.test import TestCase
+from .models import Municipality
 
 
-def assertValidHTML(string):
-    """
-    Raises exception if the string is not valid HTML, e.g. has unmatched tags
-    that need to be matched.
-    """
-    parser = html5lib.HTMLParser(strict=True)
-    parser.parse(string)
+class MunicipalityTestCase(TestCase):
+    def setUp(self):
+        Municipality.objects.create(name="City of Cape Town",
+                                    municipality_code="CPT",
+                                    municipality_type="Metropolitan",
+                                    province="WesternCape",
+                                    map_default_zoom=10,
+                                    map_latitude="-33.9249000",
+                                    map_longitude="18.4241000")
+
+    def test_municipality(self):
+        m1 = Municipality.objects.get(name="City of Cape Town")
+        self.assertEqual(m1.municipality_code, 'CPT')
