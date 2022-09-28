@@ -32,12 +32,5 @@ COPY . /app
 
 WORKDIR /app
 
-<<<<<<< HEAD
-=======
-RUN set -ex; \
-  yarn; \
-  yarn tailwind-build
-
->>>>>>> main
 EXPOSE 5000
 CMD /app/bin/start.sh
