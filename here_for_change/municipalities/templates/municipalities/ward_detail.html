@@ -64,31 +64,7 @@
   </div>
 </section>
 <section>
-  <!-- <div id="map"></div> -->
-  <h1><span class="data-municipality-name"></span> Municipality</h1>
-    <iframe class="data-src-wardid data-src-municipalityid" src="/map" frameborder="0"></iframe>
-    <div>
-      <div class="row">
-        <div class="column">
-          <ul class="data-has-children">
-            <li>
-              <a class="data-href-municipality-id" href="?"><span class="data-municipality-name"></span> Municipality </a>
-            </li>
-            <li class="is-hidden data-template data-municipal-child">
-              <a href=""></a>
-            </li>
-          </ul>
-        </div>
-        <div class="column">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
-            beatae eos pariatur assumenda, fuga sit quasi a natus minima quae
-            eligendi perspiciatis necessitatibus exercitationem ipsam, non amet
-            architecto quo. Laudantium?
-          </p>
-        </div>
-      </div>
-    </div>
+    <iframe class="data-src-wardid data-src-municipalityid" src="{% url 'map' %}" frameborder="0"></iframe>
 </section>
 <section class="bg-hfc-green-900">
   <div
@@ -587,22 +563,4 @@
     </div>
   </div>
 </section>
-<!-- 
-<script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA&callback=initMap&v=weekly"
-  defer
-></script>
-<script>
-  function initMap() {
-    const location = { lat: {{ward.map_latitude}}, lng: {{ward.map_longitude}} };
-    const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: {{ward.map_default_zoom}},
-      center: location,
-    });
-    const marker = new google.maps.Marker({
-      position: location,
-      map: map,
-    });
-  }
-</script> -->
 {% endblock %}

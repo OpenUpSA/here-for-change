@@ -12,6 +12,8 @@
     "tailwind-build": "tailwindcss -i ./here_for_change/static/css/input.css -o ./here_for_change/static/css/output.css --minify"
   },
   "dependencies": {
+    "leaflet": "^1.9.1",
+    "leaflet.gridlayer.googlemutant": "^0.13.5",
     "parcel": "^2.6.2"
   },
   "devDependencies": {

@@ -1,0 +1,456 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body,
+      div#map {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .text-pin {
+        width: auto !important;
+        text-align: center;
+        height: auto !important;
+        background-image: url("{% static 'assets/pinpoint.png' %}");
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        outline: red !important;
+
+        padding-bottom: 25px;
+      }
+
+      .text-pin div {
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+        background-color: #8334f7;
+        color: #fff;
+        border-radius: 10px;
+        white-space: nowrap;
+        padding: 5px 10px;
+      }
+
+      .is-filter-contrast-high {
+        filter: contrast(500%) grayscale(100%);
+      }
+
+      .is-filter-grayscale-bw {
+        filter: grayscale(100%);
+      }
+
+      .tooltip .leaflet-popup-content,
+      .leaflet-tooltip-top.tooltip {
+        border-radius: 10px !important;
+        font-weight: bold !important;
+      }
+
+      .icon-marker {
+        background-color: #eee;
+        border: solid 4px #fff !important;
+        border-radius: 100%;
+      }
+
+      .is-pointer-events-none {
+        pointer-events: none !important;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBc15woji15KUqe8SxJoVpwRP4sB7Mtmk"
+      async
+      defer
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js"></script>
+    <script src="{% static 'js/map.js' %}"></script>
+    <script src="{% static 'js/random-points-on-polygon.js' %}" ></script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map = L.map("map");
+      var latlng = [];
+      var zoom = 9;
+      var areas = [];
+      var areaIds = [];
+      var areasGeojson = [];
+      var youAreHereLatlng = null;
+
+      var canAccessParent = function () {
+        try {
+          return !!parent.document.location.search;
+        } catch (err) {
+          return false;
+        }
+      };
+
+      var updateParentOrSelfLocationSearch = function (search) {
+        if (canAccessParent()) {
+          parent.document.location.search = search;
+        } else {
+          document.location.search = search;
+        }
+      };
+
+      var random = function (top = 6) {
+        return Math.floor(Math.random() * top);
+      };
+
+      var loadMap = () => {
+        if (areasGeojson.length === areaIds.length) {
+          areas = L.geoJSON(areasGeojson, {
+            style: {
+              color: "#999",
+              fillOpacity: 0.01,
+              weight: 2,
+            },
+          }).addTo(map);
+
+          areas.getLayers().forEach((layer) => {
+            var label = layer.feature.geometry.label;
+            var layerCenter = layer.getBounds().getCenter();
+            var politicalParty =
+              politicalParties[random(politicalParties.length)];
+
+            if ((wardId && wardId == label) || (!wardId && !youAreHereLatlng)) {
+              var youAreHere = L.divIcon({
+                className:
+                  "text-pin is-filter-contrast-high is-pointer-events-none",
+                iconAnchor: [42, 48],
+                html: "<div>You are here</div>",
+                interactive: false,
+              });
+
+              youAreHereLatlng = randomPointsOnPolygon(
+                1,
+                layer.feature
+              )[0].geometry.coordinates.reverse();
+
+              L.marker(youAreHereLatlng, {
+                icon: youAreHere,
+                riseOnHover: true,
+                bubblingMouseEvents: true
+              }).addTo(map);
+            }
+
+            var popup = L.popup({ className: "tooltip", closeButton: false });
+            popup.setContent(`${municipality["info"]["name"]} Ward ${label}`);
+            layer.bindPopup(popup);
+
+            layer.on("mouseover", function (e) {
+              var popup = e.target.getPopup();
+              popup.setLatLng(e.latlng).openOn(map);
+            });
+
+            layer.on("mouseout", function (e) {
+              e.target.closePopup();
+            });
+
+            layer.on("mousemove", function (e) {
+              popup.setLatLng(e.latlng).openOn(map);
+            });
+
+            var iconMarker = L.marker(layerCenter, {
+              icon: politicalParty["party"]["icon"],
+              riseOnHover: true,
+              bubblingMouseEvents: true,
+            }).addTo(map);
+
+            iconMarker.on("click", (e) => {
+              updateParentOrSelfLocationSearch(
+                `municipalityid=${municipalityId}&wardid=${label}`
+              );
+            });
+
+            iconMarker.bindTooltip(
+              `${politicalParty["party"]["name"]} - ${politicalParty["wardCouncillor"]["name"]}`,
+              {
+                direction: "top",
+                offset: [0, -16],
+                className: "tooltip",
+                permanent: false,
+                opacity: 1,
+              }
+            );
+
+            iconMarker.on("mouseover", (e) => {
+              e.target.setIcon(politicalParty["wardCouncillor"]["icon"]);
+            });
+
+            iconMarker.on("mouseout", (e) => {
+              e.target.setIcon(politicalParty["party"]["icon"]);
+            });
+
+            if (wardId == label) {
+              var wardLatlng = randomPointsOnPolygon(
+                1,
+                layer.feature
+              )[0].geometry.coordinates.reverse();
+
+              var wardOffice = L.divIcon({
+                className: "text-pin",
+                iconAnchor: [40, 48],
+                html: `<div>Ward office</div>`,
+              });
+              layer.setStyle({
+                weight: 3,
+                fillOpacity: 0.05,
+                color: "#8334f7",
+              });
+              layer.bringToFront();
+              map.fitBounds(layer.getBounds());
+
+              L.marker(wardLatlng, {
+                icon: wardOffice,
+                riseOnHover: true,
+                bubblingMouseEvents: true
+              }).addTo(map);
+            }
+
+            layer.on("click", (e) => {
+              var label = e.target.feature.geometry.label;
+              updateParentOrSelfLocationSearch(
+                `municipalityid=${municipalityId}&wardid=${label}`
+              );
+            });
+
+            layer.on("mouseover", (e) => {
+              e.target.setStyle({
+                weight: 3,
+                fillOpacity: 0.05,
+                color: "#8334f7",
+              });
+              e.target.bringToFront();
+            });
+
+            layer.on("mouseout", (e) => {
+              if (e.target.feature.geometry.label != wardId) {
+                areas.resetStyle(e.target);
+              }
+            });
+          });
+        } else {
+          setTimeout(loadMap, 1000);
+        }
+      };
+
+      L.gridLayer
+        .googleMutant({
+          type: "roadmap",
+        })
+        .addTo(map);
+
+      $.getJSON(
+        "https://mapit.code4sa.org/area/" + municipalityId + "/geometry",
+        (data) => {
+          municipality["geometry"] = data;
+          latlng = [
+            municipality["geometry"]["centre_lat"],
+            municipality["geometry"]["centre_lon"],
+          ];
+          map.setView(latlng, zoom);
+          L.marker(latlng, { icon: municipalOffice, riseOnHover: true, bubblingMouseEvents: true }).addTo(
+            map
+          );
+        }
+      );
+
+      $.getJSON(
+        "https://mapit.code4sa.org/area/" + municipalityId + "/children.json",
+        (data) => {
+          municipality["children"] = data;
+          areaIds = Object.keys(municipality["children"]);
+          areaIds.forEach(async function (areaId) {
+            $.getJSON(
+              "https://mapit.code4sa.org/area/" + areaId + ".geojson",
+              (data) => {
+                data["label"] = areaId;
+                data["id"] = areaId;
+                areasGeojson.push(data);
+              }
+            );
+          });
+          loadMap();
+        }
+      );
+
+      var politicalParties = [
+        {
+          wardCouncillor: {
+            name: "Daniel Kapungwe",
+            icon: L.icon({
+              iconUrl: "{% static 'assets/danielkapungwe.png' %}",
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+              className: "icon-marker",
+              bubblingMouseEvents: true
+            }),
+          },
+          party: {
+            name: "ANC",
+            icon: L.icon({
+              iconUrl: "{% static 'assets/anc.png' %}",
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+              className: "icon-marker",
+              bubblingMouseEvents: true
+            }),
+          },
+        },
+        {
+          wardCouncillor: {
+            name: "Bukelani Zuma",
+            icon: L.icon({
+              iconUrl: "{% static 'assets/bukelanizuma.png' %}",
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+              className: "icon-marker",
+              bubblingMouseEvents: true
+            }),
+          },
+          party: {
+            name: "IFP",
+            icon: L.icon({
+              iconUrl: "{% static 'assets/ifp.png' %}",
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+              className: "icon-marker",
+              bubblingMouseEvents: true
+            }),
+          },
+        },
+        {
+          wardCouncillor: {
+            name: "Stuart Pringle",
+            icon: L.icon({
+              iconUrl: "{% static 'assets/stuartpringle.png' %}",
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+              className: "icon-marker",
+              bubblingMouseEvents: true
+            }),
+          },
+          party: {
+            name: "DA",
+            icon: L.icon({
+              iconUrl: "{% static 'assets/da.png' %}",
+              iconSize: [32, 32],
+              iconAnchor: [16, 16],
+              className: "icon-marker",
+              bubblingMouseEvents: true
+            }),
+          },
+        },
+      ];
+
+      var municipalOffice = L.divIcon({
+        className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
+        iconAnchor: [52, 48],
+        html: "<div>Municipal office</div>",
+        interactive: false,
+      });
+
+      var updateNeighbourMunicipalities = function () {
+        var neighbourIds = Object.keys(municipality["neighbours"]);
+        neighbourIds.forEach(function (neighbourId) {
+          var neighbour = municipality["neighbours"][neighbourId];
+          var parentAreaId = neighbour["parent_area"];
+
+          if (neighbour["type"] === "WD") {
+            $.getJSON(
+              "https://mapit.code4sa.org/area/" + neighbourId + ".geojson",
+              (data) => {
+                var layer = L.geoJSON(data, {
+                  style: {
+                    color: "#ccc",
+                    fillOpacity: 0.01,
+                    weight: 2,
+                  },
+                }).addTo(map);
+
+                var popup = L.popup({
+                  className: "tooltip",
+                  closeButton: false,
+                });
+                popup.setContent(neighbour["name"]);
+                layer.bindPopup(popup);
+
+                layer.on("mouseover", function (e) {
+                  var popup = e.target.getPopup();
+                  popup.setLatLng(latlng).openOn(map);
+                });
+
+                layer.on("mouseout", function (e) {
+                  e.target.closePopup();
+                });
+
+                layer.on("mousemove", function (e) {
+                  popup.setLatLng(e.latlng).openOn(map);
+                });
+
+                layer.on("click", (e) => {
+                  updateParentOrSelfLocationSearch(
+                    `municipalityid=${parentAreaId}&wardid=${neighbourId}`
+                  );
+                });
+
+                layer.on("mouseover", (e) => {
+                  e.target.setStyle({
+                    color: "#999",
+                    fillOpacity: 0.05,
+                  });
+                  e.target.bringToFront();
+                });
+
+                layer.on("mouseout", (e) => {
+                  e.target.setStyle({
+                    color: "#ccc",
+                    fillOpacity: 0.01,
+                  });
+                  e.target.bringToBack();
+                });
+              }
+            );
+          }
+        });
+      };
+
+      $.getJSON(
+        "https://mapit.code4sa.org/area/" + municipalityId + ".json",
+        (data) => {
+          municipality["info"] = data;
+        }
+      );
+
+      $.getJSON(
+        "https://mapit.code4sa.org/area/" + municipalityId + "/touches",
+        (data) => {
+          municipality["neighbours"] = data;
+          updateNeighbourMunicipalities();
+        }
+      );
+    </script>
+  </body>
+</html>
