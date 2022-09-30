@@ -372,92 +372,34 @@
         >
           Choose a category to explore!
         </p>
-        <div
-          onclick="openToc(event, 'summary')"
-          class="btn-active toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-bolt-lightning"></i>
-          </span>
-          <span class="font-medium"> Summary </span>
-        </div>
-        <div
-          onclick="openToc(event, 'contact')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-phone-flip"></i>
-          </span>
-          <span class="font-medium"> Contact </span>
-        </div>
-        <div
-          onclick="openToc(event, 'spending')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-coins"></i>
-          </span>
-          <span class="font-medium"> Spending </span>
-        </div>
-        <div
-          onclick="openToc(event, 'participation')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-calendar-days"></i>
-          </span>
-          <span class="font-medium"> Participation </span>
-        </div>
-        <div
-          onclick="openToc(event, 'surveys')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-file-signature"></i>
-          </span>
-          <span class="font-medium"> Surveys </span>
-        </div>
-        <div
-          onclick="openToc(event, 'elections')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-check-to-slot"></i>
-          </span>
-          <span class="font-medium"> Elections </span>
-        </div>
-        <div
-          onclick="openToc(event, 'messages')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-comment-dots"></i>
-          </span>
-          <span class="font-medium"> Messages </span>
-        </div>
-      </div>
+        {% for key, value in content.ward.items %}
+          {% if value.toc.show == True  %}
+            {% if forloop.counter0 == 1 %}
+            <a href="#{{value.toc.title|lower}}" class="btn-active toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="{{value.toc.icon}}"></i>
+              </span>
+              <span class="font-medium">
+                {{value.toc.title}}
+              </span>
+            </a>
+            {% else %}
+            <a href="#{{value.toc.title|lower}}" class="btn-inactive toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="{{value.toc.icon}}"></i>
+              </span>
+              <span class="font-medium">
+                {{value.toc.title}}
+              </span>
+            </a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div> 
     </div>
     <!-- Right side  -->
     <div id="summary" class="toc pt-5 md:w-3/4">
       {% include "./toc_summary.html" %}
-    </div>
-    <div id="contact" class="toc pt-5 hidden md:w-3/4">
-      {% include "./toc_contact.html" %}
-    </div> 
-    <div id="spending" class="toc pt-5 hidden md:w-3/4">
-      {% include "./toc_spending.html" %}
-    </div>
-    <div id="participation" class="toc pt-5 hidden md:w-3/4">
-      {% include "./toc_participation.html" %}
-    </div>
-    <div id="surveys" class="toc pt-5 hidden md:w-3/4">
-      {% include "./toc_surveys.html" %}
-    </div>
-    <div id="elections" class="toc pt-5 hidden md:w-3/4">
-      {% include "./toc_elections.html" %}
-    </div>
-    <div id="messages" class="toc pt-5 hidden md:w-3/4">
-      {% include "./toc_messages.html" %}
     </div>
   </div>
 </section>
@@ -486,7 +428,7 @@
       class="mx-auto flex w-full flex-col flex-wrap items-center justify-between gap-5 md:flex-row"
     >
       <!-- action card -->
-      {% for item in content.participation.items %}
+      {% for item in content.ward.participation.items %}
 
       <a
         href="{{item.url}}"

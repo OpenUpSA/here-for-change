@@ -12,6 +12,10 @@
   src: url(/static/fonts/Karla-VariableFont_wght.ttf);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .benfritz {
   font-family: Benfritz, serif;
 }
@@ -243,5 +247,15 @@ body, html {
     animation-delay: 2s;
     animation-duration: 9s;
     animation-timing-function: ease-in-out;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section {
+    scroll-margin-top: 120px;
+  }
+
+  #summary {
+    scroll-margin-top: 100px;
   }
 }

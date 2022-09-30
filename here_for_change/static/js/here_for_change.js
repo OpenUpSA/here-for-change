@@ -96,23 +96,46 @@ if (otherBtn) {
   });
 }
 
-//Toc section
-function openToc(event, toc_name) {
-  const toc_btns = document.getElementsByClassName("toc-btn");
-  const toc_sections = document.getElementsByClassName("toc");
+//Toc section onclick handler
+const toc_btns = document.getElementsByClassName("toc-btn");
+const toc_sections = document.getElementsByClassName("toc");
 
-  for (let i = 0; i < toc_sections.length; i++) {
-    toc_sections[i].style.display = "none";
-  }
-  document.getElementById(toc_name).style.display = "block";
+if (toc_btns) {
+  for (let i = 0; i < toc_btns.length; i++) {
+    toc_btns[i].addEventListener("click", (e) => {
+      const targetId = e.currentTarget.href.split("#")[1];
+      const targetEle = document.getElementById(targetId);
+      targetEle.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  for (i = 0; i < toc_btns.length; i++) {
-    toc_btns[i].classList.remove("btn-active");
-    toc_btns[i].classList.add("btn-inactive");
+      for (j = 0; j < toc_btns.length; j++) {
+        toc_btns[j].classList.remove("btn-active");
+        toc_btns[j].classList.add("btn-inactive");
+      }
+      e.currentTarget.classList.remove("btn-inactive");
+      e.currentTarget.classList.add("btn-active");
+    });
   }
-  event.currentTarget.classList.remove("btn-inactive");
-  event.currentTarget.classList.add("btn-active");
 }
+
+//toc section onScroll handler
+const links = document.querySelectorAll(".toc-btn");
+const sections = document.querySelectorAll(".section");
+
+function changeLinkState() {
+  if (links && sections) {
+    let index = sections.length;
+    while (--index && window.scrollY + 200 < sections[index].offsetTop) {}
+    links.forEach((link) => {
+      link.classList.remove("btn-active");
+      link.classList.add("btn-inactive");
+    });
+
+    links[index].classList.remove("btn-inactive");
+    links[index].classList.add("btn-active");
+  }
+}
+
+window.addEventListener("scroll", changeLinkState);
 
 // bar tooltips positioning
 const spendingBar = document.getElementsByClassName("spending-bar");
@@ -162,27 +185,24 @@ if (voteTooltip) {
 }
 
 //for side animation
+function inView(element) {
+  var windowHeight = window.innerHeight;
+  var scrollY = window.scrollY || window.pageYOffset;
+  var scrollPosition = scrollY + windowHeight;
+  var elementHeight = element.clientHeight;
+  var elementPosition =
+    element.getBoundingClientRect().top + scrollY + elementHeight;
+  if (scrollPosition > elementPosition) {
+    return true;
+  }
+  return false;
+}
 
 if (document) {
-  var element = document.getElementById("toc");
-  if (element) {
-    var elementHeight = element.clientHeight;
-  }
+  var toc_element = document.getElementById("toc");
   document.addEventListener("scroll", animate);
-  function inView() {
-    var windowHeight = window.innerHeight;
-    var scrollY = window.scrollY || window.pageYOffset;
-    var scrollPosition = scrollY + windowHeight;
-    var elementPosition =
-      element.getBoundingClientRect().top + scrollY + elementHeight;
-    if (scrollPosition > elementPosition) {
-      return true;
-    }
-    return false;
-  }
-
   function animate() {
-    if (inView()) {
+    if (inView(toc_element)) {
       const sideAnime = document.getElementById("side-anime");
       const sideAnimeBanner = document.getElementById("side-anime-banner");
 
