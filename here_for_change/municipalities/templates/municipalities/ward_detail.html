@@ -4,48 +4,6 @@
 {% block content %}
 {% include "./ward_notification.html" %}
 <section>
-    <div class="md:flex items-center inline-block text-left">
-      <h6>Select version: </h6> &nbsp;
-      <div class="relative" x-data="{open: false}">
-      <div class="">
-        <button
-          @click="open = ! open"
-          type="button"
-          class="inline-flex justify-between items-center gap-2 w-full lg:w-40 rounded-md shadow-sm px-4 py-3 bg-hfc-green-100 text-sm font-medium text-white focus:outline-none hover:bg-teal-900"
-          id="staging-button"
-          aria-expanded="true"
-          aria-haspopup="true"
-        >
-          <span>{{selected_version|title}}</span>
-          <i class="fa-solid fa-chevron-down"></i>
-        </button>
-      </div>
-      <div
-        class="dropdown-panel z-[2] w-full top-0 absolute right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-        role="menu"
-        aria-orientation="vertical"
-        aria-labelledby="menu-button"
-        tabindex="-1"
-        x-show="open"
-        x-transition
-        @click.outside = "open = false"
-        @click="open = ! open"
-        >
-        <div class="pb-1" role="none">
-          <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-          {% for version in versions %}
-          <a
-            href="{% url 'ward_detail' object.municipality.municipality_code object.slug %}?version={{version}}"
-            class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 ward-dropdown"
-            role="menuitem"
-            tabindex="-1"
-            id="staging-item-{{forloop.counter}}"
-            onclick="dropDownHandler(event, 'staging-button')"
-            >{{version|title}}</a>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
     <div class="p-4 md:p-8 max-w-screen-xl mx-auto flex flex-col align-items gap-3">
         <div class="md:flex items-center inline-block text-left">
             <h1 class="w-full md:w-auto text-left benfritz text-[48px] md:pr-4">{{ ward.municipality.name }}</h1>

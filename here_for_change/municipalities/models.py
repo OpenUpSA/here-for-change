@@ -121,7 +121,7 @@ class WardDetail(BaseModel):
     field_type=models.CharField(max_length=40,default=STRING,choices=FIELD_TYPES_CHOICES)
     field_value=models.CharField(max_length=90,null=False,blank=False)
     stage=models.CharField(max_length=40,default=STAGING,choices=VERSION_CHOICES)
-    feedback=models.JSONField(null=True)
+    feedback=models.JSONField(null=True,blank=True)
 
     def __str__(self):
         return f"{self.field_name} - {self.stage} - {self.ward}"
