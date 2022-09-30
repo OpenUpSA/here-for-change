@@ -64,7 +64,6 @@ class WardDetail(DetailView):
         ctx['ward_detail']={}
         ward_details=WD.objects.filter(ward=object,stage=staging)
         for detail in ward_details:
-            print(detail.field_name)
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value
             }
