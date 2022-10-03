@@ -1,7 +1,25 @@
-from django.db import models
-from django.contrib.auth.models import User
+from email.policy import default
 from .enums import MunicipalityTypes, Provinces
 from autoslug import AutoSlugField
+from django.utils.translation import gettext_lazy as _
+from django.contrib.gis.db import models
+from django.urls import reverse
+from django.contrib.gis.geos import Point
+
+
+class WardManager(models.Manager):
+
+    def closest(self,pt:Point):
+        qs=self.get_queryset()
+        ward_and_distance=[]
+        for ward in qs:
+            ward_pt=Point((ward.map_longitude,ward.map_latitude))
+            ward_and_distance.append((ward,pt.distance(ward_pt)*100))
+
+        ward_and_distance=sorted(ward_and_distance,key=lambda x:x[1])
+    
+        return ward_and_distance[0][0]
+
 
 
 class BaseModel(models.Model):
@@ -21,6 +39,7 @@ class Municipality(BaseModel):
     municipality_type = models.CharField(
         max_length=25, choices=MunicipalityTypes.choices, null=False, blank=False
     )
+    area_number=models.IntegerField(null=True)
     province = models.CharField(
         max_length=25, choices=Provinces.choices, null=False, blank=False
     )
@@ -50,12 +69,59 @@ class Ward(BaseModel):
     municipality = models.ForeignKey(
         Municipality, on_delete=models.CASCADE, null=False, blank=False
     )
-
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
-    map_latitude = models.DecimalField(
-        default=-33.9249, max_digits=10, decimal_places=7, null=False, blank=False)
-    map_longitude = models.DecimalField(
-        default=18.4241, max_digits=10, decimal_places=7, null=False, blank=False)
+    # GeoDjango-specific: a geometry field (MultiPolygonField)
+    boundary = models.MultiPolygonField(_("Ward Boundary data"),null=True)
+    objects=WardManager()
 
     def __str__(self):
         return self.name
+    @property
+    def map_longitude(self):     
+        return self.boundary.centroid.coords[0]
+    @property
+    def map_latitude(self):
+        return self.boundary.centroid.coords[1]
+
+    @property
+    def map_geoJson(self):
+        return self.boundary.geojson
+
+    def get_absolute_url(self):
+        return reverse("ward_detail", kwargs={"municipality_code":self.municipality.municipality_code,"slug": self.slug})
+
+
+
+
+class WardDetail(BaseModel):
+    STAGING="staging"
+    PRODUCTION="production"
+    VERSION_CHOICES=[
+    (STAGING, _("Staging version")),
+    (PRODUCTION, _("Production version"))]
+
+    STRING="string"
+    INT="int"
+    FLOAT="float"
+    DATE="date"
+    EMAIL="email"
+    PHONE="phone"
+    JSON="json"
+    FIELD_TYPES_CHOICES=[
+        (STRING,_("String")),
+        (INT,_("Integer")),
+        (FLOAT,_("Float")),
+        (JSON,_("Json")),
+        (DATE,_("Date")),
+        (EMAIL,_("Email")),
+        (PHONE,_("Phone")),
+    ]
+    ward=models.ForeignKey(Ward,on_delete=models.CASCADE)
+    field_name=models.CharField(max_length=90,null=False,blank=False) 
+    field_type=models.CharField(max_length=40,default=STRING,choices=FIELD_TYPES_CHOICES)
+    field_value=models.CharField(max_length=90,null=False,blank=False)
+    stage=models.CharField(max_length=40,default=STAGING,choices=VERSION_CHOICES)
+    feedback=models.JSONField(null=True,blank=True)
+
+    def __str__(self):
+        return f"{self.field_name} - {self.stage} - {self.ward}"

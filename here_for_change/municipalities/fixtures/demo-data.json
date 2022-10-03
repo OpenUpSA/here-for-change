@@ -1,136 +1,70 @@
 [
-  {
-    "model": "municipalities.municipality",
-    "pk": 1,
-    "fields": {
-      "created_at": "2022-08-05T14:47:48.520Z",
-      "updated_at": "2022-08-31T11:16:34.537Z",
-      "name": "City of Cape Town",
-      "municipality_code": "CPT",
-      "municipality_type": "Metropolitan",
-      "province": "WesternCape",
-      "district": null,
-      "map_default_zoom": 10,
-      "map_latitude": "-33.9249000",
-      "map_longitude": "18.4241000"
+    {
+        "model": "municipalities.municipality",
+        "pk": 1,
+        "fields": {
+            "created_at": "2022-08-05T14:47:48.520Z",
+            "updated_at": "2022-09-16T12:54:40.324Z",
+            "name": "City of Cape Town",
+            "municipality_code": "CPT",
+            "municipality_type": "Metropolitan",
+            "area_number": 9203,
+            "province": "WesternCape",
+            "district": null,
+            "map_default_zoom": 10,
+            "map_latitude": "-33.9249000",
+            "map_longitude": "18.4241000"
+        }
+    },
+    {
+        "model": "municipalities.municipality",
+        "pk": 2,
+        "fields": {
+            "created_at": "2022-08-05T14:52:04.633Z",
+            "updated_at": "2022-09-16T12:55:59.644Z",
+            "name": "Matzikama",
+            "municipality_code": "WC011",
+            "municipality_type": "Local",
+            "area_number": 9145,
+            "province": "WesternCape",
+            "district": "West Coast",
+            "map_default_zoom": 10,
+            "map_latitude": "-31.6125000",
+            "map_longitude": "18.5226000"
+        }
+    },
+    {
+        "model": "municipalities.municipality",
+        "pk": 3,
+        "fields": {
+            "created_at": "2022-08-31T11:16:22.414Z",
+            "updated_at": "2022-09-16T12:56:56.122Z",
+            "name": "Cape Agulhas",
+            "municipality_code": "WC033",
+            "municipality_type": "Local",
+            "area_number": 9152,
+            "province": "WesternCape",
+            "district": "Overberg",
+            "map_default_zoom": 12,
+            "map_latitude": "-34.4781000",
+            "map_longitude": "19.9798000"
+        }
+    },
+    {
+        "model": "municipalities.municipality",
+        "pk": 4,
+        "fields": {
+            "created_at": "2022-08-31T11:24:22.730Z",
+            "updated_at": "2022-09-16T12:55:27.748Z",
+            "name": "Cederberg",
+            "municipality_code": "WC012",
+            "municipality_type": "Local",
+            "area_number": 9146,
+            "province": "WesternCape",
+            "district": "West Coast",
+            "map_default_zoom": 12,
+            "map_latitude": "-32.2500000",
+            "map_longitude": "19.0000000"
+        }
     }
-  },
-  {
-    "model": "municipalities.municipality",
-    "pk": 2,
-    "fields": {
-      "created_at": "2022-08-05T14:52:04.633Z",
-      "updated_at": "2022-08-31T11:23:00.321Z",
-      "name": "Matzikama",
-      "municipality_code": "WC011",
-      "municipality_type": "Local",
-      "province": "WesternCape",
-      "district": "West Coast",
-      "map_default_zoom": 10,
-      "map_latitude": "-31.6125000",
-      "map_longitude": "18.5226000"
-    }
-  },
-  {
-    "model": "municipalities.municipality",
-    "pk": 3,
-    "fields": {
-      "created_at": "2022-08-31T11:16:22.414Z",
-      "updated_at": "2022-08-31T11:21:37.314Z",
-      "name": "Cape Agulhas",
-      "municipality_code": "WC033",
-      "municipality_type": "Local",
-      "province": "WesternCape",
-      "district": "Overberg",
-      "map_default_zoom": 12,
-      "map_latitude": "-34.4781000",
-      "map_longitude": "19.9798000"
-    }
-  },
-  {
-    "model": "municipalities.municipality",
-    "pk": 4,
-    "fields": {
-      "created_at": "2022-08-31T11:24:22.730Z",
-      "updated_at": "2022-08-31T11:24:22.730Z",
-      "name": "Cederberg",
-      "municipality_code": "WC012",
-      "municipality_type": "Local",
-      "province": "WesternCape",
-      "district": "West Coast",
-      "map_default_zoom": 12,
-      "map_latitude": "-32.2500000",
-      "map_longitude": "19.0000000"
-    }
-  },
-  {
-    "model": "municipalities.ward",
-    "pk": 1,
-    "fields": {
-      "created_at": "2022-08-05T14:47:59.570Z",
-      "updated_at": "2022-08-10T10:41:06.086Z",
-      "name": "Ward 84",
-      "slug": "cpt-ward-84",
-      "municipality": 1,
-      "map_default_zoom": 14,
-      "map_latitude": "-34.0757000",
-      "map_longitude": "18.8433000"
-    }
-  },
-  {
-    "model": "municipalities.ward",
-    "pk": 2,
-    "fields": {
-      "created_at": "2022-08-05T14:52:10.196Z",
-      "updated_at": "2022-08-10T10:44:14.402Z",
-      "name": "Ward 1",
-      "slug": "wc011-ward-1",
-      "municipality": 2,
-      "map_default_zoom": 12,
-      "map_latitude": "-31.5532000",
-      "map_longitude": "18.3475000"
-    }
-  },
-  {
-    "model": "municipalities.ward",
-    "pk": 3,
-    "fields": {
-      "created_at": "2022-08-05T14:53:33.486Z",
-      "updated_at": "2022-08-10T10:39:50.718Z",
-      "name": "Ward 1",
-      "slug": "cpt-ward-1",
-      "municipality": 1,
-      "map_default_zoom": 12,
-      "map_latitude": "-33.8654000",
-      "map_longitude": "18.5710000"
-    }
-  },
-  {
-    "model": "municipalities.ward",
-    "pk": 4,
-    "fields": {
-      "created_at": "2022-08-31T11:19:55.159Z",
-      "updated_at": "2022-08-31T11:19:55.159Z",
-      "name": "Ward 1",
-      "slug": "wc033-ward-1",
-      "municipality": 3,
-      "map_default_zoom": 12,
-      "map_latitude": "-34.4781000",
-      "map_longitude": "19.9798000"
-    }
-  },
-  {
-    "model": "municipalities.ward",
-    "pk": 5,
-    "fields": {
-      "created_at": "2022-08-31T11:26:21.593Z",
-      "updated_at": "2022-08-31T11:26:21.593Z",
-      "name": "Ward 1",
-      "slug": "wc012-ward-1",
-      "municipality": 4,
-      "map_default_zoom": 12,
-      "map_latitude": "-32.2500000",
-      "map_longitude": "19.0000000"
-    }
-  }
 ]

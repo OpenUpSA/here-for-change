@@ -121,14 +121,14 @@
           />
           <div class="grow">
             <div class="flex items-center justify-between">
-              <p class="font-bold">{{content.ward.councillor.name.value}}</p>
+              <p class="font-bold">{{ward_detail.councillor_name.value}}</p>
               <i class="tooltip fa-solid fa-circle-exclamation text-neutral-300 hover:text-hfc-green-900 cursor-pointer mr-2 md:mr-4"><span class="tooltipText">
                 Report a problem                    
                 <span class="triangle-down"></span> </span
               ></i>
             </div>
-            <p>{{content.ward.councillor.political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">Elected {{content.ward.councillor.elected_date.value|date:"j F Y"}}</p>
+            <p>{{ward_detail.councillor_political_party.value}}</p>
+            <p class="font-semibold text-neutral-400">Elected {{ward_detail.councillor_elected_date.value|date:"j F Y"}}</p>
           </div>
         </div>
         <div class="my-3 border-t-2 border-gray-100"></div>
@@ -140,7 +140,7 @@
             </span>
             <span id="councillor-phone" class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
              <!-- formatted phone number would be added by JS -->
-             {{ content.ward.councillor.contacts.phone.value|json_script:"council-num" }}
+             {{ward_detail.councillor_contacts_phone.value|json_script:"council-num" }}
             </span>
           </div>
           <div class="flex items-center">
@@ -184,7 +184,7 @@
               <i class="fa-solid fa-envelope"></i>
             </span>
             <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer whitespace-nowrap">
-              {{content.ward.councillor.contacts.email.primary.value}}
+              {{ward_detail.councillor_contacts_email_primary.value}}
             </span>
           </div>
           <div class="flex items-center">
@@ -563,4 +563,58 @@
     </div>
   </div>
 </section>
+
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA&callback=initMap&v=weekly"
+  defer
+></script>
+<script>
+  function initMap() {
+    const location = { lat: {{object.map_latitude}}, lng: {{object.map_longitude}} };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: {{object.map_default_zoom}},
+      center: location,
+      
+    });
+
+    {% autoescape off %}
+    const current_ward={
+      "geometry":{{ object.map_geoJson }},
+      "url":"{{ object.get_absolute_url }}",
+      "name":"{{ object.name }}",
+      "municipality":"{{ object.municipality }}",
+      "url":"{{object.get_absolute_url}}"
+    }
+    const neighboring_wards=[
+    {% for neighbour in neighbours %}
+    {
+      "geometry":{{ neighbour.map_geoJson }},
+      "url":"{{ neighbour.get_absolute_url }}",
+      "name":"{{ neighbour.name }}",
+      "municipality":"{{ neighbour.municipality.name }}",
+    },
+    {% endfor %}
+    ]
+    map.data.addGeoJson(
+      { "type": "FeatureCollection",
+      "features": [
+        { "type": "Feature",
+           "geometry": {{object.map_geoJson}}
+        },
+        {% for neighbour in neighbours %}
+        { "type": "Feature",
+        "geometry": {{neighbour.map_geoJson}}
+        },
+        {% endfor %}
+      ]
+    }
+    )
+    {% endautoescape %}
+    
+    const marker = new google.maps.Marker({
+      position: location,
+      map: map,
+    });
+  }
+</script>
 {% endblock %}

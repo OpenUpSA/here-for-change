@@ -1,10 +1,13 @@
 from django.views.generic import ListView, DetailView, TemplateView
-from .models import Municipality, Ward
+from .models import Municipality, Ward, WardDetail as WD
 from datetime import datetime
-
+from .decorators import redirect_to_closest_ward
 
 class MunicipalityList(ListView):
     model = Municipality
+    @redirect_to_closest_ward
+    def get(self,request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class WardDetail(DetailView):
@@ -178,9 +181,28 @@ class WardDetail(DetailView):
                             'feedback': {'positive': 5, 'negative': 0}},
                     }
                 },
+
+    def get_context_data(self, **kwargs):
+        # get staging
+        staging=self.request.GET.get("version","production")
+
+        ctx= super().get_context_data(**kwargs)
+        #ctx['content']={}
+        #ctx['content']['ward']=self.page_content['ward']
+        
+        object=self.get_object()
+        ctx['versions']=[WD.STAGING,WD.PRODUCTION]
+        ctx['selected_version']=staging
+        ctx['ward_detail']={}
+        ward_details=WD.objects.filter(ward=object,stage=staging)
+        for detail in ward_details:
+            print(detail.field_name)
+            ctx['ward_detail'][detail.field_name]={
+                'value':detail.field_value
             }
-        }
-    }
+        
+        ctx['neighbours']=Ward.objects.filter(municipality=object.municipality).exclude(pk=object.pk)
+        return ctx
 
     extra_context = {'content': page_content}
 
