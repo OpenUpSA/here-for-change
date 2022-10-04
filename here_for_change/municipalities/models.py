@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.db import models
 from django.urls import reverse
 from django.contrib.gis.geos import Point
+import json
 
 
 class WardManager(models.Manager):
@@ -89,8 +90,9 @@ class Ward(BaseModel):
 
     def get_absolute_url(self):
         return reverse("ward_detail", kwargs={"municipality_code":self.municipality.municipality_code,"slug": self.slug})
-
-
+    
+    def toJSON(self):
+        return json.dumps({"name":self.name,"slug":self.slug,"boundary":self.map_geoJson})
 
 
 class WardDetail(BaseModel):

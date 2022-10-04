@@ -218,12 +218,8 @@ def create_detail(ward:Ward,data:dict,stage:str="staging"):
     for data_key in data.keys():
         for field_key in data[data_key].keys():
             field=data[data_key][field_key]
-            print(field)
-            if field_key=="elected_date":
-                detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}",field_type=field.get("type"),field_value=datetime.strftime(field.get("value"),r"%Y/%m/%d"),updated_at=datetime.strptime(field.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=field.get("feedback"))
-                detail.save()
                 
-            elif field_key!="contacts":
+            if field_key!="contacts":
                 detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}",field_type=field.get("type"),field_value=field.get("value"),updated_at=datetime.strptime(field.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=field.get("feedback"))
                 detail.save()
             else:
