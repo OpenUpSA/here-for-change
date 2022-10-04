@@ -128,7 +128,7 @@
               ></i>
             </div>
             <p>{{ward_detail.councillor_political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">Elected {{ward_detail.councillor_elected_date.value|date:"j F Y"}}</p>
+            <p class="font-semibold text-neutral-400">Elected {{ward_detail.councillor_elected_date.value}}</p>
           </div>
         </div>
         <div class="my-3 border-t-2 border-gray-100"></div>
@@ -487,7 +487,7 @@
       class="mx-auto flex w-full flex-col flex-wrap items-center justify-between gap-5 md:flex-row"
     >
       <!-- action card -->
-      {% for item in content.participation.items %}
+      {% for item in content.ward.participation.items %}
 
       <a
         href="{{item.url}}"

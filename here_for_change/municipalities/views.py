@@ -181,6 +181,9 @@ class WardDetail(DetailView):
                             'feedback': {'positive': 5, 'negative': 0}},
                     }
                 },
+            }
+        }
+    }
 
     def get_context_data(self, **kwargs):
         # get staging
