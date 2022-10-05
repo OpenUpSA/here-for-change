@@ -105,6 +105,6 @@ class WardDetailJson(DetailView):
                 'value':detail.field_value
             }
         
-        ctx['neighbours']=[w.toJSON() for w in  Ward.objects.filter(municipality=object.municipality).exclude(pk=object.pk)]
+        ctx['neighbours']=[w.toDict() for w in  Ward.objects.filter(municipality=object.municipality).exclude(pk=object.pk)]
         return ctx
 

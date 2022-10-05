@@ -91,11 +91,11 @@ class Ward(BaseModel):
     def get_absolute_url(self):
         return reverse("ward_detail", kwargs={"municipality_code":self.municipality.municipality_code,"slug": self.slug})
     
-    def toJSON(self):
+    def toDict(self):
         """
-        Returns a JSON version of the ward
+        Returns a Dict version of the ward
         """
-        return json.dumps({"name":self.name,"slug":self.slug,"boundary":self.map_geoJson})
+        return {"name":self.name,"slug":self.slug,"boundary":self.map_geoJson}
 
     def toJsonUrl(self)->str:
         """
