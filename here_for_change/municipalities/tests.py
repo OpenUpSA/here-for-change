@@ -11,8 +11,8 @@ from django.core.management import call_command
 
 class IndexTestCase(TestCase):
     def test_index(self):
-        c = Client()
-        response = c.get("/")
+        client = Client()
+        response = client.get("/")
         self.assertContains(
             response, "Here For Change",
         )
@@ -22,11 +22,11 @@ class JsonPagesTestCase(TestCase):
     keys_in_response_ward=["selected_version","ward_detail","neighbours"]
     def test_ward_json_pages(self):
         
-        c=Client()
+        client=Client()
         loadDbData()
         wards=Ward.objects.using("default").all()
         for ward in wards:
-            response=c.get(ward.toJsonUrl())
+            response=client.get(ward.toJsonUrl())
             self.assertEqual(response.__class__,JsonResponse,msg="Response object is not JsonResponse")
             data=json.loads(response.content)
             for key in self.keys_in_response_ward:
