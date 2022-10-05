@@ -236,18 +236,20 @@ def create_detail(ward:Ward,data:dict,stage:str="staging"):
                             detail.save()
 
 
-
-
-
-                        
-
-if __name__=="__main__":
+def load_dummy_ward_details():
     WardDetail.objects.all().delete()
     versions=[WardDetail.STAGING,WardDetail.PRODUCTION]
     wards=Ward.objects.all()
     for ward in wards:
         for version in versions:
             create_detail(ward,DUMMY_DATA[random.randint(0,len(DUMMY_DATA))-1],version)
+
+
+                        
+
+if __name__=="__main__":
+    load_dummy_ward_details()
+
 
 
 

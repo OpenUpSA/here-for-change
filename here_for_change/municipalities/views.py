@@ -90,15 +90,13 @@ class WardDetailJson(DetailView):
         # get staging
         staging=self.request.GET.get("version","production")
         #{
-        #    version: stagig,production,
-        #    sekected_version: staging or production,
-        #    ward_details:{},
+        #    selected_version: staging or production,
+        #    ward_detail:{},
         #    neighbours: List[ward.toJSON,*]
         # }
 
         ctx= {}
         object=self.get_object()
-        ctx['versions']=[WD.STAGING,WD.PRODUCTION]
         ctx['selected_version']=staging
         ctx['ward_detail']={}
         ward_details=WD.objects.filter(ward=object,stage=staging)

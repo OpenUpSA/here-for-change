@@ -43,11 +43,14 @@ def load_boundary_in_ward(area_number:int,ward:Ward)->Ward:
     ward.boundary=MultiPolygon([ Polygon(polygon) for polygon in data["coordinates"]])
     return ward
 
-if __name__=="__main__":
+def load_wards():
     Ward.objects.all().delete()
     for municipality in Municipality.objects.all():
         if municipality.area_number:
             get_municipality_children(municipality)
+
+if __name__=="__main__":
+    load_wards()
 
 
 
