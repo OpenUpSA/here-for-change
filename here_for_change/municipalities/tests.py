@@ -19,9 +19,8 @@ class IndexTestCase(TestCase):
         assertValidHTML(response.content)
 
 class JsonPagesTestCase(TestCase):
-    keys_in_response_ward=["selected_version","ward_detail","neighbours"]
-    def test_ward_json_pages(self):
-        
+    keys_in_response_ward=["ward_detail","neighbours"]
+    def test_ward_json_pages(self):   
         client=Client()
         loadDbData()
         wards=Ward.objects.using("default").all()
