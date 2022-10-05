@@ -224,25 +224,17 @@ class WardDetailJson(DetailView):
     def get_context_data(self, **kwargs):
         # get staging
         staging=self.request.GET.get("version","production")
-        #{
-        #    version: stagig,production,
-        #    sekected_version: staging or production,
-        #    ward_details:{},
-        #    neighbours: List[ward.toJSON,*]
-        # }
-
         ctx= {}
-        object=self.get_object()
-        ctx['versions']=[WD.STAGING,WD.PRODUCTION]
-        ctx['selected_version']=staging
+        ward=self.get_object()
         ctx['ward_detail']={}
-        ward_details=WD.objects.filter(ward=object,stage=staging)
+        ward_details=WD.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
-                'value':detail.field_value
+                'value':detail.field_value,
+                'updated_at':detail.updated_at
             }
         
-        ctx['neighbours']=[w.toJSON() for w in  Ward.objects.filter(municipality=object.municipality).exclude(pk=object.pk)]
+        ctx['neighbours']=[w.toDict() for w in  Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)]
         return ctx
 
     extra_context = {'content': page_content}
