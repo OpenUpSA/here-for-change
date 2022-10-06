@@ -56,21 +56,16 @@ class WardDetail(DetailView):
         staging=self.request.GET.get("version","production")
 
         ctx= super().get_context_data(**kwargs)
-        #ctx['content']={}
-        #ctx['content']['ward']=self.page_content['ward']
-        
-        object=self.get_object()
-        ctx['versions']=[WD.STAGING,WD.PRODUCTION]
-        ctx['selected_version']=staging
+        ward=self.get_object()
         ctx['ward_detail']={}
 
-        ward_details=WD.objects.filter(ward=object,stage=staging)
+        ward_details=WD.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value
             }
         
-        ctx['neighbours']=Ward.objects.filter(municipality=object.municipality).exclude(pk=object.pk)
+        ctx['neighbours']=Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)
 
         return ctx
 
@@ -92,6 +87,7 @@ class WardDetailJson(DetailView):
         ctx= {}
         ward=self.get_object()
         ctx['ward_detail']={}
+        ctx['map_geoJson']=ward.map_geoJson
         ward_details=WD.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={

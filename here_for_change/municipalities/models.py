@@ -95,7 +95,7 @@ class Ward(BaseModel):
         """
         Returns a Dict version of the ward
         """
-        return {"name":self.name,"slug":self.slug,"boundary":self.map_geoJson}
+        return {"name":self.name,"slug":self.slug,"map_geoJson":self.map_geoJson}
 
     def toJsonUrl(self)->str:
         """
