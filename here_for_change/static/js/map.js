@@ -1,9 +1,15 @@
-var urlSearch = new URLSearchParams(window.location.search);
-//var municipalityId = urlSearch.get("municipalityid");
-//var wardId = urlSearch.get("wardid");
+// var urlSearch = new URLSearchParams(window.location.search);
+// var municipalityId = urlSearch.get("municipalityid");
+// var wardId = urlSearch.get("wardid");
+// var municipalityId = 9152;
+// var wardId = 6775;
+
+// let path = window.location.pathname
+// var municipalityId2 = path.split("/")[2]
+// var wardId2 = path.split("/")[4]
+
 var municipalityId = 9152;
 var wardId = 6775;
-
 var municipality = {};
 
 var updateMapEmbed = function () {
@@ -30,3 +36,4 @@ if (municipalityId) {
 }
 
 updateMapEmbed();
+console.log("muni",municipality);

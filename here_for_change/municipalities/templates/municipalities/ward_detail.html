@@ -569,16 +569,14 @@
   defer
 ></script>
 <script>
-  function initMap() {
-    const location = { lat: {{object.map_latitude}}, lng: {{object.map_longitude}} };
-    const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: {{object.map_default_zoom}},
-      center: location,
-      
-    });
-
     {% autoescape off %}
-    const current_ward={
+     console.log("obj",{{object.map_geoJson}});
+     {% for neighbour in neighbours %}
+        console.log("nei",{{neighbour.map_geoJson}});
+     {% endfor %}
+
+
+     window.current_ward = {
       "geometry":{{ object.map_geoJson }},
       "url":"{{ object.get_absolute_url }}",
       "name":"{{ object.name }}",
@@ -595,6 +593,17 @@
     },
     {% endfor %}
     ]
+    {% endautoescape %}
+  function initMap() {
+    const location = { lat: {{object.map_latitude}}, lng: {{object.map_longitude}} };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: {{object.map_default_zoom}},
+      center: location,
+      
+    });
+
+    {% autoescape off %}
+     
     map.data.addGeoJson(
       { "type": "FeatureCollection",
       "features": [
@@ -616,5 +625,6 @@
       map: map,
     });
   }
+
 </script>
 {% endblock %}

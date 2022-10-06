@@ -98,6 +98,13 @@
       var areasGeojson = [];
       var youAreHereLatlng = null;
 
+      let neighbourAreaData = []
+      let path = window.document.referrer
+      var municipalityId2 = path.split("/")[4]
+      var wardId2 = path.split("/")[6]
+
+      console.log("win", window.current_ward);
+
       var canAccessParent = function () {
         try {
           return !!parent.document.location.search;
@@ -117,17 +124,17 @@
       var random = function (top = 6) {
         return Math.floor(Math.random() * top);
       };
-
+      console.log("areaG", areasGeojson);
       var loadMap = () => {
-        if (areasGeojson.length === areaIds.length) {
-          areas = L.geoJSON(areasGeojson, {
+        if (neighbourAreaData.length > 0) {
+          areas = L.geoJSON(neighbourAreaData, {
             style: {
               color: "#999",
               fillOpacity: 0.01,
               weight: 2,
             },
           }).addTo(map);
-
+          console.log("areas", areas);
           areas.getLayers().forEach((layer) => {
             var label = layer.feature.geometry.label;
             var layerCenter = layer.getBounds().getCenter();
@@ -154,7 +161,6 @@
                 bubblingMouseEvents: true
               }).addTo(map);
             }
-
             var popup = L.popup({ className: "tooltip", closeButton: false });
             popup.setContent(`${municipality["info"]["name"]} Ward ${label}`);
             layer.bindPopup(popup);
@@ -203,7 +209,8 @@
               e.target.setIcon(politicalParty["party"]["icon"]);
             });
 
-            if (wardId == label) {
+            if (wardId2 == label) {
+                console.log(wardId, label);
               var wardLatlng = randomPointsOnPolygon(
                 1,
                 layer.feature
@@ -451,6 +458,20 @@
           updateNeighbourMunicipalities();
         }
       );
+
+      fetch(`http://localhost:8000/municipalities/${municipalityId2}/wards/${wardId2}.json`).then((response) => response.json()).then((data) => {
+        console.log("data",data);
+        let neighbours = data.neighbours
+            neighbours.forEach((neighbour) => {
+                let boundaryJson = JSON.parse(neighbour.boundary)
+                let name = neighbour["name"]
+                let slug = neighbour["slug"]
+                boundaryJson["id"] = name
+                boundaryJson["label"] = slug
+                neighbourAreaData.push(boundaryJson)
+            })
+            console.log("neighbourAreaData",neighbourAreaData);
+        })
     </script>
   </body>
 </html>
