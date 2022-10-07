@@ -94,8 +94,6 @@
       var latlng = [];
       var zoom = 9;
       var areas = [];
-      var areaIds = [];
-      var areasGeojson = [];
       var youAreHereLatlng = [];
 
       let muniAreaData = []
@@ -123,10 +121,8 @@
 
       var updateParentOrSelfLocationSearch = function (path) {
         if (canAccessParent()) {
-          console.log("before",parent.document.location.pathname);
           parent.document.location.pathname = path;
         } else {
-          console.log("after",document.location.pathname);
           document.location.pathname = path;
         }
       };
@@ -134,7 +130,6 @@
       var random = function (top = 6) {
         return Math.floor(Math.random() * top);
       };
-      console.log("areaG", areasGeojson);
 
       var loadMap = () => {
         if (muniAreaData.length > 0) {
@@ -145,7 +140,6 @@
               weight: 2,
             },
           }).addTo(map);
-          console.log("areas", areas);
           areas.getLayers().forEach((layer) => {
             var label = layer.feature.geometry.label;
             var id = layer.feature.geometry.id;
@@ -162,12 +156,6 @@
                 interactive: false,
               });
 
-              // youAreHereLatlng = randomPointsOnPolygon(
-              //   1,
-              //   layer.feature
-              // )[0].geometry.coordinates.reverse();
-
-              console.log(youAreHereLatlng);
                 L.marker(youAreHereLatlng, {
                     icon: youAreHere,
                     riseOnHover: true,
@@ -177,13 +165,10 @@
              
             }
             var popup = L.popup({ className: "tooltip", closeButton: false });
-            // console.log("P1", popup)
             popup.setContent(`${id}`);
             layer.bindPopup(popup);
-//to be continued
             layer.on("mouseover", function (e) {
               var popup = e.target.getPopup();
-              // console.log("P2", popup)
               popup.setLatLng(e.latlng).openOn(map);
             });
 
@@ -203,7 +188,6 @@
 
             iconMarker.on("click", (e) => {
               updateParentOrSelfLocationSearch(
-                // `municipalityid=${municipalityId}&wardid=${label}`
                 `municipalities/${municipalityId2}/wards/${label}/`
               );
             });
@@ -228,7 +212,6 @@
             });
 
             if (wardId2 == label) {
-                console.log(wardId, label);
               var wardLatlng = randomPointsOnPolygon(
                 1,
                 layer.feature
@@ -258,7 +241,6 @@
               var label = e.target.feature.geometry.label;
               updateParentOrSelfLocationSearch(
                 `municipalities/${municipalityId2}/wards/${label}/`
-                // `municipalityid=${municipalityId}&wardid=${label}`
               );
             });
 
@@ -302,25 +284,6 @@
           );
         }
       );
-
-      // $.getJSON(
-      //   "https://mapit.code4sa.org/area/" + municipalityId + "/children.json",
-      //   (data) => {
-      //     municipality["children"] = data;
-      //     areaIds = Object.keys(municipality["children"]);
-      //     areaIds.forEach(async function (areaId) {
-      //       $.getJSON(
-      //         "https://mapit.code4sa.org/area/" + areaId + ".geojson",
-      //         (data) => {
-      //           data["label"] = areaId;
-      //           data["id"] = areaId;
-      //           areasGeojson.push(data);
-      //         }
-      //       );
-      //     });
-      //     loadMap();
-      //   }
-      // );
 
       var politicalParties = [
         {
@@ -408,7 +371,6 @@
             $.getJSON(
               "https://mapit.code4sa.org/area/" + neighbourId + ".geojson",
               (data) => {
-                console.log("neighbourData",data);
                 var layer = L.geoJSON(data, {
                   style: {
                     color: "#ccc",
@@ -465,21 +427,9 @@
         });
       };
 
-    
-    //cant search mapIt with the municipalityId2 'code' we have
-
-      // $.getJSON(
-      //   "https://mapit.code4sa.org/area/" + municipalityId + "/touches",
-      //   (data) => {
-      //     municipality["neighbours"] = data;
-      //     updateNeighbourMunicipalities();
-      //   }
-      // );
-
       fetch(`http://localhost:8000/municipalities/${municipalityId2}/wards/${wardId2}.json`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("data", data);
           let { neighbours, map_geoJson } = data;
 
           let wardAreaData = JSON.parse(map_geoJson)
@@ -496,7 +446,6 @@
             muniAreaData.push(neighbourAreaData)
           })
 
-          console.log("muniAreaData", muniAreaData);
         }).then(() => loadMap())
     </script>
   </body>
