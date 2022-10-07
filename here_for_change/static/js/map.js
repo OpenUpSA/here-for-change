@@ -12,28 +12,29 @@ var municipalityId = 9152;
 var wardId = 6775;
 var municipality = {};
 
-var updateMapEmbed = function () {
-  $(".data-src-wardid.data-src-municipalityid").attr(
-    "src",
-    "/map?municipalityid=" + municipalityId + "&wardid=" + wardId
-  );
-};
+// var updateMapEmbed = function () {
+//   $(".data-src-wardid.data-src-municipalityid").attr(
+//     "src",
+//     "/map?municipalityid=" + municipalityId + "&wardid=" + wardId
+//   );
+// };
 
-if (municipalityId) {
-  $.getJSON(
-    "https://mapit.code4sa.org/area/" + municipalityId + ".json",
-    (data) => {
-      municipality["info"] = data;
-    }
-  );
+// if (municipalityId) {
+//   $.getJSON(
+//     "https://mapit.code4sa.org/area/" + municipalityId + ".json",
+//     (data) => {
+//       municipality["info"] = data;
+//     }
+//   );
 
-  $.getJSON(
-    "https://mapit.code4sa.org/area/" + municipalityId + "/children.json",
-    (data) => {
-      municipality["children"] = data;
-    }
-  );
-}
+//former way to get ward neighbours/municipalities children json map data
+//   $.getJSON(
+//     "https://mapit.code4sa.org/area/" + municipalityId + "/children.json",
+//     (data) => {
+//       municipality["children"] = data;
+//     }
+//   );
+// }
 
-updateMapEmbed();
+// updateMapEmbed();
 console.log("muni",municipality);
