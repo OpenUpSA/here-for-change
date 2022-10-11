@@ -15,41 +15,6 @@ class WardDetail(DetailView):
     model = Ward
     slug_field = 'slug__iexact'
     slug_url_kwarg = 'slug'
- # page_content = {
-    #     'ward': {
-    #         'councillor': {
-    #             'name': {
-    #                 'value': 'Danny Europa',
-    #                 'type': 'string',
-    #                 'updated': '2022/09/12 16:57'},
-    #             'political_party': {
-    #                 'value': 'African National Congress (ANC)',
-    #                 'type': 'string',
-    #                 'updated': '2021/02/12 05:57'},
-    #             'elected_date': {
-    #                 'value': datetime(2021, 1, 8),
-    #                 'type': 'date',
-    #                 'updated': '2022/09/12 16:57'},
-    #             'contacts': {
-    #                 'email': {
-    #                     'primary': {
-    #                         'type': 'email',
-    #                         'value': 'info@capeagulhas.co.za',
-    #                         'updated': '2022/09/12 16:57',
-    #                         'feedback': {'positive': 24, 'negative': 24}}
-    #                 },
-    #                 'phone': {
-    #                     'value': '+27(0)284255500',
-    #                     'type': 'phone',
-    #                     'updated': '2022/09/12 16:57',
-    #                     'feedback': {'positive': 5, 'negative': 0}
-    #                 },
-    #             }
-    #         }
-    #     },
-        
-
-    # }
 
     def get_context_data(self, **kwargs):
         # get staging
@@ -86,8 +51,8 @@ class WardDetailJson(DetailView):
         staging=self.request.GET.get("version","production")
         ctx= {}
         ward=self.get_object()
+        ctx.update(ward.toDict())
         ctx['ward_detail']={}
-        ctx['map_geoJson']=ward.map_geoJson
         ward_details=WD.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
