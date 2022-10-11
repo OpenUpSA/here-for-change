@@ -229,20 +229,50 @@ iframe {
   padding: -10px;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.column {
-  display: flex;
-  flex-direction: column;
-  flex-basis: 100%;
-  flex: 1;
-}
-
 .is-hidden {
   display: none;
+}
+
+.text-pin {
+  width: auto !important;
+  text-align: center;
+  height: auto !important;
+  background-image: url("../assets/pinpoint.png");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  outline: red !important;
+  padding-bottom: 25px;
+}
+
+.text-pin div {
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  background-color: #8334f7;
+  color: #fff;
+  border-radius: 10px;
+  white-space: nowrap;
+  padding: 5px 10px;
+}
+
+.is-filter-contrast-high {
+  filter: contrast(500%) grayscale(100%);
+}
+
+.is-filter-grayscale-bw {
+  filter: grayscale(100%);
+}
+
+.tooltip .leaflet-popup-content,
+.leaflet-tooltip-top.tooltip {
+  border-radius: 10px !important;
+  font-weight: bold !important;
+}
+
+.icon-marker {
+  background-color: #eee;
+  border: solid 4px #fff !important;
+  border-radius: 100%;
+}
+
+.is-pointer-events-none {
+  pointer-events: none !important;
 }
