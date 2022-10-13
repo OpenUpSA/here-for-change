@@ -1,8 +1,8 @@
 import json
 from django.test import Client, TestCase
 from django.http import JsonResponse
-
 import html5lib
+from .models import Municipality
 
 from .models import Ward
 import load_dummy_ward_details,load_wards
@@ -52,3 +52,17 @@ def loadDbData():
 
     #load Ward details
     load_dummy_ward_details.load_dummy_ward_details()
+    
+class MunicipalityTestCase(TestCase):
+    def setUp(self):
+        Municipality.objects.create(name="City of Cape Town",
+                                    municipality_code="CPT",
+                                    municipality_type="Metropolitan",
+                                    province="WesternCape",
+                                    map_default_zoom=10,
+                                    map_latitude="-33.9249000",
+                                    map_longitude="18.4241000")
+
+    def test_municipality(self):
+        m1 = Municipality.objects.get(name="City of Cape Town")
+        self.assertEqual(m1.municipality_code, 'CPT')
