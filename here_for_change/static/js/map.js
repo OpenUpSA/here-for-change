@@ -1,5 +1,3 @@
-var areaNumber = 9152;
-var wardNumber = 6775;
 var municipality = {};
 var mapEl = document.querySelector("#map");
 
@@ -14,6 +12,70 @@ if (mapEl) {
   let path = window.document.referrer;
   var municipalityId = path.split("/")[4];
   var wardId = path.split("/")[6];
+
+  fetch(
+    `http://localhost:8000/municipalities/${municipalityId}/wards/${wardId}.json`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      let { neighbours, map_geoJson, name, slug } = data;
+      municipality["municipality_area_number"] =
+        data["municipality"]["area_number"];
+      let wardAreaData = JSON.parse(map_geoJson);
+      wardAreaData["name"] = name;
+      wardAreaData["slug"] = slug;
+      muniAreaData.push(wardAreaData);
+
+      neighbours.forEach((neighbour) => {
+        let neighbourAreaData = JSON.parse(neighbour.map_geoJson);
+        let name = neighbour["name"];
+        let slug = neighbour["slug"];
+        neighbourAreaData["name"] = name;
+        neighbourAreaData["slug"] = slug;
+        muniAreaData.push(neighbourAreaData);
+      });
+    })
+    .then(() => {
+      fetch(
+        "https://mapit.code4sa.org/area/" +
+          municipality["municipality_area_number"] +
+          "/touches"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          municipality["neighbours"] = data;
+          updateNeighbourMunicipalities();
+        });
+
+      fetch(
+        "https://mapit.code4sa.org/area/" +
+          municipality["municipality_area_number"] +
+          "/geometry"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          municipality["geometry"] = data;
+          latlng = [
+            municipality["geometry"]["centre_lat"],
+            municipality["geometry"]["centre_lon"],
+          ];
+          map.setView(latlng, zoom);
+
+          var municipalOffice = L.divIcon({
+            className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
+            iconAnchor: [52, 48],
+            html: "<div>Municipal office</div>",
+            interactive: false,
+          });
+
+          L.marker(latlng, {
+            icon: municipalOffice,
+            riseOnHover: true,
+            bubblingMouseEvents: true,
+          }).addTo(map);
+        });
+    })
+    .then(() => loadMap());
 
   function setYouAreHere() {
     var youAreHere = L.divIcon({
@@ -73,12 +135,12 @@ if (mapEl) {
         },
       }).addTo(map);
       areas.getLayers().forEach((layer) => {
-        var label = layer.feature.geometry.label;
-        var id = layer.feature.geometry.id;
+        var slug = layer.feature.geometry.slug;
+        var name = layer.feature.geometry.name;
         var layerCenter = layer.getBounds().getCenter();
         var politicalParty = politicalParties[random(politicalParties.length)];
         var popup = L.popup({ className: "tooltip", closeButton: false });
-        popup.setContent(`${id}`);
+        popup.setContent(`${name}`);
         layer.bindPopup(popup);
         layer.on("mouseover", function (e) {
           var popup = e.target.getPopup();
@@ -101,7 +163,7 @@ if (mapEl) {
 
         iconMarker.on("click", (e) => {
           updateParentOrSelfLocationSearch(
-            `municipalities/${municipalityId}/wards/${label}/`
+            `municipalities/${municipalityId}/wards/${slug}/`
           );
         });
 
@@ -124,7 +186,8 @@ if (mapEl) {
           e.target.setIcon(politicalParty["party"]["icon"]);
         });
 
-        if (wardId == label) {
+        if (wardId == slug) {
+          //ward office is using randomPointsOnPolygon
           var wardLatlng = randomPointsOnPolygon(
             1,
             layer.feature
@@ -151,9 +214,9 @@ if (mapEl) {
         }
 
         layer.on("click", (e) => {
-          var label = e.target.feature.geometry.label;
+          var slug = e.target.feature.geometry.slug;
           updateParentOrSelfLocationSearch(
-            `municipalities/${municipalityId}/wards/${label}/`
+            `municipalities/${municipalityId}/wards/${slug}/`
           );
         });
 
@@ -167,7 +230,7 @@ if (mapEl) {
         });
 
         layer.on("mouseout", (e) => {
-          if (e.target.feature.geometry.label != wardId) {
+          if (e.target.feature.geometry.slug != wardId) {
             areas.resetStyle(e.target);
           }
         });
@@ -182,23 +245,6 @@ if (mapEl) {
       type: "roadmap",
     })
     .addTo(map);
-
-  $.getJSON(
-    "https://mapit.code4sa.org/area/" + areaNumber + "/geometry",
-    (data) => {
-      municipality["geometry"] = data;
-      latlng = [
-        municipality["geometry"]["centre_lat"],
-        municipality["geometry"]["centre_lon"],
-      ];
-      map.setView(latlng, zoom);
-      L.marker(latlng, {
-        icon: municipalOffice,
-        riseOnHover: true,
-        bubblingMouseEvents: true,
-      }).addTo(map);
-    }
-  );
 
   var politicalParties = [
     {
@@ -269,13 +315,6 @@ if (mapEl) {
     },
   ];
 
-  var municipalOffice = L.divIcon({
-    className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-    iconAnchor: [52, 48],
-    html: "<div>Municipal office</div>",
-    interactive: false,
-  });
-
   var updateNeighbourMunicipalities = function () {
     var neighbourIds = Object.keys(municipality["neighbours"]);
     neighbourIds.forEach(function (neighbourId) {
@@ -283,9 +322,9 @@ if (mapEl) {
       var parentAreaId = neighbour["parent_area"];
 
       if (neighbour["type"] === "WD") {
-        $.getJSON(
-          "https://mapit.code4sa.org/area/" + neighbourId + ".geojson",
-          (data) => {
+        fetch("https://mapit.code4sa.org/area/" + neighbourId + ".geojson")
+          .then((response) => response.json())
+          .then((data) => {
             var layer = L.geoJSON(data, {
               style: {
                 color: "#ccc",
@@ -313,11 +352,10 @@ if (mapEl) {
             layer.on("mousemove", function (e) {
               popup.setLatLng(e.latlng).openOn(map);
             });
-
+            //distant neighbours are unclickable because no 'slug' for them from backend
             layer.on("click", (e) => {
               updateParentOrSelfLocationSearch(
-                `municipalities/${municipalityId}/wards/${label}/`
-                // `municipalityid=${parentAreaId}&wardid=${neighbourId}`
+                `municipalities/${parentAreaId}/wards/${slug}/`
               );
             });
 
@@ -336,33 +374,8 @@ if (mapEl) {
               });
               e.target.bringToBack();
             });
-          }
-        );
+          });
       }
     });
   };
-
-  fetch(
-    `http://localhost:8000/municipalities/${municipalityId}/wards/${wardId}.json`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      let { neighbours, map_geoJson } = data;
-
-      let wardAreaData = JSON.parse(map_geoJson);
-      wardAreaData["id"] = wardId;
-      wardAreaData["label"] = wardId;
-      muniAreaData.push(wardAreaData);
-
-      neighbours.forEach((neighbour) => {
-        let neighbourAreaData = JSON.parse(neighbour.map_geoJson);
-        let name = neighbour["name"];
-        let slug = neighbour["slug"];
-        neighbourAreaData["id"] = name;
-        neighbourAreaData["label"] = slug;
-        muniAreaData.push(neighbourAreaData);
-      });
-    })
-    .then(() => loadMap());
 }
