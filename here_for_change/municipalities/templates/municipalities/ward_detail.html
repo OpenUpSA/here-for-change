@@ -5,10 +5,10 @@
 {% include "./ward_notification.html" %}
 <section>
   <div
-    class="align-items mx-auto flex max-w-screen-xl flex-col gap-3 p-4 md:p-8"
+    class="align-items mx-auto flex max-w-screen-xl flex-col gap-3 py-4 px-4 md:py-8  md:px-8 xl:px-4"
   >
     <div class="inline-block items-center text-left md:flex">
-      <h1 class="benfritz w-full text-left text-[48px] md:w-auto md:pr-4">
+      <h1 class="fvs-250 benfritz w-full text-left text-[48px] leading-[1.2] md:w-auto md:pr-4">
         {{ ward.municipality.name }}
       </h1>
       <div class="relative" x-data="{open: false}">
@@ -16,7 +16,7 @@
           <button
             @click="open = ! open"
             type="button"
-            class="inline-flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-100 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-teal-900 focus:outline-none lg:w-40"
+            class="inline-flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-100 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-teal-900 focus:outline-none md:w-40"
             id="ward-button"
             aria-expanded="true"
             aria-haspopup="true"
@@ -38,7 +38,6 @@
           @click="open = ! open"
         >
           <div class="pb-1" role="none">
-            <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
             {% for ward_item in ward.municipality.ward_set.all %}
             <a
               href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
@@ -68,9 +67,9 @@
 </section>
 <section class="bg-hfc-green-900">
   <div
-    class="mx-auto max-w-screen-xl items-center justify-between px-4 pt-9 pb-4 md:flex md:px-8 xl:px-4"
+    class="mx-auto max-w-screen-xl items-center justify-between px-4 pt-12 pb-4 md:flex md:px-8 xl:px-4"
   >
-    <h2 class="benfritz text-center text-2xl text-white md:text-3xl">
+    <h2 class="benfritz fvs-100 text-center text-2xl text-white md:text-3xl">
       Your
       <span class="relative">
         ward councillior<img
@@ -93,7 +92,7 @@
   </div>
 
   <div
-    class="mx-auto max-w-screen-xl items-start gap-4 px-4 py-6 md:px-8 lg:flex xl:px-4"
+    class="mx-auto max-w-screen-xl items-start gap-4 px-4 pt-6 pb-12 md:px-8 lg:flex xl:px-4"
   >
     <!-- left side -->
     <div class="lg:w-1/2">
@@ -109,7 +108,7 @@
             src="{% static 'assets/big-star.svg' %}"
           />
           <p
-            class="benfritz absolute rotate-[-12deg] text-center text-[16.8px] leading-[13.44px] text-white hover:rotate-[-32deg] lg:text-[22.4px] lg:leading-[17.92px]"
+            class="fvs-200 benfritz absolute rotate-[-12deg] text-center text-[16.8px] leading-[13.44px] text-white hover:rotate-[-32deg] lg:text-[22.4px] lg:leading-[17.92px]"
           >
             Start<br />here!
           </p>
@@ -373,92 +372,34 @@
         >
           Choose a category to explore!
         </p>
-        <div
-          onclick="openToc(event, 'summary')"
-          class="btn-active toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-bolt-lightning"></i>
-          </span>
-          <span class="font-medium"> Summary </span>
-        </div>
-        <div
-          onclick="openToc(event, 'contact')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-phone-flip"></i>
-          </span>
-          <span class="font-medium"> Contact </span>
-        </div>
-        <div
-          onclick="openToc(event, 'spending')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-coins"></i>
-          </span>
-          <span class="font-medium"> Spending </span>
-        </div>
-        <div
-          onclick="openToc(event, 'participation')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-calendar-days"></i>
-          </span>
-          <span class="font-medium"> Participation </span>
-        </div>
-        <div
-          onclick="openToc(event, 'surveys')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-file-signature"></i>
-          </span>
-          <span class="font-medium"> Surveys </span>
-        </div>
-        <div
-          onclick="openToc(event, 'elections')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-check-to-slot"></i>
-          </span>
-          <span class="font-medium"> Elections </span>
-        </div>
-        <div
-          onclick="openToc(event, 'messages')"
-          class="btn-inactive toc-btn mb-3 cursor-pointer items-center gap-5 rounded-lg p-1 text-center transition-all duration-[400ms] ease-in-out md:flex md:h-12 md:w-auto md:p-4"
-        >
-          <span>
-            <i class="fa-solid fa-comment-dots"></i>
-          </span>
-          <span class="font-medium"> Messages </span>
-        </div>
-      </div>
+        {% for key, value in content.ward.items %}
+          {% if value.toc.show == True  %}
+            {% if forloop.counter0 == 1 %}
+            <a href="#{{value.toc.title|lower}}" class="btn-active toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="{{value.toc.icon}}"></i>
+              </span>
+              <span class="font-medium">
+                {{value.toc.title}}
+              </span>
+            </a>
+            {% else %}
+            <a href="#{{value.toc.title|lower}}" class="btn-inactive toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
+              <span>
+                <i class="{{value.toc.icon}}"></i>
+              </span>
+              <span class="font-medium">
+                {{value.toc.title}}
+              </span>
+            </a>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </div> 
     </div>
     <!-- Right side  -->
-    <div id="summary" class="toc md:w-3/4">
+    <div id="summary" class="toc pt-5 md:w-3/4">
       {% include "./toc_summary.html" %}
-    </div>
-    <div id="contact" class="toc hidden md:w-3/4">
-      {% include "./toc_contact.html" %}
-    </div>
-    <div id="spending" class="toc hidden md:w-3/4">
-      {% include "./toc_spending.html" %}
-    </div>
-    <div id="participation" class="toc hidden md:w-3/4">
-      {% include "./toc_participation.html" %}
-    </div>
-    <div id="surveys" class="toc hidden md:w-3/4">
-      {% include "./toc_surveys.html" %}
-    </div>
-    <div id="elections" class="toc hidden md:w-3/4">
-      {% include "./toc_elections.html" %}
-    </div>
-    <div id="messages" class="toc hidden md:w-3/4">
-      {% include "./toc_messages.html" %}
     </div>
   </div>
 </section>

@@ -1,13 +1,13 @@
 <div>
-  <div>
-    <p class="benfritz mb-4 text-[33.6px]">Summary</p>
+  <div id="summary" class="section">
+    <p class="benfritz fvs-250 mb-4 text-[33.6px]">Summary</p>
     <p class="text-sm font-medium text-slate-400">
       A summary of the different content available for this municipality and
       ward.
     </p>
   </div>
-  <div class="mt-4 items-center justify-between md:flex">
-    <p class="benfritz text-[22.5px]">Contact information</p>
+  <div id="contact" class="section mt-4 items-center justify-between md:flex">
+    <p class="benfritz fvs-250 text-[22.5px]">Contact information</p>
     <div
       class="hidden h-[50px] w-[167px] cursor-pointer gap-2 rounded-md bg-neutral-200 p-4 font-medium hover:bg-neutral-300 md:flex md:items-center"
     >
@@ -16,10 +16,10 @@
     </div>
   </div>
   <!-- contact row -->
-  <div class="mt-6 flex flex-col md:mt-8 lg:flex-row lg:gap-4">
+  <div class="mt-6 flex flex-col md:mt-8 lg:flex-row lg:justify-between">
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-xl bg-white p-2 shadow-btm lg:w-[344px] xl:w-[444px]"
     >
       <div class="flex items-center">
         <span class="ml-3"
@@ -66,7 +66,7 @@
     </div>
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-xl bg-white p-2 shadow-btm lg:w-[344px] xl:w-[444px] lg:ml-3"
     >
       <div class="flex items-center">
         <span class="ml-3"
@@ -113,10 +113,10 @@
     </div>
   </div>
   <!-- contact row -->
-  <div class="flex flex-col lg:flex-row lg:gap-4">
+  <div class="flex flex-col lg:flex-row lg:justify-between">
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-xl bg-white p-2 shadow-btm lg:w-[344px] xl:w-[444px]"
     >
       <div class="flex items-center">
         <span class="ml-3"
@@ -163,7 +163,7 @@
     </div>
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-xl bg-white p-2 shadow-btm lg:w-[344px] xl:w-[444px] lg:ml-3"
     >
       <div class="flex items-center">
         <span class="ml-3"
@@ -213,7 +213,7 @@
   <div class="flex flex-col lg:flex-row">
     <!-- mini contact card -->
     <div
-      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-lg bg-white p-2 shadow-btm lg:w-1/2"
+      class="mb-3 flex w-full flex-wrap items-center justify-between rounded-xl bg-white p-2 shadow-btm lg:w-[344px] xl:w-[444px]"
     >
       <div class="flex items-center gap-2">
         <span class="ml-3"
@@ -261,8 +261,8 @@
   </div>
   <!-- horizontal divide line -->
   <div class="my-6 w-full border-t border-gray-300 md:my-8"></div>
-  <div class="mt-4 items-center justify-between md:flex">
-    <p class="benfritz text-[22.5px]">Municipal Spending</p>
+  <div id="spending" class="section mt-4 items-center justify-between md:flex">
+    <p class="benfritz fvs-250 text-[22.5px]">Municipal Spending</p>
     <div
       class="hidden h-[50px] w-[167px] cursor-pointer gap-2 rounded-md bg-neutral-200 p-4 font-medium hover:bg-neutral-300 md:flex md:items-center"
     >
@@ -272,7 +272,7 @@
   </div>
   <div class="mt-6 flex flex-col gap-3 md:mt-8 lg:flex-row lg:items-center">
     <!-- Amount spent card -->
-    <div class="my-4 my-0 w-full rounded-lg bg-white p-3 shadow-btm lg:w-1/2">
+    <div class="my-4 my-0 w-full rounded-xl bg-white p-4 shadow-btm lg:w-1/2">
       <div class="flex items-center justify-between">
         <p class="text-sm font-bold">Total amount spent</p>
         <span class="rounded-md bg-neutral-100 p-2 text-sm"> 2019 - 2020 </span>
@@ -284,19 +284,17 @@
           class="flex grow items-center justify-between sm:grow-0 sm:gap-2 lg:grow"
         >
           <div class="flex flex-col sm:flex-row lg:flex-col">
-            <p class="text-4xl font-bold">R180.2&nbsp;</p>
-            <p class="text-2xl">million</p>
+            <p class="text-4xl leading-none tracking-tight font-bold">R180.2 <span class="text-2xl">million</span></p>
           </div>
           <div
-            class="flex flex-col rounded-md bg-neutral-100 p-2 pr-4 text-sm sm:flex-row lg:flex-col"
+            class="rounded-md bg-neutral-100 p-2 text-sm"
           >
-            <p>12% less than&nbsp;</p>
-            <p>budgeted</p>
+            <p>12% less than budgeted</p>
           </div>
         </div>
         <div>
           <i
-            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
+            class="tooltip fa-solid fa-circle-exclamation mx-1 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
             <span class="tooltipText">
               Report a problem
@@ -311,7 +309,7 @@
       </p>
     </div>
     <!-- Spending card -->
-    <div class="my-4 my-0 w-full rounded-lg bg-white p-3 shadow-btm lg:w-1/2">
+    <div class="my-4 my-0 w-full rounded-xl bg-white p-4 shadow-btm lg:w-1/2">
       <div class="flex items-center justify-between">
         <p class="text-sm font-bold">Fruitless and wasteful spending</p>
         <span class="rounded-md bg-neutral-100 p-2 text-sm"> 2019 - 2020 </span>
@@ -323,19 +321,17 @@
           class="flex grow items-center justify-between sm:grow-0 sm:gap-2 lg:grow"
         >
           <div class="flex flex-col sm:flex-row lg:flex-col">
-            <p class="text-4xl font-bold">R14.7&nbsp;</p>
-            <p class="text-2xl">million</p>
+            <p class="text-4xl leading-none tracking-tight font-bold">R14.7 <span class="text-2xl">million</span></p>
           </div>
           <div
-            class="flex flex-col rounded-md bg-neutral-100 p-2 pr-4 text-sm sm:flex-row lg:flex-col"
+            class="rounded-md bg-neutral-100 p-2 text-sm"
           >
-            <p>12% more than&nbsp;</p>
-            <p>previous year</p>
+            <p>12% more than previous year</p>
           </div>
         </div>
         <div>
           <i
-            class="tooltip fa-solid fa-circle-exclamation mr-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
+            class="tooltip fa-solid fa-circle-exclamation mx-1 cursor-pointer text-neutral-300 hover:text-hfc-green-900 md:mr-4"
           >
             <span class="tooltipText">
               Report a problem
@@ -393,7 +389,7 @@
     </div>
   </div>
   <!-- bar chart card -->
-  <div class="mx-auto mt-2 w-full rounded-lg bg-white p-2 px-4 shadow-btm">
+  <div class="mx-auto mt-2 w-full rounded-xl bg-white p-2 px-4 shadow-btm">
     <div class="flex items-center justify-between">
       <p class="text-sm font-bold">What money was spent on</p>
       <span class="rounded-md bg-neutral-100 p-2 text-sm"> 2019 - 2020 </span>
@@ -784,8 +780,8 @@
   </div>
   <!-- horizontal divide line -->
   <div class="my-10 w-full border-t border-gray-300 md:my-8"></div>
-  <div class="mb-8 items-center justify-between md:flex">
-    <p class="benfritz text-[22.5px]">Surveys</p>
+  <div id="surveys" class="section mb-8 items-center justify-between md:flex">
+    <p class="benfritz fvs-250 text-[22.5px]">Surveys</p>
     <div
       class="hidden h-[50px] w-[167px] cursor-pointer gap-2 rounded-md bg-neutral-200 p-4 font-medium hover:bg-neutral-300 md:flex md:items-center"
     >
@@ -794,7 +790,7 @@
     </div>
   </div>
   <!-- Survey card -->
-  <div class="mx-auto w-full rounded-lg bg-white py-2 px-4 shadow-btm md:py-8">
+  <div class="mx-auto w-full rounded-xl bg-white py-2 px-4 shadow-btm md:py-8">
     <div class="flex items-center justify-between">
       <p class="text-sm font-bold">Featured survey question</p>
       <span class="rounded-md bg-neutral-100 p-2 text-sm">
@@ -803,7 +799,7 @@
     </div>
     <!-- horizontal divide line -->
     <div class="my-2 w-full border-t border-gray-300 md:my-8"></div>
-    <p class="benfritz mb-4 text-center text-xl">
+    <p class="benfritz fvs-250 font-normal mb-4 text-center text-[25px] leading-[1.2]">
       What is the most pressing issue facing the residents of your community?
     </p>
     <!-- Tags container -->
@@ -1123,8 +1119,8 @@
   </div>
   <!-- horizontal divide line -->
   <div class="my-10 w-full border-t border-gray-300 md:my-8"></div>
-  <div class="mt-2 items-center justify-between md:flex">
-    <p class="benfritz text-[22.5px]">Participation</p>
+  <div id="participation" class="section mt-2 items-center justify-between md:flex">
+    <p class="benfritz fvs-250 text-[22.5px]">Participation</p>
     <div
       class="hidden h-[50px] w-[167px] cursor-pointer gap-2 rounded-md bg-neutral-200 p-4 px-2 font-medium hover:bg-neutral-300 md:flex md:items-center"
     >
@@ -1177,7 +1173,7 @@
   <div class="mt-6 flex flex-col gap-3 md:mt-8 lg:flex-row lg:items-center">
     <!-- First participation card -->
     <div
-      class="my-4 my-0 w-full rounded-lg bg-white px-6 pt-6 shadow-btm lg:w-1/2"
+      class="my-4 my-0 w-full rounded-xl bg-white px-6 pt-6 shadow-btm lg:w-1/2"
     >
       <div class="flex items-center justify-between">
         <p class="text-sm font-bold">Next participation event</p>
@@ -1216,7 +1212,7 @@
     </div>
     <!-- second participation card -->
     <div
-      class="my-4 my-0 w-full rounded-lg bg-white px-6 pt-6 shadow-btm lg:w-1/2"
+      class="my-4 my-0 w-full rounded-xl bg-white px-6 pt-6 shadow-btm lg:w-1/2"
     >
       <div class="flex items-center justify-between">
         <p class="text-sm font-bold">Next participation deadline</p>
@@ -1258,7 +1254,7 @@
   </div>
   <!-- Calendar card -->
   <div
-    class="my-4 h-48 w-full rounded-lg bg-white px-6 pt-6 text-sm shadow-btm"
+    class="my-4 h-48 w-full rounded-xl bg-white px-6 pt-6 text-sm shadow-btm"
   >
     <div class="flex items-center justify-between">
       <p class="font-bold">participation calendar</p>
@@ -1292,7 +1288,6 @@
       tabindex="-1"
     >
       <div class="py-2 px-3" role="none">
-        <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
         <a
           href="#"
           class="block px-2 py-2 text-sm text-black"
@@ -1311,8 +1306,8 @@
   </div>
   <!-- horizontal divide line -->
   <div class="my-10 w-full border-t border-gray-300 md:my-8"></div>
-  <div class="mt-2 items-center justify-between md:flex">
-    <p class="benfritz text-[22.5px]">
+  <div id="deputy-mayor" class="section mt-2 items-center justify-between md:flex">
+    <p class="benfritz text-[22.5px] fvs-250">
       Office of the Deputy Mayor
     </p>
     <!-- <div
@@ -1326,14 +1321,14 @@
     class="mt-6 flex flex-col gap-3 pb-6 md:mt-8 lg:flex-row lg:items-center"
   >
     <!-- Deputy mayor card -->
-    <div class="my-4 w-full rounded-lg bg-white px-6 pt-6 shadow-btm lg:w-1/2">
+    <div class="my-4 w-full rounded-xl bg-white p-4 shadow-btm lg:w-1/2">
       <div class="flex items-center justify-between">
-        <p class="text-sm font-bold">Deputy Mayor</p>
+        <p class="text-sm font-bold pl-2">Deputy Mayor</p>
       </div>
       <!-- horizontal divide line -->
       <div class="my-2 w-full border-t border-gray-100 md:my-4"></div>
       <div
-        class="flex w-full flex-wrap items-center justify-between text-sm md:text-base"
+        class="pl-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
@@ -1377,7 +1372,7 @@
         </div>
       </div>
       <div
-        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
+        class="my-2 pl-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
@@ -1424,7 +1419,7 @@
         </div>
       </div>
       <div
-        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
+        class="mt-2 pl-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
@@ -1469,14 +1464,14 @@
       </div>
     </div>
     <!-- Second deputy mayor card -->
-    <div class="my-4 w-full rounded-lg bg-white px-6 pt-6 shadow-btm lg:w-1/2">
+    <div class="my-4 w-full rounded-xl bg-white p-4 shadow-btm lg:w-1/2">
       <div class="flex items-center justify-between">
-        <p class="text-sm font-bold">Secretary to the Deputy Mayor</p>
+        <p class="text-sm font-bold pl-2">Secretary to the Deputy Mayor</p>
       </div>
       <!-- horizontal divide line -->
       <div class="my-2 w-full border-t border-gray-100 md:my-4"></div>
       <div
-        class="flex w-full flex-wrap items-center justify-between text-sm md:text-base"
+        class="flex pl-2 w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
@@ -1520,7 +1515,7 @@
         </div>
       </div>
       <div
-        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
+        class="my-2 pl-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
@@ -1567,7 +1562,7 @@
         </div>
       </div>
       <div
-        class="my-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
+        class="mt-2 pl-2 flex w-full flex-wrap items-center justify-between text-sm md:text-base"
       >
         <div class="flex items-center">
           <span>
