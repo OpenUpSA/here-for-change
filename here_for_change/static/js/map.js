@@ -1,21 +1,20 @@
 var municipality = {};
+var baseUrl = window.document.referrer.split("/municipalities")[0];
 var mapEl = document.querySelector("#map");
 
-if (mapEl) {
+if (mapEl && baseUrl) {
   var map = L.map(mapEl);
   var latlng = [];
-  var zoom = 9;
+  var zoom = 8;
   var areas = [];
   var youAreHereLatlng = [];
 
   let muniAreaData = [];
-  let path = window.document.referrer;
-  var municipalityId = path.split("/")[4];
-  var wardId = path.split("/")[6];
+  let path = window.document.referrer.split("/municipalities")[1];
+  var municipalityId = path.split("/")[1];
+  var wardId = path.split("/")[3];
 
-  fetch(
-    `http://localhost:8000/municipalities/${municipalityId}/wards/${wardId}.json`
-  )
+  fetch(`${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`)
     .then((response) => response.json())
     .then((data) => {
       let { neighbours, map_geoJson, name, slug } = data;
@@ -75,7 +74,11 @@ if (mapEl) {
           }).addTo(map);
         });
     })
-    .then(() => loadMap());
+    .then(() => {
+      setTimeout(() => {
+        loadMap();
+      }, 1000);
+    });
 
   function setYouAreHere() {
     var youAreHere = L.divIcon({
@@ -332,7 +335,6 @@ if (mapEl) {
                 weight: 2,
               },
             }).addTo(map);
-
             var popup = L.popup({
               className: "tooltip",
               closeButton: false,
