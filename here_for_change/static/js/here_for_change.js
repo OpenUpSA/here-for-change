@@ -59,10 +59,12 @@ if (!!btns) {
 
 //Survey container toggle
 const showResultBtn = document.getElementsByClassName("show-results")[0];
-const surveyContainer1 =
-  document.getElementsByClassName("survey-container-1")[0];
-const surveyContainer2 =
-  document.getElementsByClassName("survey-container-2")[0];
+const surveyContainer1 = document.getElementsByClassName(
+  "survey-container-1"
+)[0];
+const surveyContainer2 = document.getElementsByClassName(
+  "survey-container-2"
+)[0];
 const hideResultBtn = document.getElementsByClassName("hide-results")[0];
 
 if (showResultBtn) {
@@ -244,4 +246,29 @@ if (deputyMayorNum) {
       .parsePhoneNumber(secDepPhoneDjango)
       .formatNational();
   }
+}
+
+const locationModal = document.querySelector("#location-modal");
+
+function openModal() {
+  if (locationModal) {
+    locationModal.classList.remove("hide-modal");
+    locationModal.classList.add("show-modal");
+  }
+}
+
+function closeModal() {
+  if (locationModal) {
+    locationModal.classList.remove("show-modal");
+    locationModal.classList.add("hide-modal");
+  }
+}
+
+if (locationModal) {
+  locationModal.addEventListener("click", (e) => {
+    const modalOverlay = document.querySelector("#modal-overlay");
+    if (e.target === modalOverlay) {
+      closeModal();
+    }
+  });
 }
