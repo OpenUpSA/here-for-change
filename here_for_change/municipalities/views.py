@@ -1,5 +1,5 @@
 from django.views.generic import ListView, DetailView
-from .models import Municipality, Ward, WardDetail as WD
+from .models import Municipality, Ward, WardDetail as WardDetailModel
 from .decorators import redirect_to_closest_ward
 from django.http import JsonResponse
 
@@ -23,7 +23,7 @@ class WardDetail(DetailView):
         ward=self.get_object()
         ctx['ward_detail']={}
 
-        ward_details=WD.objects.filter(ward=ward,stage=staging)
+        ward_details=WardDetailModel.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value
@@ -51,7 +51,7 @@ class WardDetailJson(DetailView):
         ward=self.get_object()
         ctx.update(ward.toDict())
         ctx['ward_detail']={}
-        ward_details=WD.objects.filter(ward=ward,stage=staging)
+        ward_details=WardDetailModel.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value,
