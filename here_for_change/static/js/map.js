@@ -1,5 +1,5 @@
 var municipality = {};
-var baseUrl = window.document.referrer.split("/municipalities")[0];
+var baseUrl = window.document.location.href.split("/municipalities")[0];
 var mapEl = document.querySelector("#map");
 
 if (mapEl && baseUrl) {
@@ -10,7 +10,7 @@ if (mapEl && baseUrl) {
   var youAreHereLatlng = [];
 
   let muniAreaData = [];
-  let path = window.document.referrer.split("/municipalities")[1];
+  let path = window.document.location.href.split("/municipalities")[1];
   var municipalityId = path.split("/")[1];
   var wardId = path.split("/")[3];
 
@@ -254,7 +254,7 @@ if (mapEl && baseUrl) {
       wardCouncillor: {
         name: "Daniel Kapungwe",
         icon: L.icon({
-          iconUrl: "../static/assets/danielkapungwe.png",
+          iconUrl: "../../../../static/assets/danielkapungwe.png",
           iconSize: [32, 32],
           iconAnchor: [16, 16],
           className: "icon-marker",
@@ -264,7 +264,7 @@ if (mapEl && baseUrl) {
       party: {
         name: "ANC",
         icon: L.icon({
-          iconUrl: "../static/assets/anc.png",
+          iconUrl: "../../../../static/assets/anc.png",
           iconSize: [32, 32],
           iconAnchor: [16, 16],
           className: "icon-marker",
@@ -276,7 +276,7 @@ if (mapEl && baseUrl) {
       wardCouncillor: {
         name: "Bukelani Zuma",
         icon: L.icon({
-          iconUrl: "../static/assets/bukelanizuma.png",
+          iconUrl: "../../../../static/assets/bukelanizuma.png",
           iconSize: [32, 32],
           iconAnchor: [16, 16],
           className: "icon-marker",
@@ -286,7 +286,7 @@ if (mapEl && baseUrl) {
       party: {
         name: "IFP",
         icon: L.icon({
-          iconUrl: "../static/assets/ifp.png",
+          iconUrl: "../../../../static/assets/ifp.png",
           iconSize: [32, 32],
           iconAnchor: [16, 16],
           className: "icon-marker",
@@ -298,7 +298,7 @@ if (mapEl && baseUrl) {
       wardCouncillor: {
         name: "Stuart Pringle",
         icon: L.icon({
-          iconUrl: "../static/assets/stuartpringle.png",
+          iconUrl: "../../../../static/assets/stuartpringle.png",
           iconSize: [32, 32],
           iconAnchor: [16, 16],
           className: "icon-marker",
@@ -308,7 +308,7 @@ if (mapEl && baseUrl) {
       party: {
         name: "DA",
         icon: L.icon({
-          iconUrl: "../static/assets/da.png",
+          iconUrl: "../../../../static/assets/da.png",
           iconSize: [32, 32],
           iconAnchor: [16, 16],
           className: "icon-marker",
