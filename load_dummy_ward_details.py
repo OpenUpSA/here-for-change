@@ -1,8 +1,6 @@
 """
 This script loads dummy ward details for existing wards
 """
-
-from django.contrib.gis.geos import MultiPolygon,Polygon
 import os
 import django
 import random

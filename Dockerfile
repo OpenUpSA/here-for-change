@@ -14,7 +14,6 @@ RUN set -ex; \
   apt-get install -y build-essential python3.7-dev; \
   # psycopg2 dependencies \
   apt-get install -y libpq-dev; \
-  # postgis dependencies view dependencies here: https://postgis.net/docs/postgis_installation.html#install_requirements \
   apt-get install -y proj-bin; \
   apt-get install -y binutils; \
   apt-get install -y libgeos++-dev libgeos-c1v5 libgeos-dev;\

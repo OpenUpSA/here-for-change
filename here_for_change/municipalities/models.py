@@ -1,11 +1,10 @@
-from email.policy import default
 from .enums import MunicipalityTypes, Provinces
 from autoslug import AutoSlugField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.db import models
 from django.urls import reverse
 from django.contrib.gis.geos import Point
-import json
+
 
 
 class WardManager(models.Manager):
