@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views.generic import ListView, DetailView
 from .models import Municipality, Ward, WardDetail as WD
 from datetime import datetime
 from .decorators import redirect_to_closest_ward
@@ -234,6 +234,5 @@ class WardDetailJson(DetailView):
         ctx['neighbours']=[w.toDict() for w in  Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)]
         return ctx
 
-class ArticleDetailView(TemplateView):
-    template_name = "municipalities/map.html"
+
       
