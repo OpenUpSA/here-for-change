@@ -1,5 +1,8 @@
 var municipality = {};
-var baseUrl = window.document.location.href.split("/municipalities")[0];
+var baseUrl =
+  window.document.location.href.split("/")[0] +
+  "//" +
+  window.document.location.href.split("/")[2];
 var mapEl = document.querySelector("#map");
 
 if (mapEl && baseUrl) {
@@ -8,11 +11,17 @@ if (mapEl && baseUrl) {
   var zoom = 8;
   var areas = [];
   var youAreHereLatlng = [];
-
   let muniAreaData = [];
-  let path = window.document.location.href.split("/municipalities")[1];
-  var municipalityId = path.split("/")[1];
-  var wardId = path.split("/")[3];
+
+  if (window.document.location.pathname == "/") {
+    var municipalityId = "wc033";
+    var wardId = "wc033-cape-agulhas-ward-1";
+  } else {
+    let path =
+      window.document.location.href.split("/municipalities")[1] || "///";
+    var municipalityId = path.split("/")[1];
+    var wardId = path.split("/")[3];
+  }
 
   fetch(`${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`)
     .then((response) => response.json())
@@ -128,6 +137,59 @@ if (mapEl && baseUrl) {
     return Math.floor(Math.random() * top);
   };
 
+  // var inside = [-34.63778, 19.85581]
+  // var outside = [-34.390567, 19.132697]
+
+  // var insideDiv = L.divIcon({
+  //   className: "text-pin is-filter-contrast-high is-pointer-events-none",
+  //   iconAnchor: [42, 48],
+  //   html: "<div>Inside</div>",
+  //   interactive: false,
+  // });
+
+  // var insideMarker = L.marker(inside, {
+  //   icon: insideDiv,
+  //   riseOnHover: true,
+  //   bubblingMouseEvents: true,
+  // }).addTo(map);
+
+  // var outsideDiv = L.divIcon({
+  //   className: "text-pin is-filter-contrast-high is-pointer-events-none",
+  //   iconAnchor: [42, 48],
+  //   html: "<div>outside</div>",
+  //   interactive: false,
+  // });
+
+  // var outsideMarker = L.marker(outside, {
+  //   icon: outsideDiv,
+  //   riseOnHover: true,
+  //   bubblingMouseEvents: true,
+  // }).addTo(map);
+
+  // function getDistance(origin, destination) {
+  //   // return distance in meters
+  //   var lon1 = toRadian(origin[1]),
+  //     lat1 = toRadian(origin[0]),
+  //     lon2 = toRadian(destination[1]),
+  //     lat2 = toRadian(destination[0]);
+
+  //   var deltaLat = lat2 - lat1;
+  //   var deltaLon = lon2 - lon1;
+
+  //   var a =
+  //     Math.pow(Math.sin(deltaLat / 2), 2) +
+  //     Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
+  //   var c = 2 * Math.asin(Math.sqrt(a));
+  //   var EARTH_RADIUS = 6371;
+  //   return c * EARTH_RADIUS * 1000;
+  // }
+  // function toRadian(degree) {
+  //   return (degree * Math.PI) / 180;
+  // }
+  // var auchiDistance = getDistance([9.0765, 7.3986], [7.0669, 6.2748]);
+  // var enuguDistance = getDistance([9.0765, 7.3986], [6.4483, 7.5139]);
+    
+
   var loadMap = () => {
     if (muniAreaData.length > 0) {
       areas = L.geoJSON(muniAreaData, {
@@ -137,6 +199,15 @@ if (mapEl && baseUrl) {
           weight: 2,
         },
       }).addTo(map);
+
+      //check if point is inside polygon
+      // areas.eachLayer(function(memberLayer) {
+      //   console.log("mem",memberLayer);
+      //   if (memberLayer.getBounds().contains(insideMarker.getLatLng())) {
+      //     console.log(memberLayer.feature.geometry.name);
+      //   } 
+      // });
+      
       areas.getLayers().forEach((layer) => {
         var slug = layer.feature.geometry.slug;
         var name = layer.feature.geometry.name;
