@@ -213,7 +213,7 @@ if (mapEl && baseUrl) {
         var name = layer.feature.geometry.name;
         var layerCenter = layer.getBounds().getCenter();
         var politicalParty = politicalParties[random(politicalParties.length)];
-        var popup = L.popup({ className: "tooltip", closeButton: false });
+        var popup = L.popup({ className: "mapTooltip", closeButton: false });
         popup.setContent(`${name}`);
         layer.bindPopup(popup);
         layer.on("mouseover", function (e) {
@@ -245,8 +245,8 @@ if (mapEl && baseUrl) {
           `${politicalParty["party"]["name"]} - ${politicalParty["wardCouncillor"]["name"]}`,
           {
             direction: "top",
-            offset: [0, -16],
-            className: "tooltip",
+            offset: [0, -20],
+            className: "mapTooltip",
             permanent: false,
             opacity: 1,
           }
@@ -326,8 +326,8 @@ if (mapEl && baseUrl) {
         name: "Daniel Kapungwe",
         icon: L.icon({
           iconUrl: "../../../../static/assets/danielkapungwe.png",
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
           className: "icon-marker",
           bubblingMouseEvents: true,
         }),
@@ -336,8 +336,8 @@ if (mapEl && baseUrl) {
         name: "ANC",
         icon: L.icon({
           iconUrl: "../../../../static/assets/anc.png",
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
           className: "icon-marker",
           bubblingMouseEvents: true,
         }),
@@ -348,8 +348,8 @@ if (mapEl && baseUrl) {
         name: "Bukelani Zuma",
         icon: L.icon({
           iconUrl: "../../../../static/assets/bukelanizuma.png",
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
           className: "icon-marker",
           bubblingMouseEvents: true,
         }),
@@ -358,8 +358,8 @@ if (mapEl && baseUrl) {
         name: "IFP",
         icon: L.icon({
           iconUrl: "../../../../static/assets/ifp.png",
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
           className: "icon-marker",
           bubblingMouseEvents: true,
         }),
@@ -370,8 +370,8 @@ if (mapEl && baseUrl) {
         name: "Stuart Pringle",
         icon: L.icon({
           iconUrl: "../../../../static/assets/stuartpringle.png",
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
           className: "icon-marker",
           bubblingMouseEvents: true,
         }),
@@ -380,8 +380,8 @@ if (mapEl && baseUrl) {
         name: "DA",
         icon: L.icon({
           iconUrl: "../../../../static/assets/da.png",
-          iconSize: [32, 32],
-          iconAnchor: [16, 16],
+          iconSize: [40, 40],
+          iconAnchor: [20, 20],
           className: "icon-marker",
           bubblingMouseEvents: true,
         }),
@@ -407,7 +407,7 @@ if (mapEl && baseUrl) {
               },
             }).addTo(map);
             var popup = L.popup({
-              className: "tooltip",
+              className: "mapTooltip",
               closeButton: false,
             });
             popup.setContent(neighbour["name"]);

@@ -272,3 +272,13 @@ if (locationModal) {
     }
   });
 }
+
+let findCouncillorBtn = document.querySelector("#find-councillor");
+
+if (findCouncillorBtn) {
+  if (window.document.location.pathname == "/") {
+    findCouncillorBtn.classList.add("hidden")
+  } 
+}
+
+
