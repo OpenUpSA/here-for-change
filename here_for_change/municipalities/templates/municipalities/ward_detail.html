@@ -27,7 +27,7 @@
         </div>
 
         <div
-          class="dropdown-panel absolute top-0 right-0 z-[2] w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          class="dropdown-panel absolute top-0 right-0 z-50 w-full max-h-[418px] overflow-y-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
@@ -127,8 +127,8 @@
                 <span class="triangle-down"></span> </span
               ></i>
             </div>
+            <p id="council-name">{{ward.name|json_script:"councillor-ward"}}</p>
             <p>{{ward_detail.councillor_political_party.value}}</p>
-            <p class="font-semibold text-neutral-400">Elected {{ward_detail.councillor_elected_date.value}}</p>
           </div>
         </div>
         <div class="my-3 border-t-2 border-gray-100"></div>
@@ -161,7 +161,7 @@
               <span>
                 <i class="fa-solid fa-thumbs-up text-green-600"> </i>
               </span>
-              <span> 24 </span>
+              <span> {{ward_detail.councillor_contacts_phone.feedback.positive}}</span>
             </span>
             <span
               class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
@@ -173,7 +173,7 @@
               <span>
                 <i class="fa-solid fa-thumbs-down text-red-600"></i>
               </span>
-              <span> 24 </span>
+              <span> {{ward_detail.councillor_contacts_phone.feedback.negative}}</span>
             </span>
           </div>
         </div>
@@ -207,7 +207,7 @@
               <span>
                 <i class="fa-solid fa-thumbs-up text-green-600"></i>
               </span>
-              <span> 5 </span>
+              <span> {{ward_detail.councillor_contacts_email_primary.feedback.positive}} </span>
             </span>
             <span
               class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
@@ -219,7 +219,7 @@
               <span>
                 <i class="fa-solid fa-thumbs-down text-red-600"></i>
               </span>
-              <span> 0 </span>
+              <span>  {{ward_detail.councillor_contacts_email_primary.feedback.negative}} </span>
             </span>
           </div>
         </div>
@@ -349,158 +349,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Summary section -->
-<section class="bg-neutral-100 pt-20">
-  <div
-    class="mx-auto max-w-screen-xl gap-7 px-4 md:flex md:px-8 lg:gap-12 xl:px-4"
-  >
-    <!-- Left side bar -->
-    <div
-      id="toc"
-      class="sticky top-0 z-20 bg-neutral-100 py-6 text-sm md:top-16 md:h-[446px] md:w-1/4 md:py-0 md:text-base"
-    >
-      <div
-        id="side-anime"
-        class="relative flex flex-row gap-2 overflow-x-auto border-[#9333ea00] md:flex-col md:gap-0 md:overflow-x-visible md:rounded-3xl md:border-4 md:border-solid md:p-2"
-      >
-        <p
-          id="side-anime-banner"
-          class="benfritz absolute top-[-10%] left-[-20%] hidden rounded-md bg-[#7f00ff] p-2 text-white opacity-0 md:block"
-        >
-          Choose a category to explore!
-        </p>
-        {% for key, value in content.ward.items %}
-          {% if value.toc.show == True  %}
-            {% if forloop.counter0 == 1 %}
-            <a href="#{{value.toc.title|lower}}" class="btn-active toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-              <span>
-                <i class="{{value.toc.icon}}"></i>
-              </span>
-              <span class="font-medium">
-                {{value.toc.title}}
-              </span>
-            </a>
-            {% else %}
-            <a href="#{{value.toc.title|lower}}" class="btn-inactive toc-btn block md:w-auto md:h-12 md:flex text-center items-center gap-5 p-1 md:p-4 rounded-lg mb-3 cursor-pointer transition-all duration-[400ms] ease-in-out">
-              <span>
-                <i class="{{value.toc.icon}}"></i>
-              </span>
-              <span class="font-medium">
-                {{value.toc.title}}
-              </span>
-            </a>
-            {% endif %}
-          {% endif %}
-        {% endfor %}
-      </div> 
-    </div>
-    <!-- Right side  -->
-    <div id="summary" class="toc pt-5 md:w-3/4">
-      {% include "./toc_summary.html" %}
-    </div>
-  </div>
-</section>
-<!-- Take action section -->
-<section class="mt-10 bg-white">
-  <div class="mx-auto max-w-screen-xl px-4 md:px-8 xl:px-4">
-    <div class="w-full text-center">
-      <p class="benfritz pb-5 text-2xl md:text-3xl">
-        ...or
-        <span class="relative">
-          take action
-          <img
-            class="absolute left-0 w-full"
-            src="{% static 'assets/basic-underline.svg' %}"
-          />
-        </span>
-        with our participation tools!
-      </p>
-      <p class="pb-7 text-sm font-medium text-slate-400">
-        Designed to help residents take action and influence change in their
-        community
-      </p>
-    </div>
-
-    <div
-      class="mx-auto flex w-full flex-col flex-wrap items-center justify-between gap-5 md:flex-row"
-    >
-      <!-- action card -->
-      {% for item in content.ward.participation.items %}
-
-      <a
-        href="{{item.url}}"
-        class="hover-card-img relative block w-full cursor-pointer rounded-lg px-2 pb-3 text-sm shadow-wide transition-all duration-300 ease-in-out hover:-translate-y-1.5 md:w-[48%] lg:w-[23%]"
-      >
-        {% if item.popular %}
-        <p
-          class="popular-banner benfritz absolute top-[-5px] left-[-8px] z-40 rotate-[-25deg] rounded-md bg-[#7f00ff] p-2 text-white"
-        >
-          Popular!
-        </p>
-        {% endif %}
-        <div class="relative h-[182px] w-full overflow-hidden rounded-lg">
-          <div
-            class="absolute top-0 left-0 bottom-0 right-0 z-10 rounded-lg bg-[#7f00ff] opacity-20"
-          ></div>
-          <img
-            class="z-2 h-[182px] w-full rounded-lg object-cover transition-all duration-300 ease-in-out"
-            src="{{item.image}}"
-          />
-        </div>
-        <div
-          class="flex h-[52px] w-full items-center justify-center text-center"
-        >
-          <span class="font-bold text-[#192827]">{{item.title}}</span>
-        </div>
-        <!-- horizontal divide line -->
-        <div class="mb-2 w-full border-t border-gray-100 md:mb-4"></div>
-        <div class="flex items-center justify-between text-slate-400">
-          <div class="flex items-center gap-x-2">
-            <span>
-              <i class="fa-solid fa-stopwatch"></i>
-            </span>
-            <span>{{item.length}} sec</span>
-          </div>
-          <div class="flex items-center gap-x-2">
-            <div
-              class="smTooltip flex cursor-pointer items-center gap-x-2 rounded-lg p-2 hover:bg-neutral-200 hover:text-[#7f00ff]"
-            >
-              <span class="smTooltipText">
-                Like this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-heart"></i>
-              </span>
-              <span>{{item.likes}}</span>
-            </div>
-            <div
-              class="smTooltip flex cursor-pointer items-center gap-x-2 rounded-lg p-2 hover:bg-neutral-200 hover:text-[#7f00ff]"
-            >
-              <span class="smTooltipText">
-                Share this
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-share"></i>
-              </span>
-              <span>{{item.replies}}</span>
-            </div>
-          </div>
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-    <div class="align-items mt-7 mb-12 flex w-full justify-center">
-      <div
-        class="flex h-[50px] w-full cursor-pointer items-center justify-between rounded-md bg-neutral-200 px-4 font-medium hover:bg-neutral-300 md:w-[174px]"
-      >
-        <span class="whitespace-nowrap text-sm"> Explore more tools </span>
-        <i class="fa-solid fa-arrow-right pl-2 text-xl"></i>
       </div>
     </div>
   </div>

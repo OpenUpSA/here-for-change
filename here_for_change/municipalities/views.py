@@ -4,8 +4,9 @@ from datetime import datetime
 from .decorators import redirect_to_closest_ward
 from django.http import JsonResponse
 
-class MunicipalityList(ListView):
+class Home(ListView):
     model = Municipality
+    template_name = "municipalities/home.html"
     @redirect_to_closest_ward
     def get(self,request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -199,7 +200,8 @@ class WardDetail(DetailView):
         ward_details=WD.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
-                'value':detail.field_value
+                'value':detail.field_value,
+                'feedback':detail.feedback
             }
         
         ctx['neighbours']=Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)

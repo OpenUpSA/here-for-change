@@ -137,7 +137,7 @@ function changeLinkState() {
   }
 }
 
-window.addEventListener("scroll", changeLinkState);
+// window.addEventListener("scroll", changeLinkState);
 
 // bar tooltips positioning
 const spendingBar = document.getElementsByClassName("spending-bar");
@@ -199,9 +199,8 @@ function inView(element) {
   }
   return false;
 }
-
-if (document) {
-  var toc_element = document.getElementById("toc");
+var toc_element = document.getElementById("toc");
+if (toc_element) {
   document.addEventListener("scroll", animate);
   function animate() {
     if (inView(toc_element)) {
@@ -277,8 +276,17 @@ let findCouncillorBtn = document.querySelector("#find-councillor");
 
 if (findCouncillorBtn) {
   if (window.document.location.pathname == "/") {
-    findCouncillorBtn.classList.add("hidden")
-  } 
+    findCouncillorBtn.classList.add("hidden");
+  }
+}
+
+const councillorWard = document.querySelector("#councillor-ward");
+const councilNameEl = document.querySelector("#council-name");
+if (councillorWard && councilNameEl) {
+  const councillorWardName = JSON.parse(councillorWard.textContent);
+  let splitWardName = councillorWardName.split("Ward");
+  let wardName = `Ward ${splitWardName[1]}, ${splitWardName[0]}`;
+  councilNameEl.innerHTML = wardName;
 }
 
 
