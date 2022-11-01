@@ -1,9 +1,31 @@
 var municipality = {};
+var closestMuni = [];
 var baseUrl =
   window.document.location.href.split("/")[0] +
   "//" +
   window.document.location.href.split("/")[2];
 var mapEl = document.querySelector("#map");
+
+function getDistance(origin, destination) {
+  // return distance in meters
+  var lon1 = toRadian(origin[1]),
+    lat1 = toRadian(origin[0]),
+    lon2 = toRadian(destination[1]),
+    lat2 = toRadian(destination[0]);
+
+  var deltaLat = lat2 - lat1;
+  var deltaLon = lon2 - lon1;
+
+  var a =
+    Math.pow(Math.sin(deltaLat / 2), 2) +
+    Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
+  var c = 2 * Math.asin(Math.sqrt(a));
+  var EARTH_RADIUS = 6371;
+  return c * EARTH_RADIUS * 1000;
+}
+function toRadian(degree) {
+  return (degree * Math.PI) / 180;
+}
 
 if (mapEl && baseUrl) {
   var map = L.map(mapEl);
@@ -12,82 +34,124 @@ if (mapEl && baseUrl) {
   var areas = [];
   var youAreHereLatlng = [];
   let muniAreaData = [];
+  let muniCoords = [];
+  var municipalityId = "";
+  var wardId = "";
+  const coords = document.querySelectorAll(".coords");
 
-  if (window.document.location.pathname == "/") {
-    var municipalityId = "wc033";
-    var wardId = "wc033-cape-agulhas-ward-1";
-  } else {
-    let path =
-      window.document.location.href.split("/municipalities")[1] || "///";
-    var municipalityId = path.split("/")[1];
-    var wardId = path.split("/")[3];
+  if (coords) {
+    coords.forEach((el) => {
+      muniCoords.push(JSON.parse(el.textContent));
+    });
   }
 
-  fetch(`${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`)
-    .then((response) => response.json())
-    .then((data) => {
-      let { neighbours, map_geoJson, name, slug } = data;
-      municipality["municipality_area_number"] =
-        data["municipality"]["area_number"];
-      let wardAreaData = JSON.parse(map_geoJson);
-      wardAreaData["name"] = name;
-      wardAreaData["slug"] = slug;
-      muniAreaData.push(wardAreaData);
+  function setBaseIds() {
+    if (window.document.location.pathname == "/") {
+      if (closestMuni.length > 0) {
+        municipalityId = closestMuni[0].muniCode;
+        wardId = closestMuni[0].slug;
+        console.log("closestMuni", closestMuni[0]);
+      } else {
+        municipalityId = "wc033";
+        wardId = "wc033-cape-agulhas-ward-1";
+      }
+    } else {
+      let path =
+        window.document.location.href.split("/municipalities")[1] || "///";
+      municipalityId = path.split("/")[1];
+      wardId = path.split("/")[3];
+    }
+    getJson();
+  }
 
-      neighbours.forEach((neighbour) => {
-        let neighbourAreaData = JSON.parse(neighbour.map_geoJson);
-        let name = neighbour["name"];
-        let slug = neighbour["slug"];
-        neighbourAreaData["name"] = name;
-        neighbourAreaData["slug"] = slug;
-        muniAreaData.push(neighbourAreaData);
-      });
-    })
-    .then(() => {
-      fetch(
-        "https://mapit.code4sa.org/area/" +
-          municipality["municipality_area_number"] +
-          "/touches"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          municipality["neighbours"] = data;
-          updateNeighbourMunicipalities();
+  function getJson() {
+    fetch(`${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`)
+      .then((response) => response.json())
+      .then((data) => {
+        let { neighbours, map_geoJson, name, slug } = data;
+        municipality["municipality_area_number"] =
+          data["municipality"]["area_number"];
+        let wardAreaData = JSON.parse(map_geoJson);
+        wardAreaData["name"] = name;
+        wardAreaData["slug"] = slug;
+        muniAreaData.push(wardAreaData);
+
+        neighbours.forEach((neighbour) => {
+          let neighbourAreaData = JSON.parse(neighbour.map_geoJson);
+          let name = neighbour["name"];
+          let slug = neighbour["slug"];
+          neighbourAreaData["name"] = name;
+          neighbourAreaData["slug"] = slug;
+          muniAreaData.push(neighbourAreaData);
         });
-
-      fetch(
-        "https://mapit.code4sa.org/area/" +
-          municipality["municipality_area_number"] +
-          "/geometry"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          municipality["geometry"] = data;
-          latlng = [
-            municipality["geometry"]["centre_lat"],
-            municipality["geometry"]["centre_lon"],
-          ];
-          map.setView(latlng, zoom);
-
-          var municipalOffice = L.divIcon({
-            className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-            iconAnchor: [52, 48],
-            html: "<div>Municipal office</div>",
-            interactive: false,
+      })
+      .then(() => {
+        fetch(
+          "https://mapit.code4sa.org/area/" +
+            municipality["municipality_area_number"] +
+            "/touches"
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            municipality["neighbours"] = data;
+            updateNeighbourMunicipalities();
           });
 
-          L.marker(latlng, {
-            icon: municipalOffice,
-            riseOnHover: true,
-            bubblingMouseEvents: true,
-          }).addTo(map);
-        });
-    })
-    .then(() => {
-      setTimeout(() => {
-        loadMap();
-      }, 1000);
-    });
+        fetch(
+          "https://mapit.code4sa.org/area/" +
+            municipality["municipality_area_number"] +
+            "/geometry"
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            municipality["geometry"] = data;
+            latlng = [
+              municipality["geometry"]["centre_lat"],
+              municipality["geometry"]["centre_lon"],
+            ];
+            map.setView(latlng, zoom);
+
+            var municipalOffice = L.divIcon({
+              className:
+                "text-pin is-filter-grayscale-bw is-pointer-events-none",
+              iconAnchor: [52, 48],
+              html: "<div>Municipal office</div>",
+              interactive: false,
+            });
+
+            L.marker(latlng, {
+              icon: municipalOffice,
+              riseOnHover: true,
+              bubblingMouseEvents: true,
+            }).addTo(map);
+          });
+      })
+      .then(() => {
+        setTimeout(() => {
+          loadMap();
+        }, 1000);
+      });
+  }
+
+  function successLocation(position) {
+    youAreHereLatlng.push(position.coords.longitude);
+    youAreHereLatlng.push(position.coords.latitude);
+    setYouAreHere();
+  }
+
+  function failedLocation() {
+    //to-do: implement prompt for disabled location
+    setBaseIds();
+  }
+
+  function getBrowserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successLocation, failedLocation);
+    } else {
+      console.log("Geolocation not available");
+    }
+  }
+  getBrowserLocation();
 
   function setYouAreHere() {
     var youAreHere = L.divIcon({
@@ -104,18 +168,22 @@ if (mapEl && baseUrl) {
         bubblingMouseEvents: true,
       }).addTo(map);
     }
-  }
 
-  function getBrowserLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        youAreHereLatlng.push(position.coords.latitude);
-        youAreHereLatlng.push(position.coords.longitude);
-        setYouAreHere();
+    if (muniCoords && youAreHereLatlng.length > 0) {
+      let muniDiff = [];
+      muniCoords.forEach((item) => {
+        let distanceDiff = getDistance(youAreHereLatlng, item.coords);
+        muniDiff.push({
+          name: item.name,
+          distFromUser: distanceDiff,
+          slug: item.slug,
+          muniCode: item.muniCode,
+        });
       });
+      closestMuni = muniDiff.sort((a, b) => a.distFromUser - b.distFromUser);
+      setBaseIds();
     }
   }
-  getBrowserLocation();
 
   var canAccessParent = function () {
     try {
@@ -137,59 +205,6 @@ if (mapEl && baseUrl) {
     return Math.floor(Math.random() * top);
   };
 
-  // var inside = [-34.63778, 19.85581]
-  // var outside = [-34.390567, 19.132697]
-
-  // var insideDiv = L.divIcon({
-  //   className: "text-pin is-filter-contrast-high is-pointer-events-none",
-  //   iconAnchor: [42, 48],
-  //   html: "<div>Inside</div>",
-  //   interactive: false,
-  // });
-
-  // var insideMarker = L.marker(inside, {
-  //   icon: insideDiv,
-  //   riseOnHover: true,
-  //   bubblingMouseEvents: true,
-  // }).addTo(map);
-
-  // var outsideDiv = L.divIcon({
-  //   className: "text-pin is-filter-contrast-high is-pointer-events-none",
-  //   iconAnchor: [42, 48],
-  //   html: "<div>outside</div>",
-  //   interactive: false,
-  // });
-
-  // var outsideMarker = L.marker(outside, {
-  //   icon: outsideDiv,
-  //   riseOnHover: true,
-  //   bubblingMouseEvents: true,
-  // }).addTo(map);
-
-  // function getDistance(origin, destination) {
-  //   // return distance in meters
-  //   var lon1 = toRadian(origin[1]),
-  //     lat1 = toRadian(origin[0]),
-  //     lon2 = toRadian(destination[1]),
-  //     lat2 = toRadian(destination[0]);
-
-  //   var deltaLat = lat2 - lat1;
-  //   var deltaLon = lon2 - lon1;
-
-  //   var a =
-  //     Math.pow(Math.sin(deltaLat / 2), 2) +
-  //     Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
-  //   var c = 2 * Math.asin(Math.sqrt(a));
-  //   var EARTH_RADIUS = 6371;
-  //   return c * EARTH_RADIUS * 1000;
-  // }
-  // function toRadian(degree) {
-  //   return (degree * Math.PI) / 180;
-  // }
-  // var auchiDistance = getDistance([9.0765, 7.3986], [7.0669, 6.2748]);
-  // var enuguDistance = getDistance([9.0765, 7.3986], [6.4483, 7.5139]);
-    
-
   var loadMap = () => {
     if (muniAreaData.length > 0) {
       areas = L.geoJSON(muniAreaData, {
@@ -200,14 +215,28 @@ if (mapEl && baseUrl) {
         },
       }).addTo(map);
 
-      //check if point is inside polygon
-      // areas.eachLayer(function(memberLayer) {
-      //   console.log("mem",memberLayer);
-      //   if (memberLayer.getBounds().contains(insideMarker.getLatLng())) {
-      //     console.log(memberLayer.feature.geometry.name);
-      //   } 
-      // });
-      
+      //load homepage map in the users nearest ward
+      if (youAreHereLatlng.length > 0 && window.document.location.pathname == "/") {
+        var posMarker = L.marker(youAreHereLatlng, {
+          riseOnHover: true,
+          bubblingMouseEvents: true,
+        });
+        
+        var userClosestWard = []
+        //check if user position is inside polygon
+        areas.eachLayer(function (memberLayer) {
+          if (memberLayer.getBounds().contains(posMarker.getLatLng())) {
+            console.log("IT IS INSIDE",memberLayer.feature.geometry.slug);
+            userClosestWard.push(memberLayer.feature.geometry.slug)
+          }
+        });
+        if (userClosestWard.length > 0) {
+          wardId = userClosestWard[0]
+        }
+      }
+      console.log("wardId",wardId);
+
+
       areas.getLayers().forEach((layer) => {
         var slug = layer.feature.geometry.slug;
         var name = layer.feature.geometry.name;
@@ -261,7 +290,7 @@ if (mapEl && baseUrl) {
         });
 
         if (wardId == slug) {
-          //ward office is using randomPointsOnPolygon
+          //ward office gotten using randomPointsOnPolygon
           var wardLatlng = randomPointsOnPolygon(
             1,
             layer.feature
@@ -310,7 +339,7 @@ if (mapEl && baseUrl) {
         });
       });
     } else {
-      setTimeout(loadMap, 1000);
+      //setTimeout(loadMap, 1000);
     }
   };
 
@@ -452,3 +481,39 @@ if (mapEl && baseUrl) {
     });
   };
 }
+// var inside = [-34.63778, 19.85581]
+// var outside = [-34.390567, 19.132697]
+
+// var insideDiv = L.divIcon({
+//   className: "text-pin is-filter-contrast-high is-pointer-events-none",
+//   iconAnchor: [42, 48],
+//   html: "<div>Inside</div>",
+//   interactive: false,
+// });
+
+// var insideMarker = L.marker(inside, {
+//   icon: insideDiv,
+//   riseOnHover: true,
+//   bubblingMouseEvents: true,
+// }).addTo(map);
+
+// var outsideDiv = L.divIcon({
+//   className: "text-pin is-filter-contrast-high is-pointer-events-none",
+//   iconAnchor: [42, 48],
+//   html: "<div>outside</div>",
+//   interactive: false,
+// });
+
+// var outsideMarker = L.marker(outside, {
+//   icon: outsideDiv,
+//   riseOnHover: true,
+//   bubblingMouseEvents: true,
+// }).addTo(map);
+
+//check if point is inside polygon
+// areas.eachLayer(function(memberLayer) {
+//   console.log("mem",memberLayer);
+//   if (memberLayer.getBounds().contains(insideMarker.getLatLng())) {
+//     console.log(memberLayer.feature.geometry.name);
+//   }
+// });

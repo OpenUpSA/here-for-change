@@ -1,19 +1,5 @@
 {% extends "base.html" %} {% load static %} 
 {% block content %}
-<!-- <div class=" max-w-screen-xl mx-auto flex align-items gap-3">
-  <h2>Municipalities:</h2>
-  <ul class="flex flex-col gap-3">
-    {% for municipality in object_list %}
-    <li class="underline">
-      <a
-        href="{% url 'ward_detail' municipality.municipality_code.lower municipality.ward_set.first.slug %}"
-      >
-        {{ municipality.name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</div> -->
 <section class="h-full overflow-hidden">
   <div class="heading-section min-h-[25vh]">
     <div class="flex flex-col pt-12 items-center justify-center px-4 md:px-8 xl:px-4">
@@ -62,4 +48,17 @@
   </div>
  <div id="map" class="h-[65vh]"></div> 
 </section>
+<!-- get details of available Municipalities -->
+<div class="hidden">
+  {% for municipality in object_list %}
+  <div class="coords">
+    {
+      "name": "{{municipality.name}}",
+      "coords": [{{municipality.map_latitude}}, {{municipality.map_longitude}}],
+      "slug": "{{municipality.ward_set.first.slug}}",
+      "muniCode": "{{municipality.municipality_code}}"
+    }
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

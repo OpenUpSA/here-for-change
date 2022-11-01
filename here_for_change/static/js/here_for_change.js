@@ -288,5 +288,3 @@ if (councillorWard && councilNameEl) {
   let wardName = `Ward ${splitWardName[1]}, ${splitWardName[0]}`;
   councilNameEl.innerHTML = wardName;
 }
-
-
