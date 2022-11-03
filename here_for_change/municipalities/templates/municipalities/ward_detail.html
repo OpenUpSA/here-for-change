@@ -353,5 +353,32 @@
     </div>
   </div>
 </section>
-
+<div class="hidden">
+  <div class="current_ward">
+    {
+      "geometry": {{object.map_geoJson}},
+      "name": "{{object.name}}",
+      "slug": "{{object.slug}}",
+      "muniCode": "{{object.municipality.municipality_code}}",
+      "muniAreaNum": {{object.municipality.area_number}},
+      "municipality": "{{object.municipality}}",
+      "defaultZoom": {{object.map_default_zoom}},
+      "url": "{{object.get_absolute_url}}",
+      "coords": [{{object.municipality.map_latitude}}, {{object.municipality.map_longitude}}]
+    }
+  </div>
+  {% for neighbour in neighbours %}
+  <div class="neighbouring_wards">
+    {
+      "geometry": {{neighbour.map_geoJson}},
+      "name": "{{neighbour.name}}",
+      "slug": "{{neighbour.slug}}",
+      "muniCode": "{{neighbour.municipality.municipality_code}}",
+      "municipality": "{{neighbour.municipality}}",
+      "defaultZoom": {{neighbour.map_default_zoom}},
+      "url": "{{neighbour.get_absolute_url}}"
+    }
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
