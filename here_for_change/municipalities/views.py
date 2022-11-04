@@ -238,3 +238,6 @@ class WardDetailJson(DetailView):
 
 
       
+class FindMyWardCouncillor(ListView):
+    template_name = "municipalities/find_my_ward_councillor.html"
+    model = Municipality

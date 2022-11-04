@@ -56,7 +56,7 @@ if (mapEl && baseUrl) {
   }
 
   function setBaseIds() {
-    if (window.document.location.pathname == "/") {
+    if (window.document.location.pathname == "/" || window.document.location.pathname == "/find-my-ward-councillor") {
       if (closestMuni.length > 0) {
         municipalityId = closestMuni[0].muniCode;
         wardId = closestMuni[0].slug;
@@ -75,7 +75,7 @@ if (mapEl && baseUrl) {
     getMapData();
   }
   async function getMapData() {
-    if (window.document.location.pathname == "/") {
+    if (window.document.location.pathname == "/" || window.document.location.pathname == "/find-my-ward-councillor") {
       //get data from json for home map
       await fetch(
         `${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`
@@ -498,7 +498,7 @@ if (mapEl && baseUrl) {
 
             layer.on("mouseover", function (e) {
               var popup = e.target.getPopup();
-              popup.setLatLng(muniLatlng).openOn(map);
+              popup.setLatLng(e.latlng).openOn(map);
             });
 
             layer.on("mouseout", function (e) {
