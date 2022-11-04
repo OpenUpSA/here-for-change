@@ -56,7 +56,10 @@ if (mapEl && baseUrl) {
   }
 
   function setBaseIds() {
-    if (window.document.location.pathname == "/" || window.document.location.pathname == "/find-my-ward-councillor") {
+    if (
+      window.document.location.pathname == "/" ||
+      window.document.location.pathname == "/find-my-ward-councillor"
+    ) {
       if (closestMuni.length > 0) {
         municipalityId = closestMuni[0].muniCode;
         wardId = closestMuni[0].slug;
@@ -75,7 +78,10 @@ if (mapEl && baseUrl) {
     getMapData();
   }
   async function getMapData() {
-    if (window.document.location.pathname == "/" || window.document.location.pathname == "/find-my-ward-councillor") {
+    if (
+      window.document.location.pathname == "/" ||
+      window.document.location.pathname == "/find-my-ward-councillor"
+    ) {
       //get data from json for home map
       await fetch(
         `${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`
@@ -145,7 +151,7 @@ if (mapEl && baseUrl) {
   }
 
   function failedLocation() {
-    //to-do: implement prompt for disabled location
+    alert("Please enable location permission");
     setBaseIds();
   }
 
@@ -153,7 +159,7 @@ if (mapEl && baseUrl) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(successLocation, failedLocation);
     } else {
-      console.log("Geolocation not available");
+      alert("Geolocation not available");
     }
   }
   getBrowserLocation();
@@ -206,6 +212,20 @@ if (mapEl && baseUrl) {
     return (degree * Math.PI) / 180;
   }
 
+  function setClosestMuni() {
+    let muniDiff = [];
+    muniCoords.forEach((item) => {
+      let distanceDiff = getDistance(youAreHereLatlng, item.coords);
+      muniDiff.push({
+        name: item.name,
+        distFromUser: distanceDiff,
+        slug: item.slug,
+        muniCode: item.muniCode,
+        coords: item.coords,
+      });
+    });
+    closestMuni = muniDiff.sort((a, b) => a.distFromUser - b.distFromUser);
+  }
   function setYouAreHere() {
     var youAreHere = L.divIcon({
       className: "text-pin is-filter-contrast-high is-pointer-events-none",
@@ -223,20 +243,49 @@ if (mapEl && baseUrl) {
     }
 
     if (muniCoords && youAreHereLatlng.length > 0) {
-      let muniDiff = [];
-      muniCoords.forEach((item) => {
-        let distanceDiff = getDistance(youAreHereLatlng, item.coords);
-        muniDiff.push({
-          name: item.name,
-          distFromUser: distanceDiff,
-          slug: item.slug,
-          muniCode: item.muniCode,
-          coords: item.coords,
-        });
-      });
-      closestMuni = muniDiff.sort((a, b) => a.distFromUser - b.distFromUser);
-      setBaseIds();
+      setClosestMuni();
     }
+
+    setBaseIds();
+  }
+
+  const locationBtn = document.querySelector("#location-btn");
+  if (locationBtn) {
+    locationBtn.addEventListener("click", locationBtnHandler);
+  }
+
+  function locationBtnHandler() {
+    const locationModal = document.querySelector("#location-modal");
+    if (locationModal) {
+      openModal();
+      if (navigator.geolocation) {
+        setTimeout(() => {
+          navigator.geolocation.getCurrentPosition(
+            successRedirect,
+            failedRedirect
+          );
+        }, 2000);
+      } else {
+        alert("Geolocation not available");
+      }
+    }
+  }
+
+  function successRedirect(position) {
+    youAreHereLatlng.push(position.coords.longitude);
+    youAreHereLatlng.push(position.coords.latitude);
+    if (muniCoords && youAreHereLatlng.length > 0) {
+      setClosestMuni();
+    }
+    if (closestMuni.length > 0) {
+      updateParentOrSelfLocationSearch(
+        `municipalities/${closestMuni[0].muniCode}/wards/${closestMuni[0].slug}/`
+      );
+    }
+  }
+
+  function failedRedirect() {
+    alert("Please enable location permission");
   }
 
   var canAccessParent = function () {
