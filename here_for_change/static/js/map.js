@@ -23,12 +23,14 @@ const neighbouringWards = document.querySelectorAll(".neighbouring_wards");
 
 if (currentWard) {
   current_ward = JSON.parse(currentWard.textContent);
+  console.log("curr_ward", current_ward);
 }
 
 if (neighbouringWards) {
   neighbouringWards.forEach((el) => {
     neighbouring_wards.push(JSON.parse(el.textContent));
   });
+  console.log("neighbouring_wards",neighbouring_wards);
 }
 
 if (coords) {
@@ -162,7 +164,12 @@ if (mapEl && baseUrl) {
       alert("Geolocation not available");
     }
   }
-  getBrowserLocation();
+  
+  if ( window.document.location.pathname == "/" ||  window.document.location.pathname == "/find-my-ward-councillor") {
+    getBrowserLocation();
+  } else {
+    setBaseIds();
+  }
 
   function createCookie(name, value, days) {
     var expires;

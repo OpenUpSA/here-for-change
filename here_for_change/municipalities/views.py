@@ -241,3 +241,29 @@ class WardDetailJson(DetailView):
 class FindMyWardCouncillor(ListView):
     template_name = "municipalities/find_my_ward_councillor.html"
     model = Municipality
+
+
+
+class WhoIsMyWardCouncillor(DetailView):
+    model = Ward
+    template_name = "municipalities/who_is_my_ward_councillor.html"
+    slug_field = 'slug__iexact'
+    slug_url_kwarg = 'slug'
+
+    def get_context_data(self, **kwargs):
+        # get staging
+        staging=self.request.GET.get("version","production")
+
+        ctx= super().get_context_data(**kwargs)
+        ward=self.get_object()
+        ctx['ward_detail']={}
+
+        ward_details=WD.objects.filter(ward=ward,stage=staging)
+        for detail in ward_details:
+            ctx['ward_detail'][detail.field_name]={
+                'value':detail.field_value,
+                'feedback':detail.feedback
+            }
+        
+        ctx['neighbours']=Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)
+        return ctx

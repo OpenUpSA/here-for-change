@@ -281,10 +281,13 @@ if (findCouncillorBtn) {
 }
 
 const councillorWard = document.querySelector("#councillor-ward");
-const councilNameEl = document.querySelector("#council-name");
+const councilNameEl = document.querySelectorAll(".ward-name");
 if (councillorWard && councilNameEl) {
   const councillorWardName = JSON.parse(councillorWard.textContent);
   let splitWardName = councillorWardName.split("Ward");
   let wardName = `Ward ${splitWardName[1]}, ${splitWardName[0]}`;
-  councilNameEl.innerHTML = wardName;
+  councilNameEl.forEach((el)=>{
+    el.innerHTML = wardName;
+  })
+  
 }
