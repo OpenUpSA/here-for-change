@@ -1,7 +1,5 @@
-import logging
-from datetime import date
 from functools import wraps
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.geoip2 import GeoIP2
 from django.contrib.gis.geos import Point
@@ -16,10 +14,10 @@ def redirect_to_closest_ward(func):
     @wraps(func)
     def to_closest_route(self, request, *args, **kwargs):
         ip=get_client_ip(request)
-        g=GeoIP2()
+        gepIP=GeoIP2()
         if not request.COOKIES.get("closest_ward"):
             try:
-                city=g.city(ip)
+                city=gepIP.city(ip)
                 location=Point((city.get("latitude"),city.get("longitude")))
                 closest_ward=Ward.objects.closest(location)
                 res= redirect(closest_ward.get_absolute_url())
