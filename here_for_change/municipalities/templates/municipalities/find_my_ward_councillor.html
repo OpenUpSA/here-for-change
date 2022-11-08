@@ -29,8 +29,9 @@
         integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
         crossorigin="" />
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBc15woji15KUqe8SxJoVpwRP4sB7Mtmk" async
-        defer></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBc15woji15KUqe8SxJoVpwRP4sB7Mtmk&libraries=places"
+    ></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
         integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
         crossorigin=""></script>
@@ -83,7 +84,9 @@
                             <i class="fa-solid fa-magnifying-glass text-purple-700"></i>
                         </span>
 
-                        <input type="text"
+                        <input 
+                            id="address-search-input"  
+                            type="text"
                             class="w-full min-h-[56px] py-3 pl-10 pr-4 text-gray-700 bg-white text-base border rounded-lg focus:border-blue-400 focus:outline-none ring-1 ring-transparent focus:ring-opacity-40 focus:ring-blue-300 hover:ring-purple-800"
                             placeholder="Type your address..." />
                     </div>
@@ -135,8 +138,11 @@
             </div>
         </div>
     </div>
-
-
+    <form id="redirect-to-closest-ward-form" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
+        <input type="number" name="longitude">
+        <input type="number" name="latitude">
+        <input type="text" name="url">
+    </form>
     <!-- get details of available Municipalities -->
     <div class="hidden">
         {% for municipality in object_list %}

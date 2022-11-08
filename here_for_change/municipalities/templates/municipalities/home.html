@@ -64,29 +64,8 @@
   <form id="redirect-to-closest-ward-form" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
     <input type="number" name="longitude">
     <input type="number" name="latitude">
+    <input type="text" name="url">
   </form>
 {% endblock %}
-{% block scripts %}
-  <script defer>
 
-    // Create the search box and link it to the UI element.
-    const input = document.getElementById("address-search-input");
-    const searchBox = new google.maps.places.SearchBox(input);
-    // Listen for the event fired when the user selects a prediction and retrieve
-    // more details for that place.
-    searchBox.addListener("places_changed", () => {
-        const places = searchBox.getPlaces();
-
-        if (places.length == 0) {
-        return;
-        }
-        console.log(places);
-        const form=document.getElementById("redirect-to-closest-ward-form");
-        form.querySelector('input[name="longitude"]').value=places[0].geometry.location.lng();
-        form.querySelector('input[name="latitude"]').value=places[0].geometry.location.lat();
-        form.submit();
-
-    });
-  </script>
-{% endblock scripts %}
 

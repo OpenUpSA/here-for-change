@@ -262,7 +262,7 @@ class WhoIsMyWardCouncillor(DetailView):
         ward=self.get_object()
         ctx['ward_detail']={}
 
-        ward_details=WD.objects.filter(ward=ward,stage=staging)
+        ward_details=WardDetailModel.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value,
@@ -275,11 +275,15 @@ class WhoIsMyWardCouncillor(DetailView):
 class RedirectClosestWard(View):
     def get(self,request):
         longitude,latitude=(request.GET.get("longitude"),request.GET.get("latitude"))
+        input_url = request.GET.get("url")
         if longitude and latitude:
             print(float(latitude),float(longitude))
             location=Point((float(latitude),float(longitude)))
             closest_ward=Ward.objects.closest(location)
-            return redirect(closest_ward.get_absolute_url())
+            if input_url.endswith("find-my-ward-councillor"):
+                return redirect(closest_ward.get_absolute_url() + "ward-councillor")
+            else:
+                return  redirect(closest_ward.get_absolute_url())
         else:
             return redirect("home")
 

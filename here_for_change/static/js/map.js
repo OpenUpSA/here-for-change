@@ -104,7 +104,8 @@ if (mapEl && baseUrl) {
             neighbourAreaData["slug"] = slug;
             muniAreaData.push(neighbourAreaData);
           });
-        });
+        })
+        .catch((e) => console.log(e));
     } else {
       getDataFromBackend();
     }
@@ -119,6 +120,7 @@ if (mapEl && baseUrl) {
         municipality["neighbours"] = data;
         updateNeighbourMunicipalities();
       })
+      .catch((e) => console.log(e))
       .then(() => {
         var zoom = current_ward.defaultZoom || 8;
         map.setView(muniLatlng, zoom);
@@ -359,6 +361,32 @@ if (mapEl && baseUrl) {
   var random = function (top = 6) {
     return Math.floor(Math.random() * top);
   };
+
+  // Create the search box and link it to the UI element.
+  const input = document.getElementById("address-search-input");
+  if (input) {
+    const searchBox = new google.maps.places.SearchBox(input);
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener("places_changed", () => {
+      const places = searchBox.getPlaces();
+
+      if (places.length == 0) {
+        return;
+      }
+      const form = document.getElementById("redirect-to-closest-ward-form");
+      form.querySelector(
+        'input[name="longitude"]'
+      ).value = places[0].geometry.location.lng();
+      form.querySelector(
+        'input[name="latitude"]'
+      ).value = places[0].geometry.location.lat();
+      form.querySelector(
+        'input[name="url"]'
+      ).value = window.document.location.pathname
+      form.submit();
+    });
+  }
 
   var loadMap = () => {
     if (muniAreaData.length > 0) {
@@ -623,7 +651,9 @@ if (mapEl && baseUrl) {
             });
             //distant neighbours are unclickable because no 'slug' for them from backend
             layer.on("click", (e) => {
-              if (window.document.location.pathname.endsWith("ward-councillor")) {
+              if (
+                window.document.location.pathname.endsWith("ward-councillor")
+              ) {
                 updateParentOrSelfLocationSearch(
                   `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
                 );
@@ -649,7 +679,8 @@ if (mapEl && baseUrl) {
               });
               e.target.bringToBack();
             });
-          });
+          })
+          .catch((e) => console.log(e));
       }
     });
   };
