@@ -21,7 +21,7 @@
             aria-expanded="true"
             aria-haspopup="true"
           >
-            <span>{{ward}}</span>
+            <span>{{ward.formatted_name}}</span>
             <i class="fa-solid fa-chevron-down"></i>
           </button>
         </div>
@@ -46,7 +46,7 @@
               tabindex="-1"
               id="menu-item-0"
               onclick="dropDownHandler(event, 'ward-button')"
-              >{{ward_item}}</a
+              >{{ward_item.formatted_name}}</a
             >
             {% endfor %}
           </div>
@@ -358,6 +358,7 @@
     {
       "geometry": {{object.map_geoJson}},
       "name": "{{object.name}}",
+      "formatted_name": "{{object.formatted_name}}",
       "slug": "{{object.slug}}",
       "muniCode": "{{object.municipality.municipality_code}}",
       "muniAreaNum": {{object.municipality.area_number}},
@@ -372,6 +373,7 @@
     {
       "geometry": {{neighbour.map_geoJson}},
       "name": "{{neighbour.name}}",
+      "formatted_name": "{{object.formatted_name}}",
       "slug": "{{neighbour.slug}}",
       "muniCode": "{{neighbour.municipality.municipality_code}}",
       "municipality": "{{neighbour.municipality}}",

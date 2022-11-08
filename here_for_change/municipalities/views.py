@@ -1,8 +1,14 @@
-from django.views.generic import ListView, DetailView
-from .models import Municipality, Ward, WardDetail as WD
 from datetime import datetime
-from .decorators import redirect_to_closest_ward
+
+from django.contrib.gis.geos import Point
 from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.views.generic import DetailView, ListView, View
+
+from .decorators import redirect_to_closest_ward
+from .models import Municipality, Ward
+from .models import WardDetail as WardDetailModel
+
 
 class Home(ListView):
     model = Municipality
@@ -197,7 +203,7 @@ class WardDetail(DetailView):
         ward=self.get_object()
         ctx['ward_detail']={}
 
-        ward_details=WD.objects.filter(ward=ward,stage=staging)
+        ward_details=WardDetailModel.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value,
@@ -226,14 +232,14 @@ class WardDetailJson(DetailView):
         ward=self.get_object()
         ctx.update(ward.toDict())
         ctx['ward_detail']={}
-        ward_details=WD.objects.filter(ward=ward,stage=staging)
+        ward_details=WardDetailModel.objects.filter(ward=ward,stage=staging)
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value,
                 'updated_at':detail.updated_at
             }
         
-        ctx['neighbours']=[w.toDict() for w in  Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)]
+        ctx['neighbours']=[wrd.toDict() for wrd in  Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)]
         return ctx
 
 
@@ -241,8 +247,6 @@ class WardDetailJson(DetailView):
 class FindMyWardCouncillor(ListView):
     template_name = "municipalities/find_my_ward_councillor.html"
     model = Municipality
-
-
 
 class WhoIsMyWardCouncillor(DetailView):
     model = Ward
@@ -267,3 +271,15 @@ class WhoIsMyWardCouncillor(DetailView):
         
         ctx['neighbours']=Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)
         return ctx
+
+class RedirectClosestWard(View):
+    def get(self,request):
+        longitude,latitude=(request.GET.get("longitude"),request.GET.get("latitude"))
+        if longitude and latitude:
+            print(float(latitude),float(longitude))
+            location=Point((float(latitude),float(longitude)))
+            closest_ward=Ward.objects.closest(location)
+            return redirect(closest_ward.get_absolute_url())
+        else:
+            return redirect("home")
+
