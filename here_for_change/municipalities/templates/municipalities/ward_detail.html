@@ -54,7 +54,7 @@
       </div>
     </div>
     <div>
-      <p class="leading-[2.5rem]"><a href="#" class="underline">{{ward.name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipality. A <a href="#" class="underline">{{ward.municipality.municipality_type.lower}} municipality</a> within 
+      <p class="leading-[2.5rem]"><a href="#" class="underline">{{ward.formatted_name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipality. A <a href="#" class="underline">{{ward.municipality.municipality_type.lower}} municipality</a> within 
         {% if ward.municipality.district %}
           <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.district}}</span>, 
         {% endif %}
