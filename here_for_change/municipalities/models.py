@@ -14,7 +14,7 @@ class WardManager(models.Manager):
         qs = self.get_queryset()
         ward_and_distance = []
         for ward in qs:
-            ward_pt = Point((ward.map_longitude, ward.map_latitude))
+            ward_pt = Point((ward.map_latitude, ward.map_longitude))
             ward_and_distance.append((ward, pt.distance(ward_pt)*100))
 
         ward_and_distance = sorted(ward_and_distance, key=lambda x: x[1])
@@ -101,6 +101,16 @@ class Ward(BaseModel):
     def map_geoJson(self):
         return self.boundary.geojson
 
+    @property
+    def formatted_name(self):
+        return Ward.format_name(self.name)
+
+    @staticmethod
+    def format_name(name):
+        splitted_names=name.split(" ")
+        return f"{splitted_names[-2]} {splitted_names[-1]}"
+        
+
     def get_absolute_url(self):
         return reverse("ward_detail", kwargs={"municipality_code": self.municipality.municipality_code, "slug": self.slug})
 
@@ -110,6 +120,7 @@ class Ward(BaseModel):
         """
         return {
             "name": self.name, 
+            "formatted_name":Ward.format_name(self.name),
             "slug": self.slug, 
             "municipality":self.municipality.toDict(),
             "map_geoJson": self.map_geoJson
