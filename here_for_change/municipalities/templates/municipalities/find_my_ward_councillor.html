@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% if TAG_MANAGER_ENABLED %}
     <!-- Google Tag Manager -->
@@ -88,12 +89,13 @@
                     </div>
                     <div class="w-full mt-2 md:mt-0 md:w-auto md:absolute md:right-2 flex items-center">
                         <span class="hidden md:block pr-2">OR</span>
-                        <button onclick=""
+                        <button id="embed-location-btn"
                             class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Use
                             your location</button>
                     </div>
                     <!-- loader -->
-                    <div class="hidden absolute rounded-md bg-hfc-green-700 h-full w-full flex items-center">
+                    <div id="use-location-loader"
+                        class="hidden absolute rounded-md bg-hfc-green-700 h-full w-full flex items-center">
                         <i class="fa-solid fa-spinner text-white text-base animate-spin px-3"></i>
                         <p class="text-white text-sm">Finding your ward councillor</p>
                     </div>
@@ -121,9 +123,14 @@
                     <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="#">
                         <i class="fa-brands fa-twitter text-white"></i>
                     </a>
-                    <a class="h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="#">
+                    <div id="open-embed" class="cursor-pointer relative h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg">
                         <span class="text-white text-sm font-semibold">Embed</span>
-                    </a>
+                        <!-- Embed link card -->
+                        <div id="embed-card" class="hidden break-words cursor-text absolute left-[-200px] sm:left-[-340px] bottom-8 bg-white text-black p-4 pt-6 z-[100] rounded-2xl w-auto md:w-[400px]">
+                            &lt;iframe src="http://localhost:8000{% url 'find_councillor' %}" frameborder="0" allow="clipboard-write"&gt;&lt;/iframe&gt;
+                            <i id="close-embed" class="fa-regular fa-circle-xmark absolute right-2 top-2 cursor-pointer"></i>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>

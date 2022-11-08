@@ -197,9 +197,14 @@
                     <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://twitter.com/openupsa" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-twitter text-white"></i>
                     </a>
-                    <a class="h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="#">
+                    <div id="open-embed" class="cursor-pointer relative h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg">
                         <span class="text-white text-sm font-semibold">Embed</span>
-                    </a>
+                        <!-- Embed link card -->
+                        <div id="embed-card" class="hidden break-words cursor-text absolute left-[-200px] sm:left-[-340px] bottom-8 bg-white text-black p-4 pt-6 z-[100] rounded-2xl w-auto md:w-[400px]">
+                            &lt;iframe src="http://localhost:8000{% url 'councillor_info' object.municipality.municipality_code object.slug %}" frameborder="0" allow="clipboard-write"&gt;&lt;/iframe&gt;
+                            <i id="close-embed" class="fa-regular fa-circle-xmark absolute right-2 top-2 cursor-pointer"></i>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>

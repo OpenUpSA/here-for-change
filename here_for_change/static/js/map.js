@@ -23,14 +23,12 @@ const neighbouringWards = document.querySelectorAll(".neighbouring_wards");
 
 if (currentWard) {
   current_ward = JSON.parse(currentWard.textContent);
-  console.log("curr_ward", current_ward);
 }
 
 if (neighbouringWards) {
   neighbouringWards.forEach((el) => {
     neighbouring_wards.push(JSON.parse(el.textContent));
   });
-  console.log("neighbouring_wards",neighbouring_wards);
 }
 
 if (coords) {
@@ -164,8 +162,11 @@ if (mapEl && baseUrl) {
       alert("Geolocation not available");
     }
   }
-  
-  if ( window.document.location.pathname == "/" ||  window.document.location.pathname == "/find-my-ward-councillor") {
+
+  if (
+    window.document.location.pathname == "/" ||
+    window.document.location.pathname == "/find-my-ward-councillor"
+  ) {
     getBrowserLocation();
   } else {
     setBaseIds();
@@ -295,6 +296,50 @@ if (mapEl && baseUrl) {
     alert("Please enable location permission");
   }
 
+  //embed location button handler
+  const embedLocationBtn = document.querySelector("#embed-location-btn");
+  if (embedLocationBtn) {
+    embedLocationBtn.addEventListener("click", embedLocBtnHandler);
+  }
+
+  function embedLocBtnHandler() {
+    const useLocationLoader = document.querySelector("#use-location-loader");
+    if (useLocationLoader) {
+      useLocationLoader.classList.remove("hidden");
+      if (navigator.geolocation) {
+        setTimeout(() => {
+          navigator.geolocation.getCurrentPosition(
+            embedRedirect,
+            failedEmbedRedirect
+          );
+        }, 2000);
+      } else {
+        alert("Geolocation not available");
+      }
+    }
+  }
+
+  function embedRedirect(position) {
+    youAreHereLatlng.push(position.coords.longitude);
+    youAreHereLatlng.push(position.coords.latitude);
+    if (muniCoords && youAreHereLatlng.length > 0) {
+      setClosestMuni();
+    }
+    if (closestMuni.length > 0) {
+      updateParentOrSelfLocationSearch(
+        `municipalities/${closestMuni[0].muniCode}/wards/${closestMuni[0].slug}/ward-councillor`
+      );
+    }
+  }
+
+  function failedEmbedRedirect() {
+    alert("Please enable location permission");
+    const useLocationLoader = document.querySelector("#use-location-loader");
+    if (useLocationLoader) {
+      useLocationLoader.classList.add("hidden");
+    }
+  }
+
   var canAccessParent = function () {
     try {
       return !!parent.document.location.pathname;
@@ -375,9 +420,15 @@ if (mapEl && baseUrl) {
         }).addTo(map);
 
         iconMarker.on("click", (e) => {
-          updateParentOrSelfLocationSearch(
-            `municipalities/${municipalityId}/wards/${slug}/`
-          );
+          if (window.document.location.pathname.endsWith("ward-councillor")) {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+            );
+          } else {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/`
+            );
+          }
         });
 
         iconMarker.bindTooltip(
@@ -428,9 +479,15 @@ if (mapEl && baseUrl) {
 
         layer.on("click", (e) => {
           var slug = e.target.feature.geometry.slug;
-          updateParentOrSelfLocationSearch(
-            `municipalities/${municipalityId}/wards/${slug}/`
-          );
+          if (window.document.location.pathname.endsWith("ward-councillor")) {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+            );
+          } else {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/`
+            );
+          }
         });
 
         layer.on("mouseover", (e) => {
@@ -566,9 +623,15 @@ if (mapEl && baseUrl) {
             });
             //distant neighbours are unclickable because no 'slug' for them from backend
             layer.on("click", (e) => {
-              updateParentOrSelfLocationSearch(
-                `municipalities/${parentAreaId}/wards/${slug}/`
-              );
+              if (window.document.location.pathname.endsWith("ward-councillor")) {
+                updateParentOrSelfLocationSearch(
+                  `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+                );
+              } else {
+                updateParentOrSelfLocationSearch(
+                  `municipalities/${municipalityId}/wards/${slug}/`
+                );
+              }
             });
 
             layer.on("mouseover", (e) => {

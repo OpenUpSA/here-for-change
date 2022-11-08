@@ -291,3 +291,19 @@ if (councillorWard && councilNameEl) {
   })
   
 }
+
+
+const embedCard = document.querySelector("#embed-card");
+const closeEmbed = document.querySelector("#close-embed");
+const openEmbed = document.querySelector("#open-embed");
+
+if (embedCard) {
+  openEmbed.addEventListener("click", ()=>{
+    embedCard.classList.remove("hidden");
+  })
+
+  closeEmbed.addEventListener("click", (e)=>{
+    embedCard.classList.add("hidden")
+    e.stopPropagation();
+  })
+}
