@@ -1,13 +1,71 @@
 // for dropDowns
-function dropDownHandler(e, btnId, isLang = false) {
-  const link_text = e.target.innerHTML;
-  const ward_btn = document.getElementById(btnId);
-  if (isLang === false) {
-    ward_btn.getElementsByTagName("span")[0].innerHTML = link_text;
-  } else {
-    lang_abbr = e.target.getAttribute("data-lang");
-    ward_btn.getElementsByTagName("span")[0].innerHTML = lang_abbr;
-  }
+const ward_btn = document.querySelector("#ward-button");
+const ward_dropdown = document.querySelector(".dropdown-panel");
+const ward_items = document.querySelectorAll(".ward-item");
+
+if (ward_btn) {
+  ward_btn.addEventListener("click", () => {
+    ward_dropdown.classList.remove("hidden");
+  });
+}
+
+if (ward_items) {
+  ward_items.forEach((ward_item) => {
+    ward_item.addEventListener("click", (e) => {
+      ward_btn.getElementsByTagName("span")[0].innerHTML = e.target.innerHTML;
+      ward_dropdown.classList.add("hidden");
+    });
+  });
+}
+
+function onVisible(element, callback) {
+  new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.intersectionRatio > 0) {
+        callback(element);
+        // observer.disconnect();
+      }
+    });
+  }).observe(element);
+}
+
+if (ward_dropdown) {
+  onVisible(ward_dropdown, () => {
+    document.addEventListener("click", closeDropdown);
+  });
+}
+
+function closeDropdown() {
+  ward_dropdown.classList.add("hidden");
+  lang_dropdown.classList.add("hidden");
+  document.removeEventListener("click", closeDropdown);
+}
+
+const lang_btn = document.querySelector("#lang-button");
+const lang_dropdown = document.querySelector("#lang-dropdown");
+const lang_items = document.querySelectorAll(".lang-item");
+
+if (lang_btn) {
+  lang_btn.addEventListener("click", () => {
+    lang_dropdown.classList.remove("hidden");
+  });
+}
+
+if (lang_items) {
+  lang_items.forEach((lang_item) => {
+    lang_item.addEventListener("click", (e) => {
+      lang_btn.getElementsByTagName(
+        "span"
+      )[0].innerHTML = e.target.getAttribute("data-lang");
+      lang_dropdown.classList.add("hidden");
+    });
+  });
+}
+
+if (lang_dropdown) {
+  onVisible(lang_dropdown, () => {
+    document.addEventListener("click", closeDropdown);
+  });
 }
 
 const trayTabs = document.getElementsByClassName("tray-tabs");
@@ -248,6 +306,8 @@ if (deputyMayorNum) {
 }
 
 const locationModal = document.querySelector("#location-modal");
+const openModalBtn = document.querySelector("#open-modal");
+const closeModalBtn = document.querySelector("#close-modal");
 
 function openModal() {
   if (locationModal) {
@@ -272,6 +332,14 @@ if (locationModal) {
   });
 }
 
+if (openModalBtn) {
+  openModalBtn.addEventListener("click", openModal);
+}
+
+if (closeModalBtn) {
+  closeModalBtn.addEventListener("click", closeModal);
+}
+
 let findCouncillorBtn = document.querySelector("#find-councillor");
 
 if (findCouncillorBtn) {
@@ -286,24 +354,22 @@ if (councillorWard && councilNameEl) {
   const councillorWardName = JSON.parse(councillorWard.textContent);
   let splitWardName = councillorWardName.split("Ward");
   let wardName = `Ward ${splitWardName[1]}, ${splitWardName[0]}`;
-  councilNameEl.forEach((el)=>{
+  councilNameEl.forEach((el) => {
     el.innerHTML = wardName;
-  })
-  
+  });
 }
-
 
 const embedCard = document.querySelector("#embed-card");
 const closeEmbed = document.querySelector("#close-embed");
 const openEmbed = document.querySelector("#open-embed");
 
 if (embedCard) {
-  openEmbed.addEventListener("click", ()=>{
+  openEmbed.addEventListener("click", () => {
     embedCard.classList.remove("hidden");
-  })
+  });
 
-  closeEmbed.addEventListener("click", (e)=>{
-    embedCard.classList.add("hidden")
+  closeEmbed.addEventListener("click", (e) => {
+    embedCard.classList.add("hidden");
     e.stopPropagation();
-  })
+  });
 }

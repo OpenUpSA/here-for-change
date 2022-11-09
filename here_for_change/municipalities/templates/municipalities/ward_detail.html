@@ -10,10 +10,9 @@
       <h1 class="fvs-250 benfritz w-full text-left text-[48px] leading-[1.2] md:w-auto md:pr-4">
         {{ ward.municipality.name }}
       </h1>
-      <div class="relative" x-data="{open: false}">
+      <div class="relative">
         <div class="">
           <button
-            @click="open = ! open"
             type="button"
             class="inline-flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-100 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-teal-900 focus:outline-none md:w-40"
             id="ward-button"
@@ -26,25 +25,19 @@
         </div>
 
         <div
-          class="dropdown-panel absolute top-0 right-0 z-50 w-full max-h-[418px] overflow-y-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          class="dropdown-panel hidden absolute top-0 right-0 z-50 w-full max-h-[418px] overflow-y-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
           tabindex="-1"
-          x-show="open"
-          x-transition
-          @click.outside="open = false"
-          @click="open = ! open"
         >
           <div class="pb-1" role="none">
             {% for ward_item in ward.municipality.ward_set.all %}
             <a
               href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
-              class="ward-dropdown block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              class="ward-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
               tabindex="-1"
-              id="menu-item-0"
-              onclick="dropDownHandler(event, 'ward-button')"
               >{{ward_item.formatted_name}}</a
             >
             {% endfor %}
