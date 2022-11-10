@@ -1,12 +1,9 @@
-console.log("current_ward", current_ward);
 var municipality = {};
-var closestMuni = [];
 var muniLatlng = [];
 var current_ward = current_ward; //global
 var areas = [];
 var youAreHereLatlng = [];
 var muniAreaData = [];
-var muniCoords = [];
 var municipalityId = "";
 var wardId = "";
 var neighbouring_wards = neighbouring_wards; //global
@@ -17,14 +14,6 @@ var baseUrl =
   "//" +
   window.document.location.href.split("/")[2];
 var mapEl = document.querySelector("#map");
-
-const coords = document.querySelectorAll(".coords");
-
-if (coords) {
-  coords.forEach((el) => {
-    muniCoords.push(JSON.parse(el.textContent));
-  });
-}
 
 if (mapEl && baseUrl) {
   var map = L.map(mapEl);
@@ -49,16 +38,10 @@ if (mapEl && baseUrl) {
       window.document.location.pathname == "/" ||
       window.document.location.pathname == "/find-my-ward-councillor"
     ) {
-      if (closestMuni.length > 0) {
-        municipalityId = closestMuni[0].muniCode;
-        wardId = closestMuni[0].slug;
-        muniLatlng = closestMuni[0].coords;
-      } else {
-        // IF NO LOCATION, TO Load MAP IN CAPE AGULHAS
-        municipalityId = "wc033";
-        wardId = "wc033-cape-agulhas-ward-1";
-        muniLatlng = [-34.4781, 19.9798];
-      }
+      // IF NO LOCATION, TO Load MAP IN CAPE AGULHAS
+      municipalityId = "wc033";
+      wardId = "wc033-cape-agulhas-ward-1";
+      muniLatlng = [-34.4781, 19.9798];
     } else {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
@@ -129,7 +112,6 @@ if (mapEl && baseUrl) {
       .catch((e) => console.log(e))
       .then(() => {
         var zoom = current_ward?.defaultZoom || 8;
-        console.log(zoom, "zoom");
         map.setView(muniLatlng, zoom);
 
         var municipalOffice = L.divIcon({
@@ -156,7 +138,6 @@ if (mapEl && baseUrl) {
     youAreHereLatlng.push(position.coords.longitude);
     youAreHereLatlng.push(position.coords.latitude);
     createCookie("userLoc", youAreHereLatlng, 2);
-    console.log("no cookie yahll", youAreHereLatlng);
     setYouAreHere();
   }
 
@@ -220,20 +201,6 @@ if (mapEl && baseUrl) {
     return (degree * Math.PI) / 180;
   }
 
-  function setClosestMuni() {
-    let muniDiff = [];
-    muniCoords.forEach((item) => {
-      let distanceDiff = getDistance(youAreHereLatlng, item.coords);
-      muniDiff.push({
-        name: item.name,
-        distFromUser: distanceDiff,
-        slug: item.slug,
-        muniCode: item.muniCode,
-        coords: item.coords,
-      });
-    });
-    closestMuni = muniDiff.sort((a, b) => a.distFromUser - b.distFromUser);
-  }
   function setYouAreHere() {
     var youAreHere = L.divIcon({
       className: "text-pin is-filter-contrast-high is-pointer-events-none",
@@ -249,12 +216,6 @@ if (mapEl && baseUrl) {
         bubblingMouseEvents: true,
       }).addTo(map);
     }
-
-    if (muniCoords && youAreHereLatlng.length > 0) {
-      setClosestMuni();
-    }
-
-    //setBaseIds();
   }
 
   const locationBtn = document.querySelector("#location-btn");
@@ -293,14 +254,6 @@ if (mapEl && baseUrl) {
     form.querySelector('input[name="url"]').value =
       window.document.location.pathname;
     form.submit();
-    // if (muniCoords && youAreHereLatlng.length > 0) {
-    //   setClosestMuni();
-    // }
-    // if (closestMuni.length > 0) {
-    //   updateParentOrSelfLocationSearch(
-    //     `municipalities/${closestMuni[0].muniCode}/wards/${closestMuni[0].slug}/`
-    //   );
-    // }
   }
 
   function failedRedirect() {
@@ -329,19 +282,6 @@ if (mapEl && baseUrl) {
       }
     }
   }
-
-  // function embedRedirect(position) {
-  //   youAreHereLatlng.push(position.coords.longitude);
-  //   youAreHereLatlng.push(position.coords.latitude);
-  //   if (muniCoords && youAreHereLatlng.length > 0) {
-  //     setClosestMuni();
-  //   }
-  //   if (closestMuni.length > 0) {
-  //     updateParentOrSelfLocationSearch(
-  //       `municipalities/${closestMuni[0].muniCode}/wards/${closestMuni[0].slug}/ward-councillor`
-  //     );
-  //   }
-  // }
 
   function failedEmbedRedirect() {
     alert("Please enable location permission");
@@ -405,28 +345,6 @@ if (mapEl && baseUrl) {
           weight: 2,
         },
       }).addTo(map);
-
-      //load homepage map in the users nearest ward
-      // if (
-      //   youAreHereLatlng.length > 0 &&
-      //   window.document.location.pathname == "/"
-      // ) {
-      //   var posMarker = L.marker(youAreHereLatlng, {
-      //     riseOnHover: true,
-      //     bubblingMouseEvents: true,
-      //   });
-
-      //   var userClosestWard = [];
-      //   //check if user position is inside polygon
-      //   areas.eachLayer(function (memberLayer) {
-      //     if (memberLayer.getBounds().contains(posMarker.getLatLng())) {
-      //       userClosestWard.push(memberLayer.feature.geometry.slug);
-      //     }
-      //   });
-      //   if (userClosestWard.length > 0) {
-      //     wardId = userClosestWard[0];
-      //   }
-      // }
 
       areas.getLayers().forEach((layer) => {
         var slug = layer.feature.geometry.slug;

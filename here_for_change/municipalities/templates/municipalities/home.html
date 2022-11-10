@@ -53,19 +53,6 @@
     </div>
   <div id="map" class="h-[65vh]"></div> 
   </section>
-  <!-- get details of available Municipalities -->
-  <div class="hidden">
-    {% for municipality in object_list %}
-    <div class="coords">
-      {
-        "name": "{{municipality.name}}",
-        "coords": [{{municipality.map_latitude}}, {{municipality.map_longitude}}],
-        "slug": "{{municipality.ward_set.first.slug}}",
-        "muniCode": "{{municipality.municipality_code}}"
-      }
-    </div>
-    {% endfor %}
-  </div>
   <form id="redirect-to-closest-ward-form" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
     <input type="number" name="longitude">
     <input type="number" name="latitude">

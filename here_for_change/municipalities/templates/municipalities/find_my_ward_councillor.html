@@ -40,7 +40,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Who is my ward councillor?</title>
+    <title>Find my ward councillor</title>
     {% block meta %}
     <meta property="description"
         content="{% block description %}A public participation platform at your local level.{% endblock %}" />
@@ -148,19 +148,6 @@
         <input type="number" name="latitude">
         <input type="text" name="url">
     </form>
-    <!-- get details of available Municipalities -->
-    <div class="hidden">
-        {% for municipality in object_list %}
-        <div class="coords">
-            {
-            "name": "{{municipality.name}}",
-            "coords": [{{municipality.map_latitude}}, {{municipality.map_longitude}}],
-            "slug": "{{municipality.ward_set.first.slug}}",
-            "muniCode": "{{municipality.municipality_code}}"
-            }
-        </div>
-        {% endfor %}
-    </div>
     <script src="{% static 'js/here_for_change.js' %}"></script>
     <script src="{% static 'js/map.js' %}"></script>
     <script src="{% static 'js/random-points-on-polygon.js' %}"></script>
