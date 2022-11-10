@@ -4,8 +4,6 @@ from django.contrib.gis.geos import Point
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, ListView, View
-
-from .decorators import redirect_to_closest_ward
 from .models import Municipality, Ward
 from .models import WardDetail as WardDetailModel
 
@@ -13,7 +11,6 @@ from .models import WardDetail as WardDetailModel
 class Home(ListView):
     model = Municipality
     template_name = "municipalities/home.html"
-    @redirect_to_closest_ward
     def get(self,request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
@@ -243,6 +240,25 @@ class WardDetailJson(DetailView):
         return ctx
 
 
+class MunicipalityDetailJson(DetailView):
+    model = Municipality
+    slug_field = 'municipality_code'
+    slug_url_kwarg = 'municipality_code'
+
+    def get(self,request,municipality_code):
+        super().get(request,municipality_code)
+        ctx=self.get_context_data()
+        return JsonResponse(ctx,safe=False)
+
+
+    def get_context_data(self, **kwargs):
+        municipality=self.get_object()  
+        ctx=municipality.toDict()
+        municipality_location =Point((municipality.map_latitude,municipality.map_longitude))   
+        ctx['neighbours']=[municipality_neighbor.toDict() for municipality_neighbor in  Municipality.objects.closest_n(municipality_location,municipality,5)]
+        return ctx
+
+
       
 class FindMyWardCouncillor(ListView):
     template_name = "municipalities/find_my_ward_councillor.html"
@@ -253,7 +269,6 @@ class RedirectClosestWard(View):
     def get(self,request):
         longitude,latitude=(request.GET.get("longitude"),request.GET.get("latitude"))
         if longitude and latitude:
-            print(float(latitude),float(longitude))
             location=Point((float(latitude),float(longitude)))
             closest_ward=Ward.objects.closest(location)
             return redirect(closest_ward.get_absolute_url())
