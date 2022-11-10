@@ -40,6 +40,11 @@
             <span class="flex items-center gap-x-2 md:justify-around">
               <i class="fa-solid fa-location-dot text-lg"></i>
               <span>Use your location</span>
+              <form id="redirect-to-closest-location" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
+                <input type="number" name="longitude">
+                <input type="number" name="latitude">
+                <input type="text" name="url">
+              </form>
             </span>
           </button>
         </div>

@@ -205,12 +205,13 @@
     </div>
 
 
-    <!-- get details of available Municipalities -->
-    <div class="hidden">
-        <div class="current_ward">
-            {
+    <!-- get details of ward and neighbours -->
+    <script>
+        {% autoescape off %}
+          var current_ward = {
             "geometry": {{object.map_geoJson}},
             "name": "{{object.name}}",
+            "formatted_name": "{{object.formatted_name}}",
             "slug": "{{object.slug}}",
             "muniCode": "{{object.municipality.municipality_code}}",
             "muniAreaNum": {{object.municipality.area_number}},
@@ -218,22 +219,25 @@
             "defaultZoom": {{object.map_default_zoom}},
             "url": "{{object.get_absolute_url}}",
             "coords": [{{object.municipality.map_latitude}}, {{object.municipality.map_longitude}}]
-            }
-        </div>
-        {% for neighbour in neighbours %}
-        <div class="neighbouring_wards">
-            {
+          }
+          
+          var neighbouring_wards = []
+          {% for neighbour in neighbours %}
+          
+            var eachNeighbour = {
             "geometry": {{neighbour.map_geoJson}},
             "name": "{{neighbour.name}}",
+            "formatted_name": "{{object.formatted_name}}",
             "slug": "{{neighbour.slug}}",
             "muniCode": "{{neighbour.municipality.municipality_code}}",
             "municipality": "{{neighbour.municipality}}",
-            "defaultZoom": {{object.map_default_zoom}},
+            "defaultZoom": {{neighbour.map_default_zoom}},
             "url": "{{neighbour.get_absolute_url}}"
             }
-        </div>
-        {% endfor %}
-    </div>
+            neighbouring_wards.push(eachNeighbour)
+          {% endfor %}
+        {% endautoescape %}
+    </script>
     <script src="{% static 'js/here_for_change.js' %}"></script>
     <script src="{% static 'js/map.js' %}"></script>
     <script src="{% static 'js/random-points-on-polygon.js' %}"></script>

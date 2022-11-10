@@ -345,9 +345,10 @@
     </div>
   </div>
 </section>
-<div class="hidden">
-  <div class="current_ward">
-    {
+<!-- get details of ward and neighbours -->
+<script>
+  {% autoescape off %}
+    var current_ward = {
       "geometry": {{object.map_geoJson}},
       "name": "{{object.name}}",
       "formatted_name": "{{object.formatted_name}}",
@@ -359,10 +360,11 @@
       "url": "{{object.get_absolute_url}}",
       "coords": [{{object.municipality.map_latitude}}, {{object.municipality.map_longitude}}]
     }
-  </div>
-  {% for neighbour in neighbours %}
-  <div class="neighbouring_wards">
-    {
+    
+    var neighbouring_wards = []
+    {% for neighbour in neighbours %}
+    
+      var eachNeighbour = {
       "geometry": {{neighbour.map_geoJson}},
       "name": "{{neighbour.name}}",
       "formatted_name": "{{object.formatted_name}}",
@@ -371,8 +373,9 @@
       "municipality": "{{neighbour.municipality}}",
       "defaultZoom": {{neighbour.map_default_zoom}},
       "url": "{{neighbour.get_absolute_url}}"
-    }
-  </div>
-  {% endfor %}
-</div>
+      }
+      neighbouring_wards.push(eachNeighbour)
+    {% endfor %}
+  {% endautoescape %}
+  </script>
 {% endblock %}

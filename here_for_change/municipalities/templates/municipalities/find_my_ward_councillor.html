@@ -93,7 +93,13 @@
                         <span class="hidden md:block pr-2">OR</span>
                         <button id="embed-location-btn"
                             class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Use
-                            your location</button>
+                            your location
+                        </button>
+                        <form id="redirect-to-closest-location" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
+                            <input type="number" name="longitude">
+                            <input type="number" name="latitude">
+                            <input type="text" name="url">
+                        </form>
                     </div>
                     <!-- loader -->
                     <div id="use-location-loader"
