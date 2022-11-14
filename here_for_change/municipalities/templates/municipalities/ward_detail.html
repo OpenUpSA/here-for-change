@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
 {% load static %} 
+{% load model_filters %}
 {% block title %}{{ward}} - {{ward.municipality.name }} - Here For Change{% endblock %} 
 {% block content %} 
 <section>
@@ -32,7 +33,7 @@
           tabindex="-1"
         >
           <div class="pb-1" role="none">
-            {% for ward_item in ward.municipality.ward_set.all %}
+            {% for ward_item in ward.municipality.ward_set.all|order_wards %}
             <a
               href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
               class="ward-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
