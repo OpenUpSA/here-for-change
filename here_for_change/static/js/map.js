@@ -312,24 +312,26 @@ if (mapEl && baseUrl) {
   };
 
   // Create the search box and link it to the UI element.
+  var options = {
+    types: ['street_address', 'sublocality', 'neighborhood', 'colloquial_area']
+   };
   const input = document.getElementById("address-search-input");
   if (input) {
-    const searchBox = new google.maps.places.SearchBox(input);
+    const searchBox = new google.maps.places.Autocomplete(input, options);
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
-    searchBox.addListener("places_changed", () => {
-      const places = searchBox.getPlaces();
-
-      if (places.length == 0) {
+    searchBox.addListener("place_changed", () => {
+      const place = searchBox.getPlace();
+      if (place.length == 0) {
         return;
       }
       const form = document.getElementById("redirect-to-closest-ward-form");
       form.querySelector(
         'input[name="longitude"]'
-      ).value = places[0].geometry.location.lng();
+      ).value = place.geometry.location.lng();
       form.querySelector(
         'input[name="latitude"]'
-      ).value = places[0].geometry.location.lat();
+      ).value = place.geometry.location.lat();
       form.querySelector('input[name="url"]').value =
         window.document.location.pathname;
       form.submit();
