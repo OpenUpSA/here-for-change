@@ -36,8 +36,12 @@ if (ward_dropdown) {
 }
 
 function closeDropdown() {
-  ward_dropdown.classList.add("hidden");
-  lang_dropdown.classList.add("hidden");
+  if (ward_dropdown) {
+    ward_dropdown.classList.add("hidden");
+  }
+  if (lang_dropdown) {
+    lang_dropdown.classList.add("hidden");
+  }
   document.removeEventListener("click", closeDropdown);
 }
 

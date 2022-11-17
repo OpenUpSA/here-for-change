@@ -9,16 +9,12 @@ var wardId = "";
 var neighbouring_wards = neighbouring_wards; //global
 var wardAreaData = [];
 var neighbourAreaData = [];
-var baseUrl =
-  window.document.location.href.split("/")[0] +
-  "//" +
-  window.document.location.href.split("/")[2];
 var mapEl = document.querySelector("#map");
 
-if (mapEl && baseUrl) {
+if (mapEl) {
   var map = L.map(mapEl);
 
-  function getDataFromBackend() {
+  async function getDataFromBackend() {
     municipality["municipality_area_number"] = current_ward.muniAreaNum;
     wardAreaData = current_ward.geometry;
     wardAreaData["name"] = current_ward.name;
@@ -33,72 +29,15 @@ if (mapEl && baseUrl) {
     });
   }
 
-  function setBaseIds() {
-    if (
-      window.document.location.pathname == "/" ||
-      window.document.location.pathname == "/find-my-ward-councillor"
-    ) {
-      // IF NO LOCATION, TO Load MAP IN CAPE AGULHAS
-      municipalityId = "wc033";
-      wardId = "wc033-cape-agulhas-ward-1";
-      muniLatlng = [-34.4781, 19.9798];
-    } else {
+  async function setBaseIds() {
+    if (current_ward) {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
       muniLatlng = current_ward.coords;
     }
-    getMapData();
-  }
-
-  if (
-    window.document.location.pathname == "/" ||
-    window.document.location.pathname == "/find-my-ward-councillor"
-  ) {
-    setBaseIds();
-  } else {
-    setBaseIds();
-    let userLocation = getCookie("userLoc");
-    if (userLocation) {
-      youAreHereLatlng = userLocation.split(",");
-      setYouAreHere();
-    } else {
-      getBrowserLocation();
-    }
   }
 
   async function getMapData() {
-    if (
-      window.document.location.pathname == "/" ||
-      window.document.location.pathname == "/find-my-ward-councillor"
-    ) {
-      //get data from json for home map
-      await fetch(
-        `${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          let { neighbours, map_geoJson, name, slug } = data;
-          municipality["municipality_area_number"] =
-            data["municipality"]["area_number"];
-          wardAreaData = JSON.parse(map_geoJson);
-          wardAreaData["name"] = name;
-          wardAreaData["slug"] = slug;
-          muniAreaData.push(wardAreaData);
-
-          neighbours.forEach((neighbour) => {
-            neighbourAreaData = JSON.parse(neighbour.map_geoJson);
-            let name = neighbour["name"];
-            let slug = neighbour["slug"];
-            neighbourAreaData["name"] = name;
-            neighbourAreaData["slug"] = slug;
-            muniAreaData.push(neighbourAreaData);
-          });
-        })
-        .catch((e) => console.log(e));
-    } else {
-      getDataFromBackend();
-    }
-
     await fetch(
       "https://mapit.code4sa.org/area/" +
         municipality["municipality_area_number"] +
@@ -109,29 +48,30 @@ if (mapEl && baseUrl) {
         municipality["neighbours"] = data;
         updateNeighbourMunicipalities();
       })
-      .catch((e) => console.log(e))
-      .then(() => {
-        var zoom = current_ward?.defaultZoom || 8;
-        map.setView(muniLatlng, zoom);
+      .catch((e) => console.log(e));
+  }
 
-        var municipalOffice = L.divIcon({
-          className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-          iconAnchor: [52, 48],
-          html: "<div>Municipal office</div>",
-          interactive: false,
-        });
+  async function setMuniOfficePin() {
+    var municipalOffice = L.divIcon({
+      className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
+      iconAnchor: [52, 48],
+      html: "<div>Municipal office</div>",
+      interactive: false,
+    });
 
-        L.marker(muniLatlng, {
-          icon: municipalOffice,
-          riseOnHover: true,
-          bubblingMouseEvents: true,
-        }).addTo(map);
-      })
-      .then(() => {
-        setTimeout(() => {
-          loadMap();
-        }, 1000);
-      });
+    L.marker(muniLatlng, {
+      icon: municipalOffice,
+      riseOnHover: true,
+      bubblingMouseEvents: true,
+    }).addTo(map);
+  }
+
+  function getBrowserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(successLocation, failedLocation);
+    } else {
+      alert("Geolocation not available");
+    }
   }
 
   function successLocation(position) {
@@ -143,14 +83,6 @@ if (mapEl && baseUrl) {
 
   function failedLocation() {
     console.log("Please enable location permission");
-  }
-
-  function getBrowserLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(successLocation, failedLocation);
-    } else {
-      alert("Geolocation not available");
-    }
   }
 
   function createCookie(name, value, days) {
@@ -180,27 +112,6 @@ if (mapEl && baseUrl) {
     return "";
   }
 
-  function getDistance(origin, destination) {
-    // return distance in meters
-    var lon1 = toRadian(origin[1]),
-      lat1 = toRadian(origin[0]),
-      lon2 = toRadian(destination[1]),
-      lat2 = toRadian(destination[0]);
-
-    var deltaLat = lat2 - lat1;
-    var deltaLon = lon2 - lon1;
-
-    var a =
-      Math.pow(Math.sin(deltaLat / 2), 2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
-    var c = 2 * Math.asin(Math.sqrt(a));
-    var EARTH_RADIUS = 6371;
-    return c * EARTH_RADIUS * 1000;
-  }
-  function toRadian(degree) {
-    return (degree * Math.PI) / 180;
-  }
-
   function setYouAreHere() {
     var youAreHere = L.divIcon({
       className: "text-pin is-filter-contrast-high is-pointer-events-none",
@@ -216,11 +127,6 @@ if (mapEl && baseUrl) {
         bubblingMouseEvents: true,
       }).addTo(map);
     }
-  }
-
-  const locationBtn = document.querySelector("#location-btn");
-  if (locationBtn) {
-    locationBtn.addEventListener("click", locationBtnHandler);
   }
 
   function locationBtnHandler() {
@@ -258,12 +164,6 @@ if (mapEl && baseUrl) {
 
   function failedRedirect() {
     alert("Please enable location permission");
-  }
-
-  //embed location button handler
-  const embedLocationBtn = document.querySelector("#embed-location-btn");
-  if (embedLocationBtn) {
-    embedLocationBtn.addEventListener("click", embedLocBtnHandler);
   }
 
   function embedLocBtnHandler() {
@@ -311,15 +211,51 @@ if (mapEl && baseUrl) {
     return Math.floor(Math.random() * top);
   };
 
-  // Create the search box and link it to the UI element.
-  var options = {
-    types: ['street_address', 'sublocality', 'neighborhood', 'colloquial_area']
-   };
+  async function mapInit() {
+    if (current_ward) {
+      await setBaseIds();
+      await getDataFromBackend();
+      await setMuniOfficePin();
+      setTimeout(() => {
+        loadMap();
+      }, 1000);
+      let zoom = current_ward.defaultZoom;
+      map.setView(muniLatlng, zoom);
+
+      let userLocation = getCookie("userLoc");
+      if (userLocation) {
+        youAreHereLatlng = userLocation.split(",");
+        setYouAreHere();
+      } else {
+        getBrowserLocation();
+      }
+      await getMapData();
+    } else {
+      //Load SA Map in Homepage
+      let zoom = 6;
+      map.setView([-29.68351, 24.70076], zoom);
+    }
+  }
+  mapInit();
+
+  const locationBtn = document.querySelector("#location-btn");
+  if (locationBtn) {
+    locationBtn.addEventListener("click", locationBtnHandler);
+  }
+
+  //embed location button handler
+  const embedLocationBtn = document.querySelector("#embed-location-btn");
+  if (embedLocationBtn) {
+    embedLocationBtn.addEventListener("click", embedLocBtnHandler);
+  }
+
+  // Google places Autocomplete
   const input = document.getElementById("address-search-input");
+  var options = {
+    types: ["street_address", "sublocality", "neighborhood", "colloquial_area"],
+  };
   if (input) {
     const searchBox = new google.maps.places.Autocomplete(input, options);
-    // Listen for the event fired when the user selects a prediction and retrieve
-    // more details for that place.
     searchBox.addListener("place_changed", () => {
       const place = searchBox.getPlace();
       if (place.length == 0) {
@@ -461,8 +397,6 @@ if (mapEl && baseUrl) {
           }
         });
       });
-    } else {
-      //setTimeout(loadMap, 1000);
     }
   };
 
