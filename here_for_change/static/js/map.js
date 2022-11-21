@@ -82,7 +82,7 @@ if (mapEl) {
   }
 
   function failedLocation() {
-    console.log("Please enable location permission");
+    console.log("Please enable location permission2");
   }
 
   function createCookie(name, value, days) {
@@ -163,7 +163,7 @@ if (mapEl) {
   }
 
   function failedRedirect() {
-    alert("Please enable location permission");
+    alert("Please enable location permission3");
   }
 
   function embedLocBtnHandler() {
@@ -184,7 +184,7 @@ if (mapEl) {
   }
 
   function failedEmbedRedirect() {
-    alert("Please enable location permission");
+    alert("Please enable location permission4");
     const useLocationLoader = document.querySelector("#use-location-loader");
     if (useLocationLoader) {
       useLocationLoader.classList.add("hidden");

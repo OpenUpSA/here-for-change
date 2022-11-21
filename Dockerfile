@@ -41,7 +41,7 @@ WORKDIR /app
 
 RUN set -ex; \
     yarn; \
-    yarn build
+    yarn tailwind-build
 
 
 
