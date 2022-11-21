@@ -253,6 +253,7 @@ if (mapEl) {
   const input = document.getElementById("address-search-input");
   var options = {
     types: ["street_address", "sublocality", "neighborhood", "colloquial_area"],
+    componentRestrictions: {country: "ZA"}
   };
   if (input) {
     const searchBox = new google.maps.places.Autocomplete(input, options);
