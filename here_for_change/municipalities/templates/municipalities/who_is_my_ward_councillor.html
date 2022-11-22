@@ -194,10 +194,10 @@
                     <div id="open-embed" class="cursor-pointer relative h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg">
                         <span class="text-white text-sm font-semibold">Embed</span>
                         <!-- Embed link card -->
-                        <div id="embed-card" class="hidden break-words cursor-text absolute left-[-200px] sm:left-[-340px] bottom-8 bg-white text-black p-4 pt-6 z-[100] rounded-2xl w-auto md:w-[400px]">
+                        <div id="embed-card" class="hidden break-all cursor-text absolute left-[-200px] sm:left-[-340px] bottom-8 bg-white text-black p-4 pt-6 z-[100] rounded-2xl w-auto md:w-[400px]">
                             &lt;iframe src="http://localhost:8000{% url 'councillor_info' object.municipality.municipality_code object.slug %}" frameborder="0" width="100%" height="620" allow="clipboard-write"&gt;&lt;/iframe&gt;
                             <i id="close-embed" class="fa-regular fa-circle-xmark absolute right-2 top-2 cursor-pointer"></i>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
