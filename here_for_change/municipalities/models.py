@@ -174,7 +174,7 @@ class Ward(BaseModel):
             "name": self.name, 
             "formatted_name":Ward.format_name(self.name),
             "slug": self.slug, 
-            "municipality":self.municipality,
+            "municipality":self.municipality.name,
             "map_geoJson": self.map_geoJson,
             "map_default_zoom": self.map_default_zoom,
             "absolute_url":self.get_absolute_url()
