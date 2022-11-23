@@ -206,8 +206,18 @@ class WardDetail(DetailView):
                 'value':detail.field_value,
                 'feedback':detail.feedback
             }
-        
-        ctx['neighbours']=Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)
+        ctx['neighbours']=[]
+        for neighbour_ward in  Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk):
+            ward_details=WardDetailModel.objects.filter(ward=neighbour_ward,stage=staging)
+            data=neighbour_ward.toDict()
+            data['ward_detail']={}
+            for detail in ward_details:
+                data['ward_detail'][detail.field_name]={
+                    'value':detail.field_value,
+                    'updated_at':detail.updated_at.isoformat(),
+                    'feedback':detail.feedback
+                }
+            ctx['neighbours'].append(data)
         return ctx
 
 
@@ -233,10 +243,21 @@ class WardDetailJson(DetailView):
         for detail in ward_details:
             ctx['ward_detail'][detail.field_name]={
                 'value':detail.field_value,
-                'updated_at':detail.updated_at
+                'updated_at':detail.updated_at.isoformat(),
+                'feedback':detail.feedback
             }
-        
-        ctx['neighbours']=[wrd.toDict() for wrd in  Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)]
+        ctx['neighbours']=[]
+        for neighbour_ward in  Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk):
+            ward_details=WardDetailModel.objects.filter(ward=neighbour_ward,stage=staging)
+            data=neighbour_ward.toDict()
+            data['ward_detail']={}
+            for detail in ward_details:
+                data['ward_detail'][detail.field_name]={
+                    'value':detail.field_value,
+                    'updated_at':detail.updated_at.isoformat(),
+                    'feedback':detail.feedback
+                }
+            ctx['neighbours'].append(data)
         return ctx
 
 

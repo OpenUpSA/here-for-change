@@ -39,18 +39,19 @@ if (coords) {
 
 if (mapEl && baseUrl) {
   var map = L.map(mapEl);
-
   function getDataFromBackend() {
     municipality["municipality_area_number"] = current_ward.muniAreaNum;
     wardAreaData = current_ward.geometry;
     wardAreaData["name"] = current_ward.name;
     wardAreaData["slug"] = current_ward.slug;
+    wardAreaData["details"] = current_ward.ward_detail;
     muniAreaData.push(wardAreaData);
 
     neighbouring_wards.forEach((neighbour) => {
       neighbourAreaData = neighbour.geometry;
       neighbourAreaData["name"] = neighbour["name"];
       neighbourAreaData["slug"] = neighbour["slug"];
+      neighbourAreaData["details"] = neighbour["ward_detail"]
       muniAreaData.push(neighbourAreaData);
     });
   }
@@ -73,6 +74,7 @@ if (mapEl && baseUrl) {
     } else {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
+      //muniLatlng = [-34.4781, 19.9798];
       muniLatlng = current_ward.coords;
     }
     getMapData();
@@ -88,12 +90,15 @@ if (mapEl && baseUrl) {
       )
         .then((response) => response.json())
         .then((data) => {
+          console.log(data)
           let { neighbours, map_geoJson, name, slug } = data;
           municipality["municipality_area_number"] =
             data["municipality"]["area_number"];
           wardAreaData = JSON.parse(map_geoJson);
           wardAreaData["name"] = name;
           wardAreaData["slug"] = slug;
+          wardAreaData["details"] = data["ward_detail"];
+          
           muniAreaData.push(wardAreaData);
 
           neighbours.forEach((neighbour) => {
@@ -102,6 +107,7 @@ if (mapEl && baseUrl) {
             let slug = neighbour["slug"];
             neighbourAreaData["name"] = name;
             neighbourAreaData["slug"] = slug;
+            neighbourAreaData["details"] = neighbour["ward_detail"]
             muniAreaData.push(neighbourAreaData);
           });
         });
@@ -116,6 +122,7 @@ if (mapEl && baseUrl) {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log
         municipality["neighbours"] = data;
         updateNeighbourMunicipalities();
       })
@@ -372,9 +379,8 @@ if (mapEl && baseUrl) {
             `municipalities/${municipalityId}/wards/${slug}/`
           );
         });
-
         iconMarker.bindTooltip(
-          `${politicalParty["party"]["name"]} - ${politicalParty["wardCouncillor"]["name"]}`,
+          `${layer.feature.geometry.details.councillor_political_party.value} - ${layer.feature.geometry.details.councillor_name.value}`,
           {
             direction: "top",
             offset: [0, -20],
@@ -389,7 +395,13 @@ if (mapEl && baseUrl) {
         });
 
         iconMarker.on("mouseout", (e) => {
-          e.target.setIcon(politicalParty["party"]["icon"]);
+          e.target.setIcon(L.icon({
+            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            className: "icon-marker",
+            bubblingMouseEvents: true,
+          }));
         });
 
         if (wardId == slug) {

@@ -54,14 +54,14 @@ def load_ward_details():
                     continue
                 ward_data=municipality_data[ward]
                 # Loading fields into db as ward details
-                for version in WardDetail.VERSION_CHOICES:
-                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_name", stage=version[1],defaults={"field_value":ward_data["councillor"]["Name"],"field_type":"String"})
-                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_political_party", stage=version[1],defaults={"field_value":ward_data["councillor"]["Affiliation"],"field_type":"String"})
-                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_political_party_logo_url", stage=version[1],defaults={"field_value":ward_data["councillor"]["party"]["logo"],"field_type":"String"})
-                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_phone", stage=version[1],defaults={"field_value":ward_data["councillor"]["party"]["telephone"],"field_type":"String"})
-                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_party_representative", stage=version[1],defaults={"field_value":ward_data["councillor"]["party"]["representative"],"field_type":"String"})
-                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_party_postal_address", stage=version[1],defaults={"field_value":ward_data["councillor"]["party"]["postal_address"],"field_type":"String"})
-                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_website", stage=version[1],defaults={"field_value":ward_data["councillor"]["party"]["website"],"field_type":"String"})
+                for version,_ in WardDetail.VERSION_CHOICES:
+                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_name", stage=version,defaults={"field_value":ward_data["councillor"]["Name"],"field_type":"String"})
+                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_political_party", stage=version,defaults={"field_value":ward_data["councillor"]["Affiliation"],"field_type":"String"})
+                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_political_party_logo_url", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["logo"],"field_type":"String"})
+                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_phone", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["telephone"],"field_type":"String"})
+                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_party_representative", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["representative"],"field_type":"String"})
+                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_party_postal_address", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["postal_address"],"field_type":"String"})
+                    detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_website", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["website"],"field_type":"String"})
 
 
 

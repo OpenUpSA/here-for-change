@@ -153,6 +153,10 @@ class Ward(BaseModel):
     def formatted_name(self):
         return Ward.format_name(self.name)
 
+    @property
+    def coords(self):
+        return [self.map_latitude,self.map_longitude]
+
     @staticmethod
     def format_name(name):
         splitted_names=name.split(" ")
@@ -170,8 +174,10 @@ class Ward(BaseModel):
             "name": self.name, 
             "formatted_name":Ward.format_name(self.name),
             "slug": self.slug, 
-            "municipality":self.municipality.toDict(),
-            "map_geoJson": self.map_geoJson
+            "municipality":self.municipality,
+            "map_geoJson": self.map_geoJson,
+            "map_default_zoom": self.map_default_zoom,
+            "absolute_url":self.get_absolute_url()
             
             }
 

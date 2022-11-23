@@ -1,8 +1,10 @@
 {% extends "base.html" %} 
 {% load static %} 
+{% load common %}
 {% block title %}{{ward}} - {{ward.municipality.name }} - Here For Change{% endblock %} 
 {% block content %} 
 {% include "./ward_notification.html" %}
+
 <section>
   <div
     class="align-items mx-auto flex max-w-screen-xl flex-col gap-3 py-4 px-4 md:py-8  md:px-8 xl:px-4"
@@ -140,7 +142,7 @@
             </span>
             <span id="councillor-phone" class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
              <!-- formatted phone number would be added by JS -->
-             {{ward_detail.councillor_contacts_phone.value|json_script:"council-num" }}
+             {{ward_detail.councillor_phone.value }}
             </span>
           </div>
           <div class="flex items-center">
@@ -365,7 +367,8 @@
       "municipality": "{{object.municipality}}",
       "defaultZoom": {{object.map_default_zoom}},
       "url": "{{object.get_absolute_url}}",
-      "coords": [{{object.municipality.map_latitude}}, {{object.municipality.map_longitude}}]
+      "ward_detail":{{ward_detail|to_json}},
+      "coords":{{object.coords|to_json}}
     }
   </div>
   {% for neighbour in neighbours %}
@@ -378,7 +381,8 @@
       "muniCode": "{{neighbour.municipality.municipality_code}}",
       "municipality": "{{neighbour.municipality}}",
       "defaultZoom": {{neighbour.map_default_zoom}},
-      "url": "{{neighbour.get_absolute_url}}"
+      "url": "{{neighbour.absolute_url}}",
+      "ward_detail":{{neighbour.ward_detail|to_json}}
     }
   </div>
   {% endfor %}
