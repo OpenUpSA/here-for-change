@@ -81,7 +81,7 @@
                 <button
                     class="flex items-center justify-center h-9 px-3 text-sm rounded-md text-black whitespace-nowrap text-center font-medium bg-white">
                     <i class="fa-solid fa-sharp fa-location-pin text-[#7f00ff] pr-2"></i>
-                    <span class="ward-name ">Ward name, Muni name</span>
+                    <span class="ward-name "></span>
                 </button>
                 <a href="{% url 'find_councillor' %}"
                     class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Change
@@ -89,8 +89,14 @@
             </div>
             <p class="fvs-200 benfritz text-white font-normal text-3xl mb-[31px]">Your ward councillor is:</p>
             <div class="relative rounded-lg bg-hfc-green-700 p-4 text-base">
+                <!-- loader -->
+                <div id="use-location-loader"
+                    class="absolute top-0 left-0 z-[50] rounded-md bg-hfc-green-700 h-full w-full flex items-center justify-center">
+                    <i class="fa-solid fa-spinner text-white text-base animate-spin px-3"></i>
+                    <p class="text-white text-sm">Finding your ward councillor</p>
+                </div>
                 <div class="flex items-center gap-2">
-                    <img class="h-20 w-20 rounded-lg"
+                    <img alt="ward-councillor-picture" class="h-20 w-20 rounded-lg"
                         src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png" />
                     <div class="grow">
                         <div class="flex items-center justify-between">
@@ -163,6 +169,42 @@
                     </div>
                 </div>
             </div>
+            <!-- send your feedback -->
+            <div id="feedback-div" class="mt-4 flex flex-col md:flex-row justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+                <p>
+                    Tell us about your experience! How can we improve?
+                </p>
+                <button
+                    id="send-feedback"
+                    class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Send your feedback
+                </button>
+            </div>
+            <!-- feedback form -->
+            <form id="feedback-form" class="hidden mt-4 w-full  justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+                <div class="w-full mb-2.5">
+                    <p class="text-sm mb-1 text-white text-center md:text-left">
+                        Your email address
+                    </p>
+                    <input type="email" name="email" required class="bg-hfc-green-600 text-[13px] rounded-md p-3 w-full outline-none" placeholder="john@email.com" type="text" />
+                </div>
+                <div class="w-full mb-2.5">
+                    <p class="text-sm mb-1 text-white text-center md:text-left">
+                        Your feedback
+                    </p>
+                    <textarea required rows="5" name="feedback" class="bg-hfc-green-600 text-[13px] rounded-md p-3 w-full outline-none" placeholder="Write your feedback here..." type="text"></textarea>
+                </div>
+                <p class="text-white text-xs opacity-60 mb-4">Your information will not be shared with any third parties.
+                </p>
+                <div class="flex items-center justify-between">
+                    <button type="button" id="cancel-feedback" class="flex items-center justify-center w-1/2 h-9  md:w-[100px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-hfc-green-600 transition-[background-color] duration-200 ease hover:bg-hfc-green-500">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex items-center justify-center w-1/2 h-9  md:w-[100px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">
+                        Submit
+                    </button>
+                </div>
+            </form>
+            
             <div class="border-white opacity-10 w-full border-t my-[21px] md:my-[31px]"></div>
             <div class="gap-y-4 flex flex-col sm:flex-row items-center justify-between">
                 <div class="flex flex-col">
@@ -170,7 +212,7 @@
                         <span>HereForChange</span>
                         <div
                             class="w-8 h-8 lg:w-[35px] lg:h-[35px] absolute -top-[17px] -right-[22px] lg:-right-[23px] flex items-center justify-center rotate-[-17deg]">
-                            <img class="w-8 h-8 lg:w-[35px] lg:h-[35px]" src="{% static 'assets/SA-flag.png' %}" />
+                            <img alt="South Africa flag" class="w-8 h-8 lg:w-[35px] lg:h-[35px]" src="{% static 'assets/SA-flag.png' %}" />
                         </div>
                     </a>
                     <p class="text-white text-[11px] opacity-60 -mt-1">
@@ -179,13 +221,13 @@
                 </div>
                 <div class="flex items-center gap-x-2">
                     <p class="text-white text-sm opacity-60">Share this tool:</p>
-                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhere-for-cha-home-mvp-5lckwdmi.herokuapp.com%2F&amp" target="_blank" rel="noopener noreferrer">
+                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhere-for-cha-home-mvp-5lckwdmi.herokuapp.com%2F&amp" target="_blank" rel="noopener noreferrer" aria-label="Share this tool on Facebook">
                         <i class="fa-brands fa-facebook text-white"></i>
                     </a>
-                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://wa.me/?text=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer">
+                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://wa.me/?text=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer" aria-label="Share this tool on Whatsapp">
                         <i class="fa-brands fa-whatsapp text-white"></i>
                     </a>
-                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://twitter.com/intent/tweet?url=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer">
+                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://twitter.com/intent/tweet?url=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer" aria-label="Share this tool on Twitter">
                         <i class="fa-brands fa-twitter text-white"></i>
                     </a>
                     <div id="open-embed" class="cursor-pointer relative h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg">

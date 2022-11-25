@@ -12,7 +12,7 @@ if (ward_btn) {
 if (ward_items) {
   ward_items.forEach((ward_item) => {
     ward_item.addEventListener("click", (e) => {
-      ward_btn.getElementsByTagName("span")[0].innerHTML = e.target.innerHTML;
+      ward_btn.getElementsByTagName("span")[0].textContent = e.target.innerHTML;
       ward_dropdown.classList.add("hidden");
     });
   });
@@ -60,7 +60,7 @@ if (lang_items) {
     lang_item.addEventListener("click", (e) => {
       lang_btn.getElementsByTagName(
         "span"
-      )[0].innerHTML = e.target.getAttribute("data-lang");
+      )[0].textContent = e.target.getAttribute("data-lang");
       lang_dropdown.classList.add("hidden");
     });
   });
@@ -281,7 +281,7 @@ const councilNum = document.getElementById("council-num");
 if (councilNum) {
   const councillorPhoneDjango = JSON.parse(councilNum.textContent);
   if (phone && councillorPhoneDjango) {
-    phone.innerHTML = libphonenumber
+    phone.textContent = libphonenumber
       .parsePhoneNumber(councillorPhoneDjango)
       .formatNational();
   }
@@ -297,13 +297,13 @@ if (deputyMayorNum) {
     document.getElementById("sec-dep-mayor-num").textContent
   );
   if (deputyMayorPhone && dmPhoneDjango) {
-    deputyMayorPhone.innerHTML = libphonenumber
+    deputyMayorPhone.textContent = libphonenumber
       .parsePhoneNumber(dmPhoneDjango)
       .formatNational();
   }
 
   if (secDepMayorPhone && secDepPhoneDjango) {
-    secDepMayorPhone.innerHTML = libphonenumber
+    secDepMayorPhone.textContent = libphonenumber
       .parsePhoneNumber(secDepPhoneDjango)
       .formatNational();
   }
@@ -354,12 +354,14 @@ if (findCouncillorBtn) {
 
 const councillorWard = document.querySelector("#councillor-ward");
 const councilNameEl = document.querySelectorAll(".ward-name");
+const useLocationLoader = document.querySelector("#use-location-loader");
 if (councillorWard && councilNameEl) {
   const councillorWardName = JSON.parse(councillorWard.textContent);
   let splitWardName = councillorWardName.split("Ward");
   let wardName = `Ward ${splitWardName[1]}, ${splitWardName[0]}`;
+  useLocationLoader && useLocationLoader.classList.add("hidden");
   councilNameEl.forEach((el) => {
-    el.innerHTML = wardName;
+    el.textContent = wardName;
   });
 }
 
@@ -377,3 +379,19 @@ if (embedCard) {
     e.stopPropagation();
   });
 }
+
+//Feedback form
+const sendFeedbackBtn = document.querySelector("#send-feedback");
+const feedbackDiv = document.querySelector("#feedback-div");
+const feedbackForm = document.querySelector("#feedback-form");
+const cancelFeedback = document.querySelector("#cancel-feedback");
+sendFeedbackBtn &&
+  sendFeedbackBtn.addEventListener("click", () => {
+    feedbackDiv.classList.add("hidden");
+    feedbackForm.classList.remove("hidden");
+  });
+
+cancelFeedback && cancelFeedback.addEventListener("click", () => {
+  feedbackDiv.classList.remove("hidden");
+  feedbackForm.classList.add("hidden");
+})

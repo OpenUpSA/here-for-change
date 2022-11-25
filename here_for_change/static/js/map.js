@@ -13,7 +13,7 @@ var mapEl = document.querySelector("#map");
 
 if (mapEl) {
   var map = L.map(mapEl);
-
+  
   async function getDataFromBackend() {
     municipality["municipality_area_number"] = current_ward.muniAreaNum;
     wardAreaData = current_ward.geometry;
@@ -139,7 +139,7 @@ if (mapEl) {
             successRedirect,
             failedRedirect
           );
-        }, 1500);
+        }, 1000);
       } else {
         alert("Geolocation not available");
       }
@@ -176,7 +176,7 @@ if (mapEl) {
             successRedirect,
             failedEmbedRedirect
           );
-        }, 2000);
+        }, 1000);
       } else {
         alert("Geolocation not available");
       }
@@ -253,7 +253,7 @@ if (mapEl) {
   const input = document.getElementById("address-search-input");
   var options = {
     types: ["street_address", "sublocality", "neighborhood", "colloquial_area"],
-    componentRestrictions: {country: "ZA"}
+    componentRestrictions: { country: "ZA" },
   };
   if (input) {
     const searchBox = new google.maps.places.Autocomplete(input, options);
@@ -547,4 +547,13 @@ if (mapEl) {
       }
     });
   };
+
+  //resize embed map on feedback form open
+  const sendFeedbackBtn = document.querySelector("#send-feedback");
+  sendFeedbackBtn &&
+    sendFeedbackBtn.addEventListener("click", () => {
+      setTimeout(function () {
+        map.invalidateSize();
+      }, 200);
+    });
 }
