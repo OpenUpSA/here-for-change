@@ -90,7 +90,6 @@ if (mapEl && baseUrl) {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           let { neighbours, map_geoJson, name, slug } = data;
           municipality["municipality_area_number"] =
             data["municipality"]["area_number"];
@@ -122,7 +121,6 @@ if (mapEl && baseUrl) {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log
         municipality["neighbours"] = data;
         updateNeighbourMunicipalities();
       })
@@ -367,9 +365,14 @@ if (mapEl && baseUrl) {
         layer.on("mousemove", function (e) {
           popup.setLatLng(e.latlng).openOn(map);
         });
-
         var iconMarker = L.marker(layerCenter, {
-          icon: politicalParty["party"]["icon"],
+          icon:L.icon({
+            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            className: "icon-marker",
+            bubblingMouseEvents: true,
+          }),
           riseOnHover: true,
           bubblingMouseEvents: true,
         }).addTo(map);
