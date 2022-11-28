@@ -115,15 +115,9 @@ function is_spam(ward, field, action) {
  * @returns {json}
  */
 function parse_to_object(string_object) {
-    while (string_object.includes("\\054")) {
-        string_object = string_object.replace("\\054", ",");
-    }
-    while (string_object.includes("\\")) {
-        string_object = `${string_object}`.replace("\\", "");
-    }
-    while (string_object.includes(" ")) {
-        string_object = `${string_object}`.replace(" ", "");
-    }
+    string_object = `${string_object}`.replaceAll("\\054", ",");
+    string_object = `${string_object}`.replaceAll("\\", "");
+    string_object = `${string_object}`.replaceAll(" ", "");
     string_object = `${string_object}`.replaceAll("\"", "\\\"");
     string_object = string_object.substring(1, string_object.length - 2) + "\"";
     return JSON.parse(JSON.parse(string_object));
