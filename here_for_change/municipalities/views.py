@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from django.contrib.gis.geos import Point
 from django.http import JsonResponse
@@ -8,6 +9,7 @@ from django.views.generic import DetailView, ListView, View
 from .decorators import redirect_to_closest_ward
 from .models import Municipality, Ward
 from .models import WardDetail as WardDetailModel
+
 
 
 class Home(ListView):
@@ -286,4 +288,16 @@ class RedirectClosestWard(View):
                 return  redirect(closest_ward.get_absolute_url())
         else:
             return redirect("home")
+
+
+class Feedback(View):
+    def post(self, request):
+        form_data = json.loads(request.body)
+        res = {
+            "status": "success",
+            "email": form_data.get('email'),
+            "feedback": form_data.get('feedback')
+        }
+        return JsonResponse(res,safe=False)
+
 

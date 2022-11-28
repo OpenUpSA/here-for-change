@@ -382,6 +382,9 @@ if (embedCard) {
 
 //Feedback form
 const sendFeedbackBtn = document.querySelector("#send-feedback");
+const submitFeedbackBtn = document.querySelector("#feedback-submit-btn");
+const successDiv = document.querySelector("#feedback-success-div");
+const failureDiv = document.querySelector("#feedback-failure-div");
 const feedbackDiv = document.querySelector("#feedback-div");
 const feedbackForm = document.querySelector("#feedback-form");
 const cancelFeedback = document.querySelector("#cancel-feedback");
@@ -391,7 +394,44 @@ sendFeedbackBtn &&
     feedbackForm.classList.remove("hidden");
   });
 
-cancelFeedback && cancelFeedback.addEventListener("click", () => {
-  feedbackDiv.classList.remove("hidden");
-  feedbackForm.classList.add("hidden");
-})
+cancelFeedback &&
+  cancelFeedback.addEventListener("click", () => {
+    feedbackDiv.classList.remove("hidden");
+    feedbackForm.classList.add("hidden");
+  });
+
+async function submitFeedback(data) {
+  const response = await fetch("/feedback", {
+    method: "POST",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": data.csrfmiddlewaretoken,
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+feedbackForm &&
+  feedbackForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitFeedbackBtn.textContent = "Please wait...";
+    const data = {
+      email: feedbackForm.querySelector('input[name="email"]').value,
+      feedback: feedbackForm.querySelector('textarea[name="feedback"]').value,
+      csrfmiddlewaretoken: document.querySelector(
+        "input[name='csrfmiddlewaretoken']"
+      ).value,
+    };
+    try {
+      const res = await submitFeedback(data);
+      feedbackForm.classList.add("hidden");
+      successDiv.classList.remove("hidden");
+    } catch (err) {
+      console.log(err);
+      feedbackForm.classList.add("hidden");
+      failureDiv.classList.remove("hidden");
+    }
+  });

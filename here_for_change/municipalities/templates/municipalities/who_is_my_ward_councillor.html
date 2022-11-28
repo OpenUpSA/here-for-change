@@ -179,8 +179,25 @@
                     class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Send your feedback
                 </button>
             </div>
+            <!-- feedback success div -->
+            <div id="feedback-success-div" class="hidden mt-4 flex flex-col md:flex-row justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+                <div class="flex min-h-[36px] items-center justify-center w-full bg-[#63ea20] rounded-md text-black">
+                    <p class="text-center p-2">
+                        Thank you! Your feedback was submitted!
+                    </p>
+                </div>
+            </div>
+            <!-- feedback failure div -->
+            <div id="feedback-failure-div" class="hidden mt-4 flex flex-col md:flex-row justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+                <div class="flex min-h-[36px] items-center justify-center w-full bg-red-900 rounded-md text-white">
+                    <p class="text-center p-2">
+                        Oops! Something went wrong while submitting the form.
+                    </p>
+                </div>
+            </div>
             <!-- feedback form -->
-            <form id="feedback-form" class="hidden mt-4 w-full  justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+            <form action="{% url 'feedback' %}" method="POST" id="feedback-form" class="hidden mt-4 w-full  justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+                {% csrf_token %}
                 <div class="w-full mb-2.5">
                     <p class="text-sm mb-1 text-white text-center md:text-left">
                         Your email address
@@ -199,7 +216,7 @@
                     <button type="button" id="cancel-feedback" class="flex items-center justify-center w-1/2 h-9  md:w-[100px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-hfc-green-600 transition-[background-color] duration-200 ease hover:bg-hfc-green-500">
                         Cancel
                     </button>
-                    <button type="submit" class="flex items-center justify-center w-1/2 h-9  md:w-[100px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">
+                    <button id="feedback-submit-btn" type="submit" class="flex items-center justify-center w-1/2 h-9  md:w-[100px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">
                         Submit
                     </button>
                 </div>
