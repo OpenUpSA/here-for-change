@@ -127,18 +127,34 @@
                 </div>
                 <div class="flex items-center gap-x-2">
                     <p class="text-white text-sm opacity-60">Share this tool:</p>
-                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhere-for-cha-home-mvp-5lckwdmi.herokuapp.com%2F&amp" target="_blank" rel="noopener noreferrer">
+                    <a class="voteTooltip w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhere-for-cha-home-mvp-5lckwdmi.herokuapp.com%2F&amp" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-facebook text-white"></i>
+                        <span class="voteTooltipText">
+                           Share on Facebook
+                            <span class="triangle-down"></span>
+                        </span>
                     </a>
-                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://wa.me/?text=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer">
+                    <a class="voteTooltip w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://wa.me/?text=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-whatsapp text-white"></i>
+                        <span class="voteTooltipText">
+                            Share on Whatsapp
+                             <span class="triangle-down"></span>
+                        </span>
                     </a>
-                    <a class="w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://twitter.com/intent/tweet?url=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer">
+                    <a class="voteTooltip w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://twitter.com/intent/tweet?url=https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com/" target="_blank" rel="noopener noreferrer">
                         <i class="fa-brands fa-twitter text-white"></i>
+                        <span class="voteTooltipText">
+                            Share on Twitter
+                             <span class="triangle-down"></span>
+                        </span>
                     </a>
-                    <div id="open-embed" class="cursor-pointer relative h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg">
+                    <div id="open-embed" class="voteTooltip cursor-pointer relative h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg">
                         <span class="text-white text-sm font-semibold">Embed</span>
                         <!-- Embed link card -->
+                        <span class="voteTooltipText">
+                            Embed this widget
+                             <span class="triangle-down"></span>
+                         </span>
                         <div id="embed-card" class="hidden break-all cursor-text absolute left-[-200px] sm:left-[-340px] bottom-8 bg-white text-black p-4 pt-6 z-[100] rounded-2xl w-auto md:w-[400px]">
                             &lt;iframe src="https://here-for-cha-home-mvp-5lckwdmi.herokuapp.com{% url 'find_councillor' %}" frameborder="0" width="100%" height="300" allow="clipboard-write"&gt;&lt;/iframe&gt;
                             <i id="close-embed" class="fa-regular fa-circle-xmark absolute right-2 top-2 cursor-pointer"></i>

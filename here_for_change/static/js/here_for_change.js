@@ -344,14 +344,6 @@ if (closeModalBtn) {
   closeModalBtn.addEventListener("click", closeModal);
 }
 
-let findCouncillorBtn = document.querySelector("#find-councillor");
-
-if (findCouncillorBtn) {
-  if (window.document.location.pathname == "/") {
-    findCouncillorBtn.classList.add("hidden");
-  }
-}
-
 const councillorWard = document.querySelector("#councillor-ward");
 const councilNameEl = document.querySelectorAll(".ward-name");
 const useLocationLoader = document.querySelector("#use-location-loader");
@@ -435,3 +427,25 @@ feedbackForm &&
       failureDiv.classList.remove("hidden");
     }
   });
+
+  //toggle nav items
+  const hfcTitle =  document.querySelector("#hfc-title")
+  const navSearch = document.querySelector("#nav-search")
+  const navBtnSearch = document.querySelector("#nav-btn-search")
+  const searchX = document.querySelector("#search-x")
+  const searchLens = document.querySelector("#search-lens")
+
+
+  navBtnSearch && navBtnSearch.addEventListener("click", ()=>{
+    navSearch.classList.toggle("hidden")
+    hfcTitle.classList.toggle("hidden")
+    searchX.classList.toggle("hidden")
+    searchLens.classList.toggle("hidden")
+  })
+
+  if (navSearch || navBtnSearch) {
+    if (window.document.location.pathname == "/") {
+      navSearch.setAttribute('style', 'display: none !important')
+      navBtnSearch.setAttribute('style', 'display: none !important')
+    }
+  }
