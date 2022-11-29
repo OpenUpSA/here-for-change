@@ -73,9 +73,9 @@
       </span>
       is:
     </h2>
-    <div class="">
+    <div class="hidden">
       <div
-        class="hidden cursor-pointer justify-self-end rounded-md bg-hfc-green-700 p-3 hover:bg-hfc-green-600 md:block"
+        class="cursor-pointer justify-self-end rounded-md bg-hfc-green-700 p-3 hover:bg-hfc-green-600 md:block"
       >
         <span>
           <i class="fa-solid fa-pen-to-square text-xl text-white"></i>
@@ -110,8 +110,7 @@
         <div class="flex items-center gap-2">
           <img
             class="h-20 w-20 rounded-lg"
-            src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"
-          />
+            src="{% static 'assets/placeholder-image-1.svg' %}"          />
           <div class="grow">
             <div class="flex items-center justify-between">
               <p class="font-bold">{{ward_detail.councillor_name.value}}</p>
@@ -339,6 +338,11 @@
       </div>
     </div>
   </div>
+  <form id="redirect-to-closest-ward-form" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
+    <input type="number" name="longitude">
+    <input type="number" name="latitude">
+    <input type="text" name="url">
+</form>
 </section>
 <!-- get details of ward and neighbours -->
 <script>

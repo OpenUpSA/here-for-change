@@ -95,42 +95,72 @@
                     <i class="fa-solid fa-spinner text-white text-base animate-spin px-3"></i>
                     <p class="text-white text-sm">Finding your ward councillor</p>
                 </div>
-                <div class="flex items-center gap-2">
-                    <img alt="ward-councillor-picture" class="h-20 w-20 rounded-lg"
-                        src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png" />
-                    <div class="grow">
-                        <div class="flex items-center justify-between">
-                            <p class="font-bold text-white">{{ward_detail.councillor_name.value}}</p>
+                <div class="flex items-start gap-2">
+                    <img alt="ward-councillor-picture" class="h-24 w-24 rounded-lg"
+                    src="{% static 'assets/placeholder-image.svg' %}"/>
+                    <div class="flex flex-col grow gap-y-2">
+                        <div class="flex grow items-center">
+                            <span class="mr-2">
+                                <i class="fa-solid fa-user text-white opacity-60"></i>
+                            </span>
+                            <span
+                                class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
+                                {{ward_detail.councillor_name.value}}
+                            </span>
                         </div>
-                        <p class="ward-name text-white opacity-60">{{ward.name|json_script:"councillor-ward"}}</p>
-                        <p class="text-white opacity-60">{{ward_detail.councillor_political_party.value}}</p>
+                        <div class="flex grow items-center">
+                            <span class="mr-2">
+                                <i class="fa-solid fa-landmark-flag opacity-60 text-white"></i>
+                            </span>
+                            <span
+                                class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
+                                {{ward_detail.councillor_political_party.value}}
+                            </span>
+                        </div>
+                        <div class="flex grow items-center">
+                            <span class="mr-2">
+                                <i class="fa-solid fa-sharp fa-location-pin text-white opacity-60"></i>
+                            </span>
+                            <span
+                                class="ward-name text-sm grow p-2 rounded-md whitespace-nowrap text-white">
+                                {{ward.name|json_script:"councillor-ward"}}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <!-- horizontal divide -->
                 <div class="border-white opacity-10 w-full border-t my-4"></div>
                 <p class="text-sm text-white mb-3">Contact this councillor</p>
                 <!-- tel row -->
-                <div class="flex flex-wrap items-center text-sm">
+                <div class="flex flex-wrap items-center text-sm gap-2 ">
                     <div class="flex grow items-center">
                         <span class="mr-2">
-                            <i class="fa-solid fa-phone text-white"></i>
+                            <i class="fa-solid fa-phone text-white opacity-60"></i>
                         </span>
                         <span id="councillor-phone"
-                            class="text-sm mr-5 cursor-pointer hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
+                            class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
                             <!-- formatted phone number would be added by JS -->
                             {{ward_detail.councillor_contacts_phone.value|json_script:"council-num" }}
                         </span>
                     </div>
                     <div class="flex items-center">
                         <span
-                            class="mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            class="min-w-[64px] voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            <span class="voteTooltipText">
+                                This was helpful
+                                 <span class="triangle-down"></span>
+                             </span>
                             <span>
-                                <i class="fa-solid fa-thumbs-up text-green-600"> </i>
+                                <i class="fa-solid fa-thumbs-up text-[#63ea20]"> </i>
                             </span>
                             <span class="text-white"> {{ward_detail.councillor_contacts_phone.feedback.positive}}</span>
                         </span>
                         <span
-                            class="flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            class="min-w-[64px] voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            <span class="voteTooltipText">
+                                This was not helpful
+                                 <span class="triangle-down"></span>
+                             </span>
                             <span>
                                 <i class="fa-solid fa-thumbs-down text-red-600"></i>
                             </span>
@@ -139,27 +169,35 @@
                     </div>
                 </div>
                 <!-- email row -->
-                <div class="mt-2 flex gap-y-2 shrink-0 flex-wrap items-center text-sm">
+                <div class="mt-2 flex gap-2 shrink-0 flex-wrap items-center text-sm">
                     <div class="flex grow flex-nowrap items-center">
                         <span class="mr-2">
-                            <i class="fa-solid fa-envelope text-white"></i>
+                            <i class="fa-solid fa-envelope text-white opacity-60"></i>
                         </span>
                         <span
-                            class="text-sm text-white mr-1 md:mr-5 bg-hfc-green-600 hover:bg-hfc-green-500 p-2 rounded-md cursor-pointer whitespace-nowrap">
+                            class="text-sm text-white grow bg-hfc-green-600 hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap">
                             {{ward_detail.councillor_contacts_email_primary.value}}
                         </span>
                     </div>
                     <div class="flex items-center">
                         <span
-                            class=" mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            class="min-w-[64px] voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            <span class="voteTooltipText">
+                                This was helpful
+                                 <span class="triangle-down"></span>
+                             </span>
                             <span>
-                                <i class="fa-solid fa-thumbs-up text-green-600"></i>
+                                <i class="fa-solid fa-thumbs-up text-[#63ea20]"></i>
                             </span>
                             <span class="text-white">
                                 {{ward_detail.councillor_contacts_email_primary.feedback.positive}} </span>
                         </span>
                         <span
-                            class=" flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            class="min-w-[64px] voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500">
+                            <span class="voteTooltipText">
+                                This was not helpful
+                                 <span class="triangle-down"></span>
+                             </span>
                             <span>
                                 <i class="fa-solid fa-thumbs-down text-red-600"></i>
                             </span>

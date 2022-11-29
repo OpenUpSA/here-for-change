@@ -13,7 +13,7 @@ var mapEl = document.querySelector("#map");
 
 if (mapEl) {
   var map = L.map(mapEl);
-  
+
   async function getDataFromBackend() {
     municipality["municipality_area_number"] = current_ward.muniAreaNum;
     wardAreaData = current_ward.geometry;
@@ -82,7 +82,7 @@ if (mapEl) {
   }
 
   function failedLocation() {
-    console.log("Please enable location permission2");
+    console.log("Please enable location permission");
   }
 
   function createCookie(name, value, days) {
@@ -150,8 +150,10 @@ if (mapEl) {
     youAreHereLatlng.push(position.coords.longitude);
     youAreHereLatlng.push(position.coords.latitude);
 
-    //set cookie here
-    createCookie("userLoc", youAreHereLatlng, 2);
+    let userLocation = getCookie("userLoc");
+    if (!userLocation) {
+      createCookie("userLoc", youAreHereLatlng, 2);
+    }
     const form = document.getElementById("redirect-to-closest-ward-form");
     form.querySelector('input[name="latitude"]').value =
       position.coords.latitude;
@@ -163,7 +165,7 @@ if (mapEl) {
   }
 
   function failedRedirect() {
-    alert("Please enable location permission3");
+    alert("Please enable location permission");
   }
 
   function embedLocBtnHandler() {
@@ -184,7 +186,7 @@ if (mapEl) {
   }
 
   function failedEmbedRedirect() {
-    alert("Please enable location permission4");
+    alert("Please enable location permission");
     const useLocationLoader = document.querySelector("#use-location-loader");
     if (useLocationLoader) {
       useLocationLoader.classList.add("hidden");
@@ -243,6 +245,11 @@ if (mapEl) {
     locationBtn.addEventListener("click", locationBtnHandler);
   }
 
+  const openModalBtn = document.querySelector("#open-modal");
+  if (openModalBtn) {
+    openModalBtn.addEventListener("click", locationBtnHandler);
+  }
+
   //embed location button handler
   const embedLocationBtn = document.querySelector("#embed-location-btn");
   if (embedLocationBtn) {
@@ -250,30 +257,42 @@ if (mapEl) {
   }
 
   // Google places Autocomplete
-  const input = document.getElementById("address-search-input");
-  var options = {
-    types: ["street_address", "sublocality", "neighborhood", "colloquial_area"],
-    componentRestrictions: { country: "ZA" },
-  };
-  if (input) {
-    const searchBox = new google.maps.places.Autocomplete(input, options);
-    searchBox.addListener("place_changed", () => {
-      const place = searchBox.getPlace();
-      if (place.length == 0) {
-        return;
-      }
-      const form = document.getElementById("redirect-to-closest-ward-form");
-      form.querySelector(
-        'input[name="longitude"]'
-      ).value = place.geometry.location.lng();
-      form.querySelector(
-        'input[name="latitude"]'
-      ).value = place.geometry.location.lat();
-      form.querySelector('input[name="url"]').value =
-        window.document.location.pathname;
-      form.submit();
-    });
+  function googlePlacesAutocomplete(inputId) {
+    const input = document.getElementById(inputId);
+    var options = {
+      types: [
+        "street_address",
+        "sublocality",
+        "neighborhood",
+        "colloquial_area",
+      ],
+      componentRestrictions: { country: "ZA" },
+    };
+    if (input) {
+      const searchBox = new google.maps.places.Autocomplete(input, options);
+      searchBox.addListener("place_changed", () => {
+        const place = searchBox.getPlace();
+        if (place.length == 0) {
+          return;
+        }
+        const form = document.getElementById("redirect-to-closest-ward-form");
+        form.querySelector(
+          'input[name="longitude"]'
+        ).value = place.geometry.location.lng();
+        form.querySelector(
+          'input[name="latitude"]'
+        ).value = place.geometry.location.lat();
+        form.querySelector('input[name="url"]').value =
+          window.document.location.pathname;
+        form.submit();
+      });
+    }
   }
+  //Home and embed page search
+  googlePlacesAutocomplete("address-search-input")
+  //ward page search
+  googlePlacesAutocomplete("nav-search-input")
+
 
   var loadMap = () => {
     if (muniAreaData.length > 0) {
