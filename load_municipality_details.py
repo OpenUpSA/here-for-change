@@ -1,20 +1,24 @@
 """
 Loads municipality details from data file into db
 """
-from here_for_change.municipalities.models import (
-    Municipality, MunicipalityDetail)
 import json
 import django
 import os
+import googlemaps
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'here_for_change.settings')
 django.setup()
+from here_for_change.municipalities.models import (
+    Municipality, MunicipalityDetail)
+GMAP_API_KEY = "AIzaSyAcOEGhLjgM6DKeW0lTGZyJ_QqcLwO7GmA" # Should be secret
 
 
-def geocode_address(address: str):
-    """ Converts a text address to points """
-    # TODO: add logic for geocoding address
-    ...
+def geocode_address(address: str)->dict:
+    """ Converts a text address to an approximate point location using googlemaps API """
+    gmaps_key = googlemaps.Client(key=GMAP_API_KEY)
+    approximate_location = gmaps_key.geocode(address)
+    return approximate_location[0]["geometry"]["location"]
 
 
 def slugify(string: str) -> str:
@@ -92,10 +96,12 @@ def load_municipality_details(municipality: Municipality, data: dict):
         field_value = data["municipality"][info]
         if type(field_value) == list:
             field_value = ", ".join(field_value)
+        if info == "street_address":
+            field_value={"address":field_value}
+            field_value.update(geocode_address(data["municipality"][info]))
+            field_value = json.dumps(field_value)
         municipality_detail, _ = MunicipalityDetail.objects.update_or_create(
             municipality=municipality, field_name=f"municipality_{info}", stage=MunicipalityDetail.PRODUCTION, defaults={"field_value": field_value, "field_type": "String"})
-
-    # TODO: Store geocoded address as municipality detail
 
     # load name of municipality representative
     roles = ["executive_mayor", "mayor", "municipal_manager",

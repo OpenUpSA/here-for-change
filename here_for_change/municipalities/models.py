@@ -250,10 +250,10 @@ class MunicipalityDetail(BaseModel):
         (PHONE, _("Phone")),
     ]
     municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE)
-    field_name = models.CharField(max_length=90, null=False, blank=False)
+    field_name = models.CharField(max_length=200, null=False, blank=False)
     field_type = models.CharField(
         max_length=40, default=STRING, choices=FIELD_TYPES_CHOICES)
-    field_value = models.CharField(max_length=90, null=False, blank=False)
+    field_value = models.CharField(max_length=200, null=False, blank=False)
     stage = models.CharField(
         max_length=40, default=STAGING, choices=VERSION_CHOICES)
     feedback = models.JSONField(null=True, blank=True)

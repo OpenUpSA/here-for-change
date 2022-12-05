@@ -311,6 +311,17 @@ recommended = ["backports.socketpair", "cffi (>=1.12.2)", "dnspython (>=1.16.0,<
 test = ["backports.socketpair", "cffi (>=1.12.2)", "contextvars (==2.4)", "coverage (>=5.0)", "coveralls (>=1.7.0)", "dnspython (>=1.16.0,<2.0)", "futures", "idna", "mock", "objgraph", "psutil (>=5.7.0)", "requests", "selectors2"]
 
 [[package]]
+name = "googlemaps"
+version = "4.7.3"
+description = "Python client library for Google Maps Platform"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+requests = ">=2.20.0,<3.0"
+
+[[package]]
 name = "greenlet"
 version = "1.1.2"
 description = "Lightweight in-process concurrent programming"
@@ -836,7 +847,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "12424212bdfac06855c1c38da75990309690e0d21b468b1f40b081eca6806da2"
+content-hash = "d484a6b6fdab7b253885276f4cb2a4af4e6460252a9dac16e0ecd28ae8d98f1d"
 
 [metadata.files]
 aiohttp = [
@@ -1205,6 +1216,9 @@ gevent = [
     {file = "gevent-20.12.1-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:60799fd7dcbb622f8435eb12436d48a8d27f8e7b3d23631e32ccc04ddd2097c2"},
     {file = "gevent-20.12.1-pp27-pypy_73-win32.whl", hash = "sha256:7a808c63f065a303bbbe87c5c0754e06abb1e23e18752f418dce1eb3189cb43d"},
     {file = "gevent-20.12.1.tar.gz", hash = "sha256:99b68765767bb3e2244a66b012883899a6f17c23b6dc1cd80b793df341e15f08"},
+]
+googlemaps = [
+    {file = "googlemaps-4.7.3.tar.gz", hash = "sha256:da6d29e406d13c9e9c78bc7c4c2b4e96d0b034cf4031d8afadf6e5b54e73ffde"},
 ]
 greenlet = [
     {file = "greenlet-1.1.2-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:58df5c2a0e293bf665a51f8a100d3e9956febfbf1d9aaf8c0677cf70218910c6"},
