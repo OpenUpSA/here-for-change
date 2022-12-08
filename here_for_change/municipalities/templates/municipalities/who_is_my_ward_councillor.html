@@ -1,4 +1,5 @@
 {% load static %}
+{% load common %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -328,21 +329,23 @@
             "municipality": "{{object.municipality}}",
             "defaultZoom": {{object.map_default_zoom}},
             "url": "{{object.get_absolute_url}}",
-            "coords": [{{object.municipality.map_latitude}}, {{object.municipality.map_longitude}}]
+            "ward_detail":{{ward_detail|to_json}},
+            "coords":{{object.coords|to_json}}
           }
           
           var neighbouring_wards = []
           {% for neighbour in neighbours %}
           
             var eachNeighbour = {
-            "geometry": {{neighbour.map_geoJson}},
-            "name": "{{neighbour.name}}",
-            "formatted_name": "{{object.formatted_name}}",
-            "slug": "{{neighbour.slug}}",
-            "muniCode": "{{neighbour.municipality.municipality_code}}",
-            "municipality": "{{neighbour.municipality}}",
-            "defaultZoom": {{neighbour.map_default_zoom}},
-            "url": "{{neighbour.get_absolute_url}}"
+                "geometry": {{neighbour.map_geoJson}},
+                "name": "{{neighbour.name}}",
+                "formatted_name": "{{object.formatted_name}}",
+                "slug": "{{neighbour.slug}}",
+                "muniCode": "{{neighbour.municipality.municipality_code}}",
+                "municipality": "{{neighbour.municipality}}",
+                "defaultZoom": {{neighbour.map_default_zoom}},
+                "url": "{{neighbour.get_absolute_url}}",
+                "ward_detail":{{neighbour.ward_detail|to_json}}
             }
             neighbouring_wards.push(eachNeighbour)
           {% endfor %}
