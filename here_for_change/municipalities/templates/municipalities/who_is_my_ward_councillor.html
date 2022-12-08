@@ -140,8 +140,7 @@
                         </span>
                         <span id="councillor-phone"
                             class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
-                            <!-- formatted phone number would be added by JS -->
-                            {{ward_detail.councillor_contacts_phone.value|json_script:"council-num" }}
+                            {{ward_detail.councillor_contacts_phone.value }}
                         </span>
                     </div>
                     <div class="flex items-center">
@@ -337,20 +336,20 @@
           {% for neighbour in neighbours %}
           
             var eachNeighbour = {
-                "geometry": {{neighbour.map_geoJson}},
-                "name": "{{neighbour.name}}",
-                "formatted_name": "{{object.formatted_name}}",
-                "slug": "{{neighbour.slug}}",
-                "muniCode": "{{neighbour.municipality.municipality_code}}",
-                "municipality": "{{neighbour.municipality}}",
-                "defaultZoom": {{neighbour.map_default_zoom}},
-                "url": "{{neighbour.get_absolute_url}}",
-                "ward_detail":{{neighbour.ward_detail|to_json}}
+              "geometry": {{neighbour.map_geoJson}},
+              "name": "{{neighbour.name}}",
+              "formatted_name": "{{object.formatted_name}}",
+              "slug": "{{neighbour.slug}}",
+              "muniCode": "{{neighbour.municipality.municipality_code}}",
+              "municipality": "{{neighbour.municipality}}",
+              "defaultZoom": {{neighbour.map_default_zoom}},
+              "url": "{{neighbour.get_absolute_url}}",
+              "ward_detail":{{neighbour.ward_detail|to_json}}
             }
             neighbouring_wards.push(eachNeighbour)
           {% endfor %}
         {% endautoescape %}
-    </script>
+      </script>
     <script src="{% static 'js/here_for_change.js' %}"></script>
     <script src="{% static 'js/map.js' %}"></script>
     <script src="{% static 'js/random-points-on-polygon.js' %}"></script>
