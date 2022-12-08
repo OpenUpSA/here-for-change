@@ -25,11 +25,12 @@ services:
       - TAG_MANAGER_ENABLED=False
 
   db:
-    image: postgres:11.6
+    image: postgis/postgis:14-master
     environment:
       - POSTGRES_USER=here_for_change
       - POSTGRES_PASSWORD=devpassword
       - POSTGRES_DB=here_for_change
+      - POSTGRES_HOST=172.22.0.2
     volumes:
       - db-data:/var/lib/postgresql/data
 

@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import logging.config
 import environ
-
+import os
 ROOT_DIR = environ.Path(__file__) - 2
 PROJ_DIR = ROOT_DIR.path("here_for_change")
 
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_extensions",
+    'django.contrib.gis',
+
 ]
 
 MIDDLEWARE = [
@@ -83,6 +85,8 @@ WSGI_APPLICATION = "here_for_change.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
+
+DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis" # engine used for postgis
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
@@ -158,3 +162,7 @@ logging.config.dictConfig(
 TAG_MANAGER_ENABLED = env.bool("TAG_MANAGER_ENABLED", False)
 if TAG_MANAGER_ENABLED:
     TAG_MANAGER_CONTAINER_ID = env("TAG_MANAGER_CONTAINER_ID")
+
+GEOIP_PATH =os.path.join('geoip')
+
+APPEND_SLASH=False

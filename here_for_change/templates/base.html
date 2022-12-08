@@ -24,6 +24,22 @@
     </script>
     <!-- End Google Tag Manager -->
     {% endif %}
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBc15woji15KUqe8SxJoVpwRP4sB7Mtmk&libraries=places"
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/libphonenumber-js@1.9.9/bundle/libphonenumber-min.js"></script>
     <meta charset="utf-8" />
@@ -76,241 +92,41 @@
     <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 
-    <nav class="shadow bg-hfc-green-900 relative z-20">
-      <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto flex justify-between">
-        <div class="py-3 flex items-center justify-between z-20">
-          <div>
-            <a class="text-lg benfritz text-white lg:text-2xl relative" href="/">
-              <span>HereForChange</span>
-              <div class="w-5 h-5 lg:w-[25px] lg:h-[25px] absolute -top-3 -right-3 lg:-right-4 flex items-center justify-center rotate-[-17deg]">
-                <img class="w-5 h-5 lg:w-[25px] lg:h-[25px]" src="{% static 'assets/Star1.svg' %}"/>
-                <span class="text-white absolute text-xs lg:text-sm font-extralight">za</span>
+    {% include "./simple_nav.html" %}
+     <!-- find location modal -->
+     <div id="location-modal" class="relative z-[100] hide-modal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"></div>
+      <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div id="modal-overlay" class="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
+          <div class="flex flex-col p-8 w-[420px] gap-y-3.5 relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8">
+            <div class="flex items-center">
+              <div class="relative h-10 w-10">
+                <span class="double-bounce-1 absolute bg-[#7f00ff] opacity-60 h-10 w-10 rounded-full"></span>
+                <span class="double-bounce-2 absolute bg-[#7f00ff] opacity-60 h-10 w-10 rounded-full"></span>
               </div>
-            </a>
-          </div>
-        </div>
-
-        <ul class="hidden lg:flex px-2 -mx-4  lg:inline-block lg:flex-row md:mx-0 items-center z-20">
-          <li
-            class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
-          >
-            <a
-              href="#"
-              class="text-sm font-medium text-white rounded md:mr-2"
-              >Learning</a
-            >
-            <i class="fa-solid fa-angle-down text-zinc-400"></i>
-          </li>
-          <li
-            class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
-          >
-            <a
-              href="#"
-              class="text-sm font-medium text-white rounded md:mr-2"
-              >Tools</a
-            >
-            <i class="fa-solid fa-angle-down text-zinc-400"></i>
-          </li>
-          <li
-            class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
-          >
-            <a
-              href="#"
-              class=" text-sm font-medium text-white rounded md:mr-2"
-              >Guides</a
-            >
-            <i class="fa-solid fa-angle-down text-zinc-400"></i>
-          </li>
-        </ul>
-
-        <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
-        <div
-          class="hidden md:flex md:items-center md:justify-between py-3 gap-3 z-20"
-        >
-          <div class="relative flex items-center">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-              <i class="fa-solid fa-magnifying-glass text-purple-700"></i>
-            </span>
-
-            <input
-              type="text"
-              class="w-72 py-3 pl-10 pr-4 text-gray-700 bg-white text-sm border rounded-md focus:border-blue-400 focus:outline-none ring-1 ring-transparent focus:ring-opacity-40 focus:ring-blue-300 hover:ring-purple-800"
-              placeholder="Find your ward..."
-            />
-            <button class="absolute inset-y-0 right-0 text-sm px-4 py-3 rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Use location</button>
-          </div>
-          <!-- Dropdown below-->
-          <div class="relative inline-block text-left" x-data="{open: false}">
-            <div>
-              <button
-                @click="open = !open"
-                type="button"
-                class="inline-flex justify-center items-center gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-800 text-sm font-medium text-white focus:outline-none"
-                id="lang-button"
-                aria-expanded="true"
-                aria-haspopup="true"
-              >
-                <span>EN</span>
-                <i class="fa-solid fa-caret-down"></i>
-              </button>
+              <p class="leading-8 text-[#192827] ml-3.5 text-3xl font-bold benfritz fvs-200">Please wait, we are<br/> finding your ward!</p>
             </div>
-
-            <div
-              class="top-0 w-auto absolute right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="menu-button"
-              tabindex="-1"
-              x-show="open" 
-              x-transition
-              @click.outside = "open = false"
-              @click="open = ! open"
-            >
-              <div class="py-1" role="none">
-                <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-0"
-                  data-lang="EN"
-                  onclick="dropDownHandler(event, 'lang-button', true)"
-                  >English</a
-                >
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-1"
-                  data-lang="AF"
-                  onclick="dropDownHandler(event, 'lang-button', true)"
-                  >Africaans</a
-                >
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  data-lang="ISZ"
-                  onclick="dropDownHandler(event, 'lang-button', true)"
-                  >isiZulu</a
-                >
-                <a
-                  href="#"
-                  class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
-                  role="menuitem"
-                  tabindex="-1"
-                  id="menu-item-2"
-                  data-lang="ISX"
-                  onclick="dropDownHandler(event, 'lang-button', true)"
-                  >isiXhosa</a
-                >
-              </div>
+            <div class="flex">
+              <p class="text-sm text-[#192827]">
+                Based on the location provided to us by your browser, we are identifying your ward. <strong>Please enable location sharing</strong> for our website to enable this feature.
+              </p>
             </div>
+            <div class="flex flex-col md:flex-row md:justify-between gap-3.5">
+              <button onclick="closeModal()" class="text-sm p-4 text-center w-full cursor-pointer bg-[#1928270d] rounded-lg">Cancel</button>
+              <a target="_blank" rel="noopener noreferrer" class="text-sm whitespace-nowrap p-4 text-center block w-full  cursor-pointer text-white bg-[#192827] rounded-lg" href="https://support.google.com/chrome/answer/142065?hl=en&co=GENIE.Platform%3DDesktop">How to enable location</a>
+            </div> 
           </div>
-          <!-- End of dropdown -->
-
-
-         
-
         </div>
-        <!-- Mobile menu button -->
-        <div class="flex lg:hidden -ml-32">
-          <button
-            type="button"
-            class="text-white focus:outline-none"
-            aria-label="toggle menu"
-          >
-            <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
-              <path
-                fill-rule="evenodd"
-                d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
-              ></path>
-            </svg>
-          </button>
-        </div>
-
-
       </div>
-    </nav>
-    <div id="" class="hidden lg:block nav-tray py-7  absolute w-full top-[-50%] left-0 right-0 bg-hfc-green-900 z-10 border-t border-[#ffffff12]">
-      <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto w-full flex items-start">
-        <!-- from here blog section -->
-        <div class="flex flex-col text-sm text-white w-1/3 border-r border-[#ffffff12] pr-7">
-          <p class="text-hfc-green-100 mb-2 pb-2.5 pr-3 w-full">From our blog</p>
-          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">Find my ward councillor</a>
-          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">Find my municipalities contact information</a>
-          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">How does my municipality earn and spend its money</a>
-          <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">How my municipal and ward leadership was selected</a>
-        </div>
-        <!-- participation section -->
-        <div class="flex flex-col text-sm text-white w-1/3 border-r border-[#ffffff12] px-7">
-          <p class="text-hfc-green-100 mb-2 pb-2.5 px-3 w-full">Participation</p>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-        </div>
-        <!-- understanding govt section -->
-        <div class="flex flex-col text-sm text-white w-1/3 px-7">
-          <p class="text-hfc-green-100 mb-2 pb-2.5 px-3 w-full">Understanding government</p>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-          <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
-        </div>
-      </div>   
     </div>
-    
+    <!-- end of location modal -->
     {% block content %}{% endblock %}
-    <footer class="bg-hfc-green-900 w-full py-12">
-      <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
-        <div class="flex flex-col md:flex-row">
-          <div class="w-full md:w-[27.5%]">
-            <a class="text-lg inline-block benfritz text-white lg:text-2xl relative pb-7" href="#">
-              <span>HereForChange</span>
-              <div class="w-5 h-5 lg:w-[25px] lg:h-[25px] absolute -top-2 -right-3 lg:-right-4 flex items-center justify-center rotate-[-17deg]">
-                <img class="w-5 h-5 lg:w-[25px] lg:h-[25px]" src="{% static 'assets/Star1.svg' %}"/>
-                <span class="text-white absolute text-xs lg:text-sm font-extralight">za</span>
-              </div>
-            </a>
-            <p class="text-sm text-white opacity-60">
-              This site was created to help citizens better understand and engage with their local government’s public participation processes in order to effect change in their communities.
-            </p>
-          </div>
-          <div class="w-full md:w-[27.5%] md:ml-[12.5%] text-sm">
-            <p class="my-4 text-hfc-green-100">Learning & guides</p>
-            <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">What is public participation?</a>
-            <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">Understanding local government</a>
-            <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">How to effectively resolve issues in your ward</a>
-            <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">How to write a letter to government officials</a>
-            <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">How money is raised and spent in government</a>
-          </div>
-          <div class="w-full md:w-[27.5%] md:ml-[5%] text-sm">
-            <p class="my-4 text-hfc-green-100">Take action</p>
-            <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">Find my ward councillor</a>
-            <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">Write to my ward councillor</a>
-            <p class="my-4 text-hfc-green-100">Get in touch</p>
-            <a href="mailto:info@hereforchange.org.za" class="mb-2 text-white opacity-60 hover:opacity-100 break-words">info@hereforchange.org.za</a>
-          </div>
-        </div>
-        <div class="mt-10">
-          <!-- horizontal divide line -->
-          <div class="border-white opacity-10 w-full border-t mb-7"></div>
-          <div class="flex flex-col md:flex-row md:items-center justify-between">
-            <p class="text-white opacity-60 text-sm">© 2022 <a href="https://openup.org.za" target="_blank" rel="noopener noreferrer" class="underline">OpenUp</a>. HereForChange is a project created by OpenUp.</p>
-            <div class="flex items-center gap-4 text-white text-2xl mt-3 md:mt-0">
-              <a href="https://www.facebook.com/OpenUpSA" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f opacity-60 hover:opacity-100"></i></a>
-              <a href="https://twitter.com/openupsa" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-twitter opacity-60 hover:opacity-100"></i></a>
-              <a href="https://www.instagram.com/openup_southafrica/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram opacity-60 hover:opacity-100"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <script src="{% static 'js/here_for_change.js' %}" async></script>
+    {% include './simple_footer.html' %}
+    <script src="{% static 'js/here_for_change.js' %}" ></script>
+    <script src="{% static 'js/map.js' %}" ></script>
+    <script src="{% static 'js/random-points-on-polygon.js' %}" ></script>
+    {% block scripts %}
+      
+    {% endblock scripts %}
   </body>
 </html>
