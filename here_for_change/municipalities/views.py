@@ -346,6 +346,41 @@ class Feedback(View):
             "feedback": form_data.get('feedback')
         }
         return JsonResponse(res,safe=False)
+        
+class UpdateWardDetailFeedback(View):
+    def post(self,request,ward_slug,field):
+        updated=False
+        data=dict(json.loads(request.body))
+        action=data.get("action")
+        if not action:
+            return HttpResponseBadRequest()
+        last_feedback=request.COOKIES.get(f"{ward_slug}-{field}") # Get info on last action performed by user
+        try:
+            ward_detail=WardDetailModel.objects.get(ward__slug=ward_slug,field_name=field,stage="production") # get Ward detail
+        except WardDetailModel.DoesNotExist:
+            return Http404()
+        if last_feedback:
+            last_feedback=json.loads(last_feedback)
+            last_action=last_feedback.get("action")
+            if action!=last_action: # If current and last action are different, reduce last action number and increase current action number
+                ward_detail.feedback[last_action]-=1
+                ward_detail.feedback[action]+=1 
+                updated=True
+        else:
+            # increase current action
+            ward_detail.feedback[action]+=1
+            updated=True
+
+        if updated:        
+            ward_detail.save()
+            response=JsonResponse({"updated":updated,"feedback":ward_detail.feedback})
+            # Save performed action as last action in cookie
+            response.set_cookie(f"{ward_slug}-{field}",json.dumps({"action":action,"updated":datetime.now().timestamp()}))
+            return response
+        return JsonResponse({"updated":updated})
+
+        
+        
 
 class UpdateWardDetailFeedback(View):
     def post(self,request,ward_slug,field):

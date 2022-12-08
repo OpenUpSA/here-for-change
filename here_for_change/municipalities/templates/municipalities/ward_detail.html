@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
 {% load static %} 
+{% load common %}
 {% load model_filters %}
 {% load common %}
 {% block title %}{{ward}} - {{ward.municipality.name }} - Here For Change{% endblock %} 
@@ -351,6 +352,7 @@
     <input type="text" name="url">
 </form>
 </section>
+{% csrf_token %}
 <!-- get details of ward and neighbours -->
 <script>
   {% autoescape off %}
@@ -372,15 +374,15 @@
     {% for neighbour in neighbours %}
     
       var eachNeighbour = {
-        "geometry": {{neighbour.map_geoJson}},
-        "name": "{{neighbour.name}}",
-        "formatted_name": "{{object.formatted_name}}",
-        "slug": "{{neighbour.slug}}",
-        "muniCode": "{{neighbour.municipality.municipality_code}}",
-        "municipality": "{{neighbour.municipality}}",
-        "defaultZoom": {{neighbour.map_default_zoom}},
-        "url": "{{neighbour.get_absolute_url}}",
-        "ward_detail":{{neighbour.ward_detail|to_json}}
+      "geometry": {{neighbour.map_geoJson}},
+      "name": "{{neighbour.name}}",
+      "formatted_name": "{{neighbour.formatted_name}}",
+      "slug": "{{neighbour.slug}}",
+      "muniCode": "{{neighbour.municipality.municipality_code}}",
+      "municipality": "{{neighbour.municipality}}",
+      "defaultZoom": {{neighbour.map_default_zoom}},
+      "url": "{{neighbour.absolute_url}}",
+      "ward_detail":{{neighbour.ward_detail|to_json}}
       }
       neighbouring_wards.push(eachNeighbour)
     {% endfor %}
