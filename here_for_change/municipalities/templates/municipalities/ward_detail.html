@@ -145,7 +145,11 @@
                 <span class="triangle-down"></span> </span
             ></i>
             <span
-              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100 feedback-vote"
+              data-field="councillor_contacts_phone"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_phone' %}"
+              data-action="positive"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was helpful
@@ -157,7 +161,11 @@
               <span> {{ward_detail.councillor_contacts_phone.feedback.positive}}</span>
             </span>
             <span
-              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200 feedback-vote"
+              data-field="councillor_contacts_phone"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_phone' %}"
+              data-action="negative"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was not helpful
@@ -190,7 +198,11 @@
               </span>
             </i>
             <span
-              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100 feedback-vote"
+              data-field="councillor_contacts_email_primary"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_email_primary' %}"
+              data-action="positive"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was helpful
@@ -203,7 +215,11 @@
               <span> {{ward_detail.councillor_contacts_email_primary.feedback.positive}} </span>
             </span>
             <span
-              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200 feedback-vote"
+              data-field="councillor_contacts_email_primary"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_email_primary' %}"
+              data-action="negative"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was not helpful
@@ -345,6 +361,7 @@
     <input type="text" name="url">
 </form>
 </section>
+{% csrf_token %}
 <!-- get details of ward and neighbours -->
 <script>
   {% autoescape off %}
@@ -381,3 +398,8 @@
   {% endautoescape %}
   </script>
 {% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/ward-detail-feedback.js' %}" ></script>
+{% endblock scripts %}
+
