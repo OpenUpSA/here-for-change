@@ -75,17 +75,17 @@ if (mapEl) {
       getDataFromBackend();
     }
 
-    await fetch(
-      "https://mapit.code4sa.org/area/" +
-        municipality["municipality_area_number"] +
-        "/touches"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        municipality["neighbours"] = data;
-        updateNeighbourMunicipalities();
-      })
-      .catch((e) => console.log(e));
+    // await fetch(
+    //   "https://mapit.code4sa.org/area/" +
+    //     municipality["municipality_area_number"] +
+    //     "/touches"
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     municipality["neighbours"] = data;
+    //     updateNeighbourMunicipalities();
+    //   })
+    //   .catch((e) => console.log(e));
   }
 
   async function setMuniOfficePin() {
