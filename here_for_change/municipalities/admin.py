@@ -3,7 +3,8 @@ from django.contrib import admin
 
 from .models import (
     Municipality,
-    Ward)
+    Ward,
+    WardDetail)
 
 
 class MunicipalityAdmin(admin.ModelAdmin):
@@ -18,6 +19,13 @@ class WardAdmin(admin.ModelAdmin):
     list_display = ['name', 'municipality']
     list_filter = ['name', 'municipality']
 
+class WardDetailAdmin(admin.ModelAdmin):
+    model = WardDetail
+    list_display = ['ward', 'field_name',
+                    'field_type', 'field_value', 'stage']
+    list_filter = ['ward', 'field_name', 'field_type', 'stage']
+
 
 admin.site.register(Municipality, MunicipalityAdmin)
 admin.site.register(Ward, WardAdmin)
+admin.site.register(WardDetail, WardDetailAdmin)

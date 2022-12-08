@@ -1,0 +1,92 @@
+{% extends "base.html" %} {% load static %} 
+{% block content %}
+  <section class="h-full overflow-hidden">
+    <div class="heading-section min-h-[25vh]">
+      <div class="flex flex-col pt-12 items-center justify-center px-4 md:px-8 xl:px-4">
+      <h1 class="flex wrap-heading benfritz fvs-250 text-center text-black text-4xl">
+        <span>Find my&nbsp;</span>
+        <span class="relative">
+          ward councillor<img
+            class="absolute left-0 -bottom-1.5 w-full"
+            src="{% static 'assets/basic-underline.svg' %}"
+          />
+        </span>
+      </h1>
+      <p class="max-w-[740px] mt-5 mb-8 text-base leading-[26px] text-center opacity-60">Knowing who your ward councillor is and how to get in touch with them is an essential part of citizen participation. Your ward councillor represents you and your local community and is responsible for ensuring certain issues within your ward are addressed.</p>
+      <div class="relative -mb-9 z-20 flex flex-col gap-y-2 w-full h-auto md:h-[74px] md:w-[90%] lg:w-[80%] mx-auto md:flex-row items-center justify-between p-2 bg-white rounded-xl shadow-[0_10px_13px_0_rgba(26,41,40,0.2)]">
+        <div
+            class="start-transition absolute z-30 -top-9 -right-6 md:-left-[50px] flex h-[63px] w-[63px] cursor-default items-center justify-center lg:h-[84px] lg:w-[84px]"
+          >
+            <img
+              style="animation-duration: 8s"
+              class="animate-spin"
+              src="{% static 'assets/big-star.svg' %}"
+            />
+            <p
+              class="fvs-200 benfritz absolute rotate-[-12deg] text-center text-[16.8px] leading-[13.44px] text-white hover:rotate-[-32deg] lg:text-[22.4px] lg:leading-[17.92px]"
+            >
+              Start<br />here!
+            </p>
+          </div>
+        <div class="relative flex flex-row items-center w-full">
+          <span class="absolute flex items-center pl-3">
+            <i class="fa-solid fa-magnifying-glass text-purple-700"></i>
+          </span>
+          <input id="address-search-input" class="text-[15px] text-[#333333] w-full h-14 pl-10 rounded-lg border-[1.25px] bg-[#f5f5f5] border-transparent outline-none hover:bg-[#19282726] hover:border-[#7f00ff] focus:border-[#7f00ff] focus:bg-[#7f00ff1a] transition-all duration-[400ms] ease-linear" type="text" placeholder="Enter your address...">
+        </div>
+        <div class="w-full md:w-auto h-14 flex flex-row items-center">
+          <p class="px-3.5">OR</p>
+          <button id="location-btn" class="text-sm w-full h-14 md:w-[177px] p-4 rounded-lg text-white whitespace-nowrap font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">
+            <span class="flex items-center gap-x-2 md:justify-around">
+              <i class="fa-solid fa-location-dot text-lg"></i>
+              <span>Use your location</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  <div id="map" class="h-[65vh]"></div> 
+  </section>
+  <!-- get details of available Municipalities -->
+  <div class="hidden">
+    {% for municipality in object_list %}
+    <div class="coords">
+      {
+        "name": "{{municipality.name}}",
+        "coords": [{{municipality.map_latitude}}, {{municipality.map_longitude}}],
+        "slug": "{{municipality.ward_set.first.slug}}",
+        "muniCode": "{{municipality.municipality_code}}"
+      }
+    </div>
+    {% endfor %}
+  </div>
+  <form id="redirect-to-closest-ward-form" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
+    <input type="number" name="longitude">
+    <input type="number" name="latitude">
+  </form>
+{% endblock %}
+{% block scripts %}
+  <script defer>
+
+    // Create the search box and link it to the UI element.
+    const input = document.getElementById("address-search-input");
+    const searchBox = new google.maps.places.SearchBox(input);
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+        return;
+        }
+        console.log(places);
+        const form=document.getElementById("redirect-to-closest-ward-form");
+        form.querySelector('input[name="longitude"]').value=places[0].geometry.location.lng();
+        form.querySelector('input[name="latitude"]').value=places[0].geometry.location.lat();
+        form.submit();
+
+    });
+  </script>
+{% endblock scripts %}
+

@@ -1,0 +1,190 @@
+{% load static %}
+<nav class="shadow bg-hfc-green-900 relative z-20">
+    <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto flex justify-between">
+      <div class="py-3 flex items-center justify-between z-20">
+        <div>
+          <a class="text-lg benfritz text-white lg:text-2xl relative" href="/">
+            <span>HereForChange</span>
+            <div class="w-5 h-5 lg:w-[25px] lg:h-[25px] absolute -top-3 -right-3 lg:-right-4 flex items-center justify-center rotate-[-17deg]">
+              <img class="w-5 h-5 lg:w-[25px] lg:h-[25px]" src="{% static 'assets/Star1.svg' %}"/>
+              <span class="text-white absolute text-xs lg:text-sm font-extralight">za</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <ul class="hidden lg:flex px-2 -mx-4  lg:inline-block lg:flex-row md:mx-0 items-center z-20">
+        <li
+          class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+        >
+          <a
+            href="#"
+            class="text-sm font-medium text-white rounded md:mr-2"
+            >Learning</a
+          >
+          <i class="fa-solid fa-angle-down text-zinc-400"></i>
+        </li>
+        <li
+          class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+        >
+          <a
+            href="#"
+            class="text-sm font-medium text-white rounded md:mr-2"
+            >Tools</a
+          >
+          <i class="fa-solid fa-angle-down text-zinc-400"></i>
+        </li>
+        <li
+          class="tray-tabs px-4 h-full inline-block flex justify-center items-center hover:bg-hfc-green-800 cursor-pointer"
+        >
+          <a
+            href="#"
+            class=" text-sm font-medium text-white rounded md:mr-2"
+            >Guides</a
+          >
+          <i class="fa-solid fa-angle-down text-zinc-400"></i>
+        </li>
+      </ul>
+
+      <!-- Mobile Menu open: "block", Menu closed: "hidden" -->
+      <div
+        class="hidden md:flex md:items-center md:justify-between py-3 gap-3 z-20"
+      >
+        <div class="relative flex items-center">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+            <i class="fa-solid fa-magnifying-glass text-purple-700"></i>
+          </span>
+
+          <input
+            type="text"
+            class="w-72 py-3 pl-10 pr-4 text-gray-700 bg-white text-sm border rounded-md focus:border-blue-400 focus:outline-none ring-1 ring-transparent focus:ring-opacity-40 focus:ring-blue-300 hover:ring-purple-800"
+            placeholder="Find your ward..."
+          />
+          <button onclick="openModal()" class="absolute inset-y-0 right-0 text-sm px-4 py-3 rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Use location</button>
+        </div>
+        <!-- Dropdown below-->
+        <div class="relative inline-block text-left" x-data="{open: false}">
+          <div>
+            <button
+              @click="open = !open"
+              type="button"
+              class="inline-flex justify-center items-center gap-2 w-full rounded-md shadow-sm px-4 py-3 bg-hfc-green-800 text-sm font-medium text-white focus:outline-none"
+              id="lang-button"
+              aria-expanded="true"
+              aria-haspopup="true"
+            >
+              <span>EN</span>
+              <i class="fa-solid fa-caret-down"></i>
+            </button>
+          </div>
+
+          <div
+            class="top-0 w-auto absolute right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+            role="menu"
+            aria-orientation="vertical"
+            aria-labelledby="menu-button"
+            tabindex="-1"
+            x-show="open" 
+            x-transition
+            @click.outside = "open = false"
+            @click="open = ! open"
+          >
+            <div class="py-1" role="none">
+              <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+              <a
+                href="#"
+                class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-0"
+                data-lang="EN"
+                onclick="dropDownHandler(event, 'lang-button', true)"
+                >English</a
+              >
+              <a
+                href="#"
+                class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-1"
+                data-lang="AF"
+                onclick="dropDownHandler(event, 'lang-button', true)"
+                >Africaans</a
+              >
+              <a
+                href="#"
+                class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-2"
+                data-lang="ISZ"
+                onclick="dropDownHandler(event, 'lang-button', true)"
+                >isiZulu</a
+              >
+              <a
+                href="#"
+                class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100"
+                role="menuitem"
+                tabindex="-1"
+                id="menu-item-2"
+                data-lang="ISX"
+                onclick="dropDownHandler(event, 'lang-button', true)"
+                >isiXhosa</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- End of dropdown -->
+
+
+       
+
+      </div>
+      <!-- Mobile menu button -->
+      <div class="flex lg:hidden -ml-32">
+        <button
+          type="button"
+          class="text-white focus:outline-none"
+          aria-label="toggle menu"
+        >
+          <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current">
+            <path
+              fill-rule="evenodd"
+              d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+ 
+  <div id="" class="hidden lg:block nav-tray py-7  absolute w-full top-[-50%] left-0 right-0 bg-hfc-green-900 z-10 border-t border-[#ffffff12]">
+    <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto w-full flex items-start">
+      <!-- from here blog section -->
+      <div class="flex flex-col text-sm text-white w-1/3 border-r border-[#ffffff12] pr-7">
+        <p class="text-hfc-green-100 mb-2 pb-2.5 pr-3 w-full">From our blog</p>
+        <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">Find my ward councillor</a>
+        <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">Find my municipalities contact information</a>
+        <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">How does my municipality earn and spend its money</a>
+        <a class="py-2.5 pr-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">How my municipal and ward leadership was selected</a>
+      </div>
+      <!-- participation section -->
+      <div class="flex flex-col text-sm text-white w-1/3 border-r border-[#ffffff12] px-7">
+        <p class="text-hfc-green-100 mb-2 pb-2.5 px-3 w-full">Participation</p>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+      </div>
+      <!-- understanding govt section -->
+      <div class="flex flex-col text-sm text-white w-1/3 px-7">
+        <p class="text-hfc-green-100 mb-2 pb-2.5 px-3 w-full">Understanding government</p>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+        <a class="py-2.5 px-3 inline-block rounded-lg w-full hover:bg-hfc-green-800" href="#">The week ahead</a>
+      </div>
+    </div>   
+  </div>
+
+  

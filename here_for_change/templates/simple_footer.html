@@ -1,0 +1,39 @@
+{% load static %}
+<footer class="bg-hfc-green-900 w-full py-12">
+    <div class="px-4 md:px-8 xl:px-4 max-w-screen-xl mx-auto">
+      <div class="flex flex-col md:flex-row">
+        <div class="w-full md:w-[27.5%]">
+          <a class="text-lg inline-block benfritz text-white lg:text-2xl relative pb-7" href="#">
+            <span>HereForChange</span>
+            <div class="w-5 h-5 lg:w-[25px] lg:h-[25px] absolute -top-2 -right-3 lg:-right-4 flex items-center justify-center rotate-[-17deg]">
+              <img class="w-5 h-5 lg:w-[25px] lg:h-[25px]" src="{% static 'assets/Star1.svg' %}"/>
+              <span class="text-white absolute text-xs lg:text-sm font-extralight">za</span>
+            </div>
+          </a>
+          <p class="text-sm text-white opacity-60">
+            This site was created to help citizens better understand and engage with their local government’s public participation processes in order to effect change in their communities.
+          </p>
+        </div>
+        <div class="w-full md:w-[27.5%] md:ml-[12.5%] text-sm">
+          <p class="my-4 text-hfc-green-100">Learning & guides</p>
+          <a href="#" class="mb-2 text-white block opacity-60 hover:opacity-100">Coming soon!</a>
+        </div>
+        <div class="w-full md:w-[27.5%] md:ml-[5%] text-sm">
+          <p class="my-4 text-hfc-green-100">Get in touch</p>
+          <a href="mailto:info@hereforchange.org.za" class="mb-2 text-white opacity-60 hover:opacity-100 break-words">info@hereforchange.org.za</a>
+        </div>
+      </div>
+      <div class="mt-10">
+        <!-- horizontal divide line -->
+        <div class="border-white opacity-10 w-full border-t mb-7"></div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between">
+          <p class="text-white opacity-60 text-sm">© 2022 <a href="https://openup.org.za" target="_blank" rel="noopener noreferrer" class="underline">OpenUp</a>. HereForChange is a project created by OpenUp.</p>
+          <div class="flex items-center gap-4 text-white text-2xl mt-3 md:mt-0">
+            <a href="https://www.facebook.com/OpenUpSA" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f opacity-60 hover:opacity-100"></i></a>
+            <a href="https://twitter.com/openupsa" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-twitter opacity-60 hover:opacity-100"></i></a>
+            <a href="https://www.instagram.com/openup_southafrica/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram opacity-60 hover:opacity-100"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>

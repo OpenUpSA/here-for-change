@@ -59,10 +59,12 @@ if (!!btns) {
 
 //Survey container toggle
 const showResultBtn = document.getElementsByClassName("show-results")[0];
-const surveyContainer1 =
-  document.getElementsByClassName("survey-container-1")[0];
-const surveyContainer2 =
-  document.getElementsByClassName("survey-container-2")[0];
+const surveyContainer1 = document.getElementsByClassName(
+  "survey-container-1"
+)[0];
+const surveyContainer2 = document.getElementsByClassName(
+  "survey-container-2"
+)[0];
 const hideResultBtn = document.getElementsByClassName("hide-results")[0];
 
 if (showResultBtn) {
@@ -96,23 +98,46 @@ if (otherBtn) {
   });
 }
 
-//Toc section
-function openToc(event, toc_name) {
-  const toc_btns = document.getElementsByClassName("toc-btn");
-  const toc_sections = document.getElementsByClassName("toc");
+//Toc section onclick handler
+const toc_btns = document.getElementsByClassName("toc-btn");
+const toc_sections = document.getElementsByClassName("toc");
 
-  for (let i = 0; i < toc_sections.length; i++) {
-    toc_sections[i].style.display = "none";
-  }
-  document.getElementById(toc_name).style.display = "block";
+if (toc_btns) {
+  for (let i = 0; i < toc_btns.length; i++) {
+    toc_btns[i].addEventListener("click", (e) => {
+      const targetId = e.currentTarget.href.split("#")[1];
+      const targetEle = document.getElementById(targetId);
+      targetEle.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  for (i = 0; i < toc_btns.length; i++) {
-    toc_btns[i].classList.remove("btn-active");
-    toc_btns[i].classList.add("btn-inactive");
+      for (j = 0; j < toc_btns.length; j++) {
+        toc_btns[j].classList.remove("btn-active");
+        toc_btns[j].classList.add("btn-inactive");
+      }
+      e.currentTarget.classList.remove("btn-inactive");
+      e.currentTarget.classList.add("btn-active");
+    });
   }
-  event.currentTarget.classList.remove("btn-inactive");
-  event.currentTarget.classList.add("btn-active");
 }
+
+//toc section onScroll handler
+const links = document.querySelectorAll(".toc-btn");
+const sections = document.querySelectorAll(".section");
+
+function changeLinkState() {
+  if (links && sections) {
+    let index = sections.length;
+    while (--index && window.scrollY + 200 < sections[index].offsetTop) {}
+    links.forEach((link) => {
+      link.classList.remove("btn-active");
+      link.classList.add("btn-inactive");
+    });
+
+    links[index].classList.remove("btn-inactive");
+    links[index].classList.add("btn-active");
+  }
+}
+
+// window.addEventListener("scroll", changeLinkState);
 
 // bar tooltips positioning
 const spendingBar = document.getElementsByClassName("spending-bar");
@@ -162,27 +187,23 @@ if (voteTooltip) {
 }
 
 //for side animation
-
-if (document) {
-  var element = document.getElementById("toc");
-  if (element) {
-    var elementHeight = element.clientHeight;
+function inView(element) {
+  var windowHeight = window.innerHeight;
+  var scrollY = window.scrollY || window.pageYOffset;
+  var scrollPosition = scrollY + windowHeight;
+  var elementHeight = element.clientHeight;
+  var elementPosition =
+    element.getBoundingClientRect().top + scrollY + elementHeight;
+  if (scrollPosition > elementPosition) {
+    return true;
   }
+  return false;
+}
+var toc_element = document.getElementById("toc");
+if (toc_element) {
   document.addEventListener("scroll", animate);
-  function inView() {
-    var windowHeight = window.innerHeight;
-    var scrollY = window.scrollY || window.pageYOffset;
-    var scrollPosition = scrollY + windowHeight;
-    var elementPosition =
-      element.getBoundingClientRect().top + scrollY + elementHeight;
-    if (scrollPosition > elementPosition) {
-      return true;
-    }
-    return false;
-  }
-
   function animate() {
-    if (inView()) {
+    if (inView(toc_element)) {
       const sideAnime = document.getElementById("side-anime");
       const sideAnimeBanner = document.getElementById("side-anime-banner");
 
@@ -190,4 +211,80 @@ if (document) {
       sideAnimeBanner.classList.add("side-anime-banner");
     }
   }
+}
+
+//Councillor phone number formatting
+const phone = document.getElementById("councillor-phone");
+const councilNum = document.getElementById("council-num");
+if (councilNum) {
+  const councillorPhoneDjango = JSON.parse(councilNum.textContent);
+  if (phone && councillorPhoneDjango) {
+    phone.innerHTML = libphonenumber
+      .parsePhoneNumber(councillorPhoneDjango)
+      .formatNational();
+  }
+}
+
+//Deputy mayor phone number formatting
+const deputyMayorNum = document.getElementById("deputy-mayor-num");
+if (deputyMayorNum) {
+  const dmPhoneDjango = JSON.parse(deputyMayorNum.textContent);
+  const deputyMayorPhone = document.getElementById("deputy-mayor-phone");
+  const secDepMayorPhone = document.getElementById("sec-dep-mayor-phone");
+  const secDepPhoneDjango = JSON.parse(
+    document.getElementById("sec-dep-mayor-num").textContent
+  );
+  if (deputyMayorPhone && dmPhoneDjango) {
+    deputyMayorPhone.innerHTML = libphonenumber
+      .parsePhoneNumber(dmPhoneDjango)
+      .formatNational();
+  }
+
+  if (secDepMayorPhone && secDepPhoneDjango) {
+    secDepMayorPhone.innerHTML = libphonenumber
+      .parsePhoneNumber(secDepPhoneDjango)
+      .formatNational();
+  }
+}
+
+const locationModal = document.querySelector("#location-modal");
+
+function openModal() {
+  if (locationModal) {
+    locationModal.classList.remove("hide-modal");
+    locationModal.classList.add("show-modal");
+  }
+}
+
+function closeModal() {
+  if (locationModal) {
+    locationModal.classList.remove("show-modal");
+    locationModal.classList.add("hide-modal");
+  }
+}
+
+if (locationModal) {
+  locationModal.addEventListener("click", (e) => {
+    const modalOverlay = document.querySelector("#modal-overlay");
+    if (e.target === modalOverlay) {
+      closeModal();
+    }
+  });
+}
+
+let findCouncillorBtn = document.querySelector("#find-councillor");
+
+if (findCouncillorBtn) {
+  if (window.document.location.pathname == "/") {
+    findCouncillorBtn.classList.add("hidden");
+  }
+}
+
+const councillorWard = document.querySelector("#councillor-ward");
+const councilNameEl = document.querySelector("#council-name");
+if (councillorWard && councilNameEl) {
+  const councillorWardName = JSON.parse(councillorWard.textContent);
+  let splitWardName = councillorWardName.split("Ward");
+  let wardName = `Ward ${splitWardName[1]}, ${splitWardName[0]}`;
+  councilNameEl.innerHTML = wardName;
 }

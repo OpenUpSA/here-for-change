@@ -1,5 +1,5 @@
-describe('index spec', () => {
-  it('passes', () => {
-    cy.visit('/')
-  })
-})
+describe("index spec", () => {
+  it("passes", () => {
+    cy.visit("/");
+  });
+});
