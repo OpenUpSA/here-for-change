@@ -19,12 +19,14 @@ if (mapEl) {
     wardAreaData = current_ward.geometry;
     wardAreaData["name"] = current_ward.name;
     wardAreaData["slug"] = current_ward.slug;
+    wardAreaData["details"] = current_ward.ward_detail;
     muniAreaData.push(wardAreaData);
 
     neighbouring_wards.forEach((neighbour) => {
       neighbourAreaData = neighbour.geometry;
       neighbourAreaData["name"] = neighbour["name"];
       neighbourAreaData["slug"] = neighbour["slug"];
+      neighbourAreaData["details"] = neighbour["ward_detail"]
       muniAreaData.push(neighbourAreaData);
     });
   }
@@ -33,6 +35,7 @@ if (mapEl) {
     if (current_ward) {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
+      //muniLatlng = [-34.4781, 19.9798];
       muniLatlng = current_ward.coords;
     }
   }
@@ -45,6 +48,7 @@ if (mapEl) {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log
         municipality["neighbours"] = data;
         updateNeighbourMunicipalities();
       })
@@ -342,9 +346,8 @@ if (mapEl) {
             );
           }
         });
-
         iconMarker.bindTooltip(
-          `${politicalParty["party"]["name"]} - ${politicalParty["wardCouncillor"]["name"]}`,
+          `${layer.feature.geometry.details.councillor_political_party.value} - ${layer.feature.geometry.details.councillor_name.value}`,
           {
             direction: "top",
             offset: [0, -20],
@@ -359,7 +362,13 @@ if (mapEl) {
         });
 
         iconMarker.on("mouseout", (e) => {
-          e.target.setIcon(politicalParty["party"]["icon"]);
+          e.target.setIcon(L.icon({
+            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            className: "icon-marker",
+            bubblingMouseEvents: true,
+          }));
         });
 
         if (wardId == slug) {

@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 {% load static %} 
 {% load model_filters %}
+{% load common %}
 {% block title %}{{ward}} - {{ward.municipality.name }} - Here For Change{% endblock %} 
 {% block content %} 
 <section>
@@ -132,7 +133,7 @@
             </span>
             <span id="councillor-phone" class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
              <!-- formatted phone number would be added by JS -->
-             {{ward_detail.councillor_contacts_phone.value|json_script:"council-num" }}
+             {{ward_detail.councillor_phone.value }}
             </span>
           </div>
           <div class="flex items-center">
@@ -144,7 +145,11 @@
                 <span class="triangle-down"></span> </span
             ></i>
             <span
-              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100 feedback-vote"
+              data-field="councillor_contacts_phone"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_phone' %}"
+              data-action="positive"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was helpful
@@ -156,7 +161,11 @@
               <span> {{ward_detail.councillor_contacts_phone.feedback.positive}}</span>
             </span>
             <span
-              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200 feedback-vote"
+              data-field="councillor_contacts_phone"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_phone' %}"
+              data-action="negative"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was not helpful
@@ -189,7 +198,11 @@
               </span>
             </i>
             <span
-              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100"
+              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100 feedback-vote"
+              data-field="councillor_contacts_email_primary"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_email_primary' %}"
+              data-action="positive"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was helpful
@@ -202,7 +215,11 @@
               <span> {{ward_detail.councillor_contacts_email_primary.feedback.positive}} </span>
             </span>
             <span
-              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200"
+              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200 feedback-vote"
+              data-field="councillor_contacts_email_primary"
+              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_email_primary' %}"
+              data-action="negative"
+              data-ward="{{object.slug}}"
             >
               <span class="voteTooltipText">
                 This was not helpful
@@ -348,24 +365,32 @@
       "municipality": "{{object.municipality}}",
       "defaultZoom": {{object.map_default_zoom}},
       "url": "{{object.get_absolute_url}}",
-      "coords": [{{object.municipality.map_latitude}}, {{object.municipality.map_longitude}}]
+      "ward_detail":{{ward_detail|to_json}},
+      "coords":{{object.coords|to_json}}
     }
     
     var neighbouring_wards = []
     {% for neighbour in neighbours %}
     
       var eachNeighbour = {
-      "geometry": {{neighbour.map_geoJson}},
-      "name": "{{neighbour.name}}",
-      "formatted_name": "{{object.formatted_name}}",
-      "slug": "{{neighbour.slug}}",
-      "muniCode": "{{neighbour.municipality.municipality_code}}",
-      "municipality": "{{neighbour.municipality}}",
-      "defaultZoom": {{neighbour.map_default_zoom}},
-      "url": "{{neighbour.get_absolute_url}}"
+        "geometry": {{neighbour.map_geoJson}},
+        "name": "{{neighbour.name}}",
+        "formatted_name": "{{object.formatted_name}}",
+        "slug": "{{neighbour.slug}}",
+        "muniCode": "{{neighbour.municipality.municipality_code}}",
+        "municipality": "{{neighbour.municipality}}",
+        "defaultZoom": {{neighbour.map_default_zoom}},
+        "url": "{{neighbour.get_absolute_url}}",
+        "ward_detail":{{neighbour.ward_detail|to_json}}
       }
       neighbouring_wards.push(eachNeighbour)
     {% endfor %}
   {% endautoescape %}
-  </script>
+</script>
+{% csrf_token %}
 {% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/ward-detail-feedback.js' %}" ></script>
+{% endblock scripts %}
+

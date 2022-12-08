@@ -25,7 +25,6 @@ services:
       - TAG_MANAGER_ENABLED=False
 
   db:
-    #image: postgres:11.6
     image: postgis/postgis:14-master
     environment:
       - POSTGRES_USER=here_for_change
