@@ -221,7 +221,7 @@ class WardDetail(BaseModel):
     field_value = models.CharField(max_length=90, null=False, blank=False)
     stage = models.CharField(
         max_length=40, default=STAGING, choices=VERSION_CHOICES)
-    feedback = models.JSONField(null=False, blank=False, default={"positive":0,"negative":0})
+    feedback = models.JSONField(null=False, blank=False, default=dict({"positive":0,"negative":0}))
 
     def __str__(self):
         return f"{self.field_name} - {self.stage} - {self.ward}"
@@ -260,3 +260,13 @@ class MunicipalityDetail(BaseModel):
 
     def __str__(self):
         return f"{self.field_name} - {self.stage} - {self.municipality}"
+
+
+class FindMyWardCouncillorFeedback(BaseModel):
+    email=models.EmailField(null=False,blank=False)
+    feedback=models.CharField(null=False,blank=False, max_length=250)
+    ward=models.ForeignKey(Ward,null=False,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.ward} - {self.email}"
+

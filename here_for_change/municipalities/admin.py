@@ -5,7 +5,8 @@ from .models import (
     Municipality,
     MunicipalityDetail,
     Ward,
-    WardDetail)
+    WardDetail,
+    FindMyWardCouncillorFeedback)
 
 
 class MunicipalityAdmin(admin.ModelAdmin):
@@ -32,8 +33,13 @@ class MunicipalityDetailAdmin(admin.ModelAdmin):
                     'field_type', 'field_value', 'stage']
     list_filter = ['municipality', 'field_name', 'field_type', 'stage']
 
+class FindMyWardCouncillorFeedbackAdmin(admin.ModelAdmin):
+    model = FindMyWardCouncillorFeedback
+    list_display = ['ward','email','feedback','created_at','updated_at']
+    list_filter = ['email','created_at','updated_at','ward']
 
 admin.site.register(Municipality, MunicipalityAdmin)
 admin.site.register(Ward, WardAdmin)
 admin.site.register(WardDetail, WardDetailAdmin)
 admin.site.register(MunicipalityDetail, MunicipalityDetailAdmin)
+admin.site.register(FindMyWardCouncillorFeedback, FindMyWardCouncillorFeedbackAdmin)

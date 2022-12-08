@@ -412,6 +412,7 @@ feedbackForm &&
     submitFeedbackBtn.textContent = "Please wait...";
     const data = {
       email: feedbackForm.querySelector('input[name="email"]').value,
+      ward: feedbackForm.querySelector('input[name="ward"]').value,
       feedback: feedbackForm.querySelector('textarea[name="feedback"]').value,
       csrfmiddlewaretoken: document.querySelector(
         "input[name='csrfmiddlewaretoken']"
