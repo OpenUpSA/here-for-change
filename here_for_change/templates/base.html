@@ -40,7 +40,6 @@
       crossorigin=""
     ></script>
     <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/libphonenumber-js@1.9.9/bundle/libphonenumber-min.js"></script>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -112,7 +111,7 @@
               </p>
             </div>
             <div class="flex flex-col md:flex-row md:justify-between gap-3.5">
-              <button onclick="closeModal()" class="text-sm p-4 text-center w-full cursor-pointer bg-[#1928270d] rounded-lg">Cancel</button>
+              <button id="close-modal" class="text-sm p-4 text-center w-full cursor-pointer bg-[#1928270d] rounded-lg">Cancel</button>
               <a target="_blank" rel="noopener noreferrer" class="text-sm whitespace-nowrap p-4 text-center block w-full  cursor-pointer text-white bg-[#192827] rounded-lg" href="https://support.google.com/chrome/answer/142065?hl=en&co=GENIE.Platform%3DDesktop">How to enable location</a>
             </div> 
           </div>
@@ -125,8 +124,5 @@
     <script src="{% static 'js/here_for_change.js' %}" ></script>
     <script src="{% static 'js/map.js' %}" ></script>
     <script src="{% static 'js/random-points-on-polygon.js' %}" ></script>
-    {% block scripts %}
-      
-    {% endblock scripts %}
   </body>
 </html>

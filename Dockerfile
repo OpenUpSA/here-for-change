@@ -39,9 +39,9 @@ WORKDIR /app
 
 
 
-# RUN set -ex; \
-#   yarn; \
-#   yarn build
+RUN set -ex; \
+    yarn; \
+    yarn tailwind-build
 
 
 

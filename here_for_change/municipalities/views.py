@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from django.contrib.gis.geos import Point
 from django.http import JsonResponse
@@ -6,6 +7,7 @@ from django.shortcuts import redirect
 from django.views.generic import DetailView, ListView, View
 from .models import Municipality, Ward
 from .models import WardDetail as WardDetailModel
+
 
 
 class Home(ListView):
@@ -285,14 +287,53 @@ class FindMyWardCouncillor(ListView):
     template_name = "municipalities/find_my_ward_councillor.html"
     model = Municipality
 
+class WhoIsMyWardCouncillor(DetailView):
+    model = Ward
+    template_name = "municipalities/who_is_my_ward_councillor.html"
+    slug_field = 'slug__iexact'
+    slug_url_kwarg = 'slug'
+
+    def get_context_data(self, **kwargs):
+        # get staging
+        staging=self.request.GET.get("version","production")
+
+        ctx= super().get_context_data(**kwargs)
+        ward=self.get_object()
+        ctx['ward_detail']={}
+
+        ward_details=WardDetailModel.objects.filter(ward=ward,stage=staging)
+        for detail in ward_details:
+            ctx['ward_detail'][detail.field_name]={
+                'value':detail.field_value,
+                'feedback':detail.feedback
+            }
+        
+        ctx['neighbours']=Ward.objects.filter(municipality=ward.municipality).exclude(pk=ward.pk)
+        return ctx
 
 class RedirectClosestWard(View):
     def get(self,request):
         longitude,latitude=(request.GET.get("longitude"),request.GET.get("latitude"))
+        input_url = request.GET.get("url")
         if longitude and latitude:
             location=Point((float(latitude),float(longitude)))
             closest_ward=Ward.objects.closest(location)
-            return redirect(closest_ward.get_absolute_url())
+            if input_url.endswith("find-my-ward-councillor"):
+                return redirect(closest_ward.get_absolute_url() + "ward-councillor")
+            else:
+                return  redirect(closest_ward.get_absolute_url())
         else:
             return redirect("home")
+
+
+class Feedback(View):
+    def post(self, request):
+        form_data = json.loads(request.body)
+        res = {
+            "status": "success",
+            "email": form_data.get('email'),
+            "feedback": form_data.get('feedback')
+        }
+        return JsonResponse(res,safe=False)
+
 

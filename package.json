@@ -7,8 +7,10 @@
   "scripts": {
     "db-dump-demo-data": "docker-compose run --rm web python manage.py dumpdata --exclude=auth --exclude=contenttypes --exclude=sessions --exclude=admin",
     "db-load-demo-data": "docker-compose run --rm web python manage.py loaddata demo-data",
+    "db-load-demo-wards": "docker-compose run --rm web python load_wards.py",
+    "db-load-demo-wards-details": "docker-compose run --rm web python load_dummy_ward_details.py",
     "db-migrate": "docker-compose run --rm web python manage.py migrate",
-    "dev-init": "yarn install && yarn db-migrate && yarn db-load-demo-data",
+    "dev-init": "yarn install && yarn db-migrate && yarn db-load-demo-data && yarn db-load-demo-wards && yarn db-load-demo-wards-details",
     "dev": "yarn tailwind-watch & docker-compose up",
     "dev-reset": "rm -r node_modules & docker-compose down --volumes",
     "test": "cypress run",
