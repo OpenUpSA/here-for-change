@@ -1,6 +1,7 @@
 from django.urls import path,re_path
 from .views import Home, WardDetail, WardDetailJson, MunicipalityDetailJson, FindMyWardCouncillor, RedirectClosestWard, WhoIsMyWardCouncillor, Feedback, UpdateWardDetailFeedback
 
+
 urlpatterns = [
     path("", Home.as_view(), name="home"),
     re_path(r"municipalities/(?P<municipality_code>[a-zA-Z0-9\-]*)/wards/(?P<slug>[a-zA-Z0-9\-]*).json$", WardDetailJson.as_view(), name="ward_detail_json"),

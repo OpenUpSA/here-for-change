@@ -86,6 +86,7 @@ if (mapEl) {
     //     updateNeighbourMunicipalities();
     //   })
     //   .catch((e) => console.log(e));
+
   }
 
   async function setMuniOfficePin() {
