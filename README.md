@@ -74,6 +74,27 @@ To dump data from your db for updating demo/seed data:
 
      yarn db-dump-demo-data
 
+To fetch and load wards into db:
+
+     yarn db-load-wards
+
+To load dummy ward details into db:
+
+     yarn db-load-demo-wards-details
+
+To load ward details from json data file:
+
+     yarn db-load-wards-details
+
+To load municipality boundaries into db:
+
+     yarn db-load-municipality-boundaries
+
+To load municipality details from json data file:
+
+     yarn db-load-municipality-details
+  
+  
 If you need to destroy and recreate your dev setup, e.g. if you've messed up your
 database data or want to switch to a branch with an incompatible database schema,
 you can destroy all volumes and recreate them by running the following, and running

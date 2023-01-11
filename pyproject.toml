@@ -23,6 +23,8 @@ gevent = "^20.9.0"
 django-autoslug = "^1.9.8"
 beautifulsoup4 = "^4.11.1"
 selenium = "^4.6.0"
+requests = "^2.28.1"
+googlemaps = "^4.7.3"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
