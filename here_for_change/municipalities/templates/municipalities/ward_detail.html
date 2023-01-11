@@ -1,10 +1,10 @@
 {% extends "base.html" %} 
 {% load static %} 
 {% load common %}
+{% load model_filters %}
+{% load common %}
 {% block title %}{{ward}} - {{ward.municipality.name }} - Here For Change{% endblock %} 
 {% block content %} 
-{% include "./ward_notification.html" %}
-
 <section>
   <div
     class="align-items mx-auto flex max-w-screen-xl flex-col gap-3 py-4 px-4 md:py-8  md:px-8 xl:px-4"
@@ -13,10 +13,9 @@
       <h1 class="fvs-250 benfritz w-full text-left text-[48px] leading-[1.2] md:w-auto md:pr-4">
         {{ ward.municipality.name }}
       </h1>
-      <div class="relative" x-data="{open: false}">
+      <div class="relative">
         <div class="">
           <button
-            @click="open = ! open"
             type="button"
             class="inline-flex w-full items-center justify-between gap-2 rounded-md bg-hfc-green-100 px-4 py-3 text-sm font-medium text-white shadow-sm hover:bg-teal-900 focus:outline-none md:w-40"
             id="ward-button"
@@ -29,25 +28,19 @@
         </div>
 
         <div
-          class="dropdown-panel absolute top-0 right-0 z-50 w-full max-h-[418px] overflow-y-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          class="dropdown-panel hidden absolute top-0 right-0 z-50 w-full max-h-[418px] overflow-y-auto rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
           tabindex="-1"
-          x-show="open"
-          x-transition
-          @click.outside="open = false"
-          @click="open = ! open"
         >
           <div class="pb-1" role="none">
-            {% for ward_item in ward.municipality.ward_set.all %}
+            {% for ward_item in ward.municipality.ward_set.all|order_wards %}
             <a
               href="{% url 'ward_detail' ward.municipality.municipality_code ward_item.slug %}"
-              class="ward-dropdown block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              class="ward-item block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               role="menuitem"
               tabindex="-1"
-              id="menu-item-0"
-              onclick="dropDownHandler(event, 'ward-button')"
               >{{ward_item.formatted_name}}</a
             >
             {% endfor %}
@@ -56,7 +49,7 @@
       </div>
     </div>
     <div>
-      <p class="leading-[2.5rem]"><a href="#" class="underline">{{ward.name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipality. A <a href="#" class="underline">{{ward.municipality.municipality_type.lower}} municipality</a> within 
+      <p class="leading-[2.5rem]"><a href="#" class="underline">{{ward.formatted_name}}</a> within <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.name}}</span> municipality. A <a href="#" class="underline">{{ward.municipality.municipality_type.lower}} municipality</a> within 
         {% if ward.municipality.district %}
           <span class="font-semibold p-2 bg-neutral-100 rounded-lg">{{ward.municipality.district}}</span>, 
         {% endif %}
@@ -82,9 +75,9 @@
       </span>
       is:
     </h2>
-    <div class="">
+    <div class="hidden">
       <div
-        class="hidden cursor-pointer justify-self-end rounded-md bg-hfc-green-700 p-3 hover:bg-hfc-green-600 md:block"
+        class="cursor-pointer justify-self-end rounded-md bg-hfc-green-700 p-3 hover:bg-hfc-green-600 md:block"
       >
         <span>
           <i class="fa-solid fa-pen-to-square text-xl text-white"></i>
@@ -95,7 +88,7 @@
   </div>
 
   <div
-    class="mx-auto max-w-screen-xl items-start gap-4 px-4 pt-6 pb-12 md:px-8 lg:flex xl:px-4"
+    class="mx-auto max-w-screen-xl items-start gap-4 px-4 pt-6 pb-12 -mb-1 md:px-8 lg:flex xl:px-4"
   >
     <!-- left side -->
     <div class="lg:w-1/2">
@@ -119,8 +112,7 @@
         <div class="flex items-center gap-2">
           <img
             class="h-20 w-20 rounded-lg"
-            src="https://assets.website-files.com/61a46f92a4845f1ed45ec01d/61d7e311bea0c7b4d41234e6_danny-europa.png"
-          />
+            src="{% static 'assets/placeholder-image-1.svg' %}"          />
           <div class="grow">
             <div class="flex items-center justify-between">
               <p class="font-bold">{{ward_detail.councillor_name.value}}</p>
@@ -129,7 +121,7 @@
                 <span class="triangle-down"></span> </span
               ></i>
             </div>
-            <p id="council-name">{{ward.name|json_script:"councillor-ward"}}</p>
+            <p class="ward-name">{{ward.name|json_script:"councillor-ward"}}</p>
             <p>{{ward_detail.councillor_political_party.value}}</p>
           </div>
         </div>
@@ -141,8 +133,7 @@
               <i class="fa-solid fa-phone-flip"></i>
             </span>
             <span id="councillor-phone" class="text-sm mr-5 cursor-pointer hover:bg-gray-200 p-2 rounded-md whitespace-nowrap">
-             <!-- formatted phone number would be added by JS -->
-             {{ward_detail.councillor_phone.value }}
+             {{ward_detail.councillor_contacts_phone.value }}
             </span>
           </div>
           <div class="flex items-center">
@@ -271,19 +262,14 @@
             tabindex="-1"
           >
             <div class="py-2 px-3" role="none">
-              <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-              <a
-                href="#"
+              <p
                 class="block px-2 py-2 text-sm text-white"
                 role="menuitem"
                 tabindex="-1"
                 id="menu-item-0"
               >
-                A ward councillor is an elected representative responsible for
-                ensuring that the needs of their ward are represented and
-                considered during a district or municipalities various planning
-                and budgetary processes.
-              </a>
+              A Ward councillor is an elected person who will represent the citizens of that ward at a Municipal level in terms of the political decision making processes. The ward councillor is the “link” between the citizens in a ward and the municipality.
+            </p>
             </div>
           </div>
         </div>
@@ -312,19 +298,14 @@
             tabindex="-1"
           >
             <div class="py-2 px-3" role="none">
-              <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-              <a
-                href="#"
+              <p
                 class="block px-2 py-2 text-sm text-white"
                 role="menuitem"
                 tabindex="-1"
                 id="menu-item-0"
               >
-                A ward councillor is an elected representative responsible for
-                ensuring that the needs of their ward are represented and
-                considered during a district or municipalities various planning
-                and budgetary processes.
-              </a>
+              Ward elections in either a metropolitan or local municipality may be contested by an independent or party ward candidate who is eligible to stand to be elected as a councillor. During the Local government elections, citizens vote at a ward level for a ward councillor.
+              </p>
             </div>
           </div>
         </div>
@@ -351,29 +332,31 @@
             tabindex="-1"
           >
             <div class="py-2 px-3" role="none">
-              <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-              <a
-                href="#"
+              <p
                 class="block px-2 py-2 text-sm text-white"
                 role="menuitem"
                 tabindex="-1"
                 id="menu-item-0"
               >
-                A ward councillor is an elected representative responsible for
-                ensuring that the needs of their ward are represented and
-                considered during a district or municipalities various planning
-                and budgetary processes.
-              </a>
+              A ward is a boundary linked to the process of local government elections in South Africa. A ward is the lowest level within a municipality and a group of wards make up a municipality. Citizens living in a ward vote in local government elections to elect a ward councillor.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <form id="redirect-to-closest-ward-form" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">
+    <input type="number" name="longitude">
+    <input type="number" name="latitude">
+    <input type="text" name="url">
+</form>
 </section>
-<div class="hidden">
-  <div class="current_ward">
-    {
+{% csrf_token %}
+<!-- get details of ward and neighbours -->
+<script>
+  {% autoescape off %}
+    var current_ward = {
       "geometry": {{object.map_geoJson}},
       "name": "{{object.name}}",
       "formatted_name": "{{object.formatted_name}}",
@@ -386,23 +369,25 @@
       "ward_detail":{{ward_detail|to_json}},
       "coords":{{object.coords|to_json}}
     }
-  </div>
-  {% for neighbour in neighbours %}
-  <div class="neighbouring_wards">
-    {
+    
+    var neighbouring_wards = []
+    {% for neighbour in neighbours %}
+    
+      var eachNeighbour = {
       "geometry": {{neighbour.map_geoJson}},
       "name": "{{neighbour.name}}",
-      "formatted_name": "{{object.formatted_name}}",
+      "formatted_name": "{{neighbour.formatted_name}}",
       "slug": "{{neighbour.slug}}",
       "muniCode": "{{neighbour.municipality.municipality_code}}",
       "municipality": "{{neighbour.municipality}}",
       "defaultZoom": {{neighbour.map_default_zoom}},
       "url": "{{neighbour.absolute_url}}",
       "ward_detail":{{neighbour.ward_detail|to_json}}
-    }
-  </div>
-  {% endfor %}
-</div>
+      }
+      neighbouring_wards.push(eachNeighbour)
+    {% endfor %}
+  {% endautoescape %}
+</script>
 {% csrf_token %}
 {% endblock %}
 

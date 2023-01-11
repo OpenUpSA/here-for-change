@@ -221,7 +221,52 @@ class WardDetail(BaseModel):
     field_value = models.CharField(max_length=90, null=False, blank=False)
     stage = models.CharField(
         max_length=40, default=STAGING, choices=VERSION_CHOICES)
-    feedback = models.JSONField(null=False, blank=False, default={"positive":0,"negative":0})
+    feedback = models.JSONField(null=False, blank=False, default=dict({"positive":0,"negative":0}))
 
     def __str__(self):
         return f"{self.field_name} - {self.stage} - {self.ward}"
+
+class MunicipalityDetail(BaseModel):
+    STAGING = "staging"
+    PRODUCTION = "production"
+    VERSION_CHOICES = [
+        (STAGING, _("Staging version")),
+        (PRODUCTION, _("Production version"))]
+
+    STRING = "string"
+    INT = "int"
+    FLOAT = "float"
+    DATE = "date"
+    EMAIL = "email"
+    PHONE = "phone"
+    JSON = "json"
+    FIELD_TYPES_CHOICES = [
+        (STRING, _("String")),
+        (INT, _("Integer")),
+        (FLOAT, _("Float")),
+        (JSON, _("Json")),
+        (DATE, _("Date")),
+        (EMAIL, _("Email")),
+        (PHONE, _("Phone")),
+    ]
+    municipality = models.ForeignKey(Municipality, on_delete=models.CASCADE)
+    field_name = models.CharField(max_length=200, null=False, blank=False)
+    field_type = models.CharField(
+        max_length=40, default=STRING, choices=FIELD_TYPES_CHOICES)
+    field_value = models.CharField(max_length=200, null=False, blank=False)
+    stage = models.CharField(
+        max_length=40, default=STAGING, choices=VERSION_CHOICES)
+    feedback = models.JSONField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.field_name} - {self.stage} - {self.municipality}"
+
+
+class FindMyWardCouncillorFeedback(BaseModel):
+    email=models.EmailField(null=False,blank=False)
+    feedback=models.CharField(null=False,blank=False, max_length=250)
+    ward=models.ForeignKey(Ward,null=False,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.ward} - {self.email}"
+

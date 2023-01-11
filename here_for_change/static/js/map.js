@@ -1,45 +1,20 @@
 var municipality = {};
-var closestMuni = [];
 var muniLatlng = [];
-var current_ward = [];
+var current_ward = current_ward; //global
 var areas = [];
 var youAreHereLatlng = [];
 var muniAreaData = [];
-var muniCoords = [];
 var municipalityId = "";
 var wardId = "";
-var neighbouring_wards = [];
+var neighbouring_wards = neighbouring_wards; //global
 var wardAreaData = [];
 var neighbourAreaData = [];
-var baseUrl =
-  window.document.location.href.split("/")[0] +
-  "//" +
-  window.document.location.href.split("/")[2];
 var mapEl = document.querySelector("#map");
 
-const coords = document.querySelectorAll(".coords");
-const currentWard = document.querySelector(".current_ward");
-const neighbouringWards = document.querySelectorAll(".neighbouring_wards");
-
-if (currentWard) {
-  current_ward = JSON.parse(currentWard.textContent);
-}
-
-if (neighbouringWards) {
-  neighbouringWards.forEach((el) => {
-    neighbouring_wards.push(JSON.parse(el.textContent));
-  });
-}
-
-if (coords) {
-  coords.forEach((el) => {
-    muniCoords.push(JSON.parse(el.textContent));
-  });
-}
-
-if (mapEl && baseUrl) {
+if (mapEl) {
   var map = L.map(mapEl);
-  function getDataFromBackend() {
+
+  async function getDataFromBackend() {
     municipality["municipality_area_number"] = current_ward.muniAreaNum;
     wardAreaData = current_ward.geometry;
     wardAreaData["name"] = current_ward.name;
@@ -56,29 +31,15 @@ if (mapEl && baseUrl) {
     });
   }
 
-  function setBaseIds() {
-    if (
-      window.document.location.pathname == "/" ||
-      window.document.location.pathname == "/find-my-ward-councillor"
-    ) {
-      if (closestMuni.length > 0) {
-        municipalityId = closestMuni[0].muniCode;
-        wardId = closestMuni[0].slug;
-        muniLatlng = closestMuni[0].coords;
-      } else {
-        // IF NO LOCATION, TO Load MAP IN CAPE AGULHAS
-        municipalityId = "wc033";
-        wardId = "wc033-cape-agulhas-ward-1";
-        muniLatlng = [-34.4781, 19.9798];
-      }
-    } else {
+  async function setBaseIds() {
+    if (current_ward) {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
       //muniLatlng = [-34.4781, 19.9798];
       muniLatlng = current_ward.coords;
     }
-    getMapData();
   }
+
   async function getMapData() {
     if (
       window.document.location.pathname == "/" ||
@@ -90,7 +51,6 @@ if (mapEl && baseUrl) {
       )
         .then((response) => response.json())
         .then((data) => {
-          console.log(data)
           let { neighbours, map_geoJson, name, slug } = data;
           municipality["municipality_area_number"] =
             data["municipality"]["area_number"];
@@ -115,51 +75,33 @@ if (mapEl && baseUrl) {
       getDataFromBackend();
     }
 
-    await fetch(
-      "https://mapit.code4sa.org/area/" +
-        municipality["municipality_area_number"] +
-        "/touches"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log
-        municipality["neighbours"] = data;
-        updateNeighbourMunicipalities();
-      })
-      .then(() => {
-        var zoom = current_ward.defaultZoom || 8;
-        map.setView(muniLatlng, zoom);
+    // await fetch(
+    //   "https://mapit.code4sa.org/area/" +
+    //     municipality["municipality_area_number"] +
+    //     "/touches"
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     municipality["neighbours"] = data;
+    //     updateNeighbourMunicipalities();
+    //   })
+    //   .catch((e) => console.log(e));
 
-        var municipalOffice = L.divIcon({
-          className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-          iconAnchor: [52, 48],
-          html: "<div>Municipal office</div>",
-          interactive: false,
-        });
-
-        L.marker(muniLatlng, {
-          icon: municipalOffice,
-          riseOnHover: true,
-          bubblingMouseEvents: true,
-        }).addTo(map);
-      })
-      .then(() => {
-        setTimeout(() => {
-          loadMap();
-        }, 1000);
-      });
   }
 
-  function successLocation(position) {
-    youAreHereLatlng.push(position.coords.longitude);
-    youAreHereLatlng.push(position.coords.latitude);
-    setYouAreHere();
-    createCookie("userIP", youAreHereLatlng, 2);
-  }
+  async function setMuniOfficePin() {
+    var municipalOffice = L.divIcon({
+      className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
+      iconAnchor: [52, 48],
+      html: "<div>Municipal office</div>",
+      interactive: false,
+    });
 
-  function failedLocation() {
-    alert("Please enable location permission");
-    setBaseIds();
+    L.marker(muniLatlng, {
+      icon: municipalOffice,
+      riseOnHover: true,
+      bubblingMouseEvents: true,
+    }).addTo(map);
   }
 
   function getBrowserLocation() {
@@ -169,7 +111,17 @@ if (mapEl && baseUrl) {
       alert("Geolocation not available");
     }
   }
-  getBrowserLocation();
+
+  function successLocation(position) {
+    youAreHereLatlng.push(position.coords.longitude);
+    youAreHereLatlng.push(position.coords.latitude);
+    createCookie("userLoc", youAreHereLatlng, 2);
+    setYouAreHere();
+  }
+
+  function failedLocation() {
+    console.log("Please enable location permission");
+  }
 
   function createCookie(name, value, days) {
     var expires;
@@ -198,41 +150,6 @@ if (mapEl && baseUrl) {
     return "";
   }
 
-  function getDistance(origin, destination) {
-    // return distance in meters
-    var lon1 = toRadian(origin[1]),
-      lat1 = toRadian(origin[0]),
-      lon2 = toRadian(destination[1]),
-      lat2 = toRadian(destination[0]);
-
-    var deltaLat = lat2 - lat1;
-    var deltaLon = lon2 - lon1;
-
-    var a =
-      Math.pow(Math.sin(deltaLat / 2), 2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(deltaLon / 2), 2);
-    var c = 2 * Math.asin(Math.sqrt(a));
-    var EARTH_RADIUS = 6371;
-    return c * EARTH_RADIUS * 1000;
-  }
-  function toRadian(degree) {
-    return (degree * Math.PI) / 180;
-  }
-
-  function setClosestMuni() {
-    let muniDiff = [];
-    muniCoords.forEach((item) => {
-      let distanceDiff = getDistance(youAreHereLatlng, item.coords);
-      muniDiff.push({
-        name: item.name,
-        distFromUser: distanceDiff,
-        slug: item.slug,
-        muniCode: item.muniCode,
-        coords: item.coords,
-      });
-    });
-    closestMuni = muniDiff.sort((a, b) => a.distFromUser - b.distFromUser);
-  }
   function setYouAreHere() {
     var youAreHere = L.divIcon({
       className: "text-pin is-filter-contrast-high is-pointer-events-none",
@@ -248,17 +165,6 @@ if (mapEl && baseUrl) {
         bubblingMouseEvents: true,
       }).addTo(map);
     }
-
-    if (muniCoords && youAreHereLatlng.length > 0) {
-      setClosestMuni();
-    }
-
-    setBaseIds();
-  }
-
-  const locationBtn = document.querySelector("#location-btn");
-  if (locationBtn) {
-    locationBtn.addEventListener("click", locationBtnHandler);
   }
 
   function locationBtnHandler() {
@@ -271,7 +177,7 @@ if (mapEl && baseUrl) {
             successRedirect,
             failedRedirect
           );
-        }, 2000);
+        }, 1000);
       } else {
         alert("Geolocation not available");
       }
@@ -281,18 +187,48 @@ if (mapEl && baseUrl) {
   function successRedirect(position) {
     youAreHereLatlng.push(position.coords.longitude);
     youAreHereLatlng.push(position.coords.latitude);
-    if (muniCoords && youAreHereLatlng.length > 0) {
-      setClosestMuni();
+
+    let userLocation = getCookie("userLoc");
+    if (!userLocation) {
+      createCookie("userLoc", youAreHereLatlng, 2);
     }
-    if (closestMuni.length > 0) {
-      updateParentOrSelfLocationSearch(
-        `municipalities/${closestMuni[0].muniCode}/wards/${closestMuni[0].slug}/`
-      );
-    }
+    const form = document.getElementById("redirect-to-closest-ward-form");
+    form.querySelector('input[name="latitude"]').value =
+      position.coords.latitude;
+    form.querySelector('input[name="longitude"]').value =
+      position.coords.longitude;
+    form.querySelector('input[name="url"]').value =
+      window.document.location.pathname;
+    form.submit();
   }
 
   function failedRedirect() {
     alert("Please enable location permission");
+  }
+
+  function embedLocBtnHandler() {
+    const useLocationLoader = document.querySelector("#use-location-loader");
+    if (useLocationLoader) {
+      useLocationLoader.classList.remove("hidden");
+      if (navigator.geolocation) {
+        setTimeout(() => {
+          navigator.geolocation.getCurrentPosition(
+            successRedirect,
+            failedEmbedRedirect
+          );
+        }, 1000);
+      } else {
+        alert("Geolocation not available");
+      }
+    }
+  }
+
+  function failedEmbedRedirect() {
+    alert("Please enable location permission");
+    const useLocationLoader = document.querySelector("#use-location-loader");
+    if (useLocationLoader) {
+      useLocationLoader.classList.add("hidden");
+    }
   }
 
   var canAccessParent = function () {
@@ -315,6 +251,87 @@ if (mapEl && baseUrl) {
     return Math.floor(Math.random() * top);
   };
 
+  async function mapInit() {
+    if (current_ward) {
+      await setBaseIds();
+      await getDataFromBackend();
+      await setMuniOfficePin();
+      setTimeout(() => {
+        loadMap();
+      }, 1000);
+      let zoom = current_ward.defaultZoom;
+      map.setView(muniLatlng, zoom);
+
+      let userLocation = getCookie("userLoc");
+      if (userLocation) {
+        youAreHereLatlng = userLocation.split(",");
+        setYouAreHere();
+      } else {
+        getBrowserLocation();
+      }
+      await getMapData();
+    } else {
+      //Load SA Map in Homepage
+      let zoom = 6;
+      map.setView([-29.68351, 24.70076], zoom);
+    }
+  }
+  mapInit();
+
+  const locationBtn = document.querySelector("#location-btn");
+  if (locationBtn) {
+    locationBtn.addEventListener("click", locationBtnHandler);
+  }
+
+  const openModalBtn = document.querySelector("#open-modal");
+  if (openModalBtn) {
+    openModalBtn.addEventListener("click", locationBtnHandler);
+  }
+
+  //embed location button handler
+  const embedLocationBtn = document.querySelector("#embed-location-btn");
+  if (embedLocationBtn) {
+    embedLocationBtn.addEventListener("click", embedLocBtnHandler);
+  }
+
+  // Google places Autocomplete
+  function googlePlacesAutocomplete(inputId) {
+    const input = document.getElementById(inputId);
+    var options = {
+      types: [
+        "street_address",
+        "sublocality",
+        "neighborhood",
+        "colloquial_area",
+      ],
+      componentRestrictions: { country: "ZA" },
+    };
+    if (input) {
+      const searchBox = new google.maps.places.Autocomplete(input, options);
+      searchBox.addListener("place_changed", () => {
+        const place = searchBox.getPlace();
+        if (place.length == 0) {
+          return;
+        }
+        const form = document.getElementById("redirect-to-closest-ward-form");
+        form.querySelector(
+          'input[name="longitude"]'
+        ).value = place.geometry.location.lng();
+        form.querySelector(
+          'input[name="latitude"]'
+        ).value = place.geometry.location.lat();
+        form.querySelector('input[name="url"]').value =
+          window.document.location.pathname;
+        form.submit();
+      });
+    }
+  }
+  //Home and embed page search
+  googlePlacesAutocomplete("address-search-input")
+  //ward page search
+  googlePlacesAutocomplete("nav-search-input")
+
+
   var loadMap = () => {
     if (muniAreaData.length > 0) {
       areas = L.geoJSON(muniAreaData, {
@@ -324,28 +341,6 @@ if (mapEl && baseUrl) {
           weight: 2,
         },
       }).addTo(map);
-
-      //load homepage map in the users nearest ward
-      if (
-        youAreHereLatlng.length > 0 &&
-        window.document.location.pathname == "/"
-      ) {
-        var posMarker = L.marker(youAreHereLatlng, {
-          riseOnHover: true,
-          bubblingMouseEvents: true,
-        });
-
-        var userClosestWard = [];
-        //check if user position is inside polygon
-        areas.eachLayer(function (memberLayer) {
-          if (memberLayer.getBounds().contains(posMarker.getLatLng())) {
-            userClosestWard.push(memberLayer.feature.geometry.slug);
-          }
-        });
-        if (userClosestWard.length > 0) {
-          wardId = userClosestWard[0];
-        }
-      }
 
       areas.getLayers().forEach((layer) => {
         var slug = layer.feature.geometry.slug;
@@ -367,17 +362,28 @@ if (mapEl && baseUrl) {
         layer.on("mousemove", function (e) {
           popup.setLatLng(e.latlng).openOn(map);
         });
-
         var iconMarker = L.marker(layerCenter, {
-          icon: politicalParty["party"]["icon"],
+          icon:L.icon({
+            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            className: "icon-marker",
+            bubblingMouseEvents: true,
+          }),
           riseOnHover: true,
           bubblingMouseEvents: true,
         }).addTo(map);
 
         iconMarker.on("click", (e) => {
-          updateParentOrSelfLocationSearch(
-            `municipalities/${municipalityId}/wards/${slug}/`
-          );
+          if (window.document.location.pathname.endsWith("ward-councillor")) {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+            );
+          } else {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/`
+            );
+          }
         });
         iconMarker.bindTooltip(
           `${layer.feature.geometry.details.councillor_political_party.value} - ${layer.feature.geometry.details.councillor_name.value}`,
@@ -433,9 +439,15 @@ if (mapEl && baseUrl) {
 
         layer.on("click", (e) => {
           var slug = e.target.feature.geometry.slug;
-          updateParentOrSelfLocationSearch(
-            `municipalities/${municipalityId}/wards/${slug}/`
-          );
+          if (window.document.location.pathname.endsWith("ward-councillor")) {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+            );
+          } else {
+            updateParentOrSelfLocationSearch(
+              `municipalities/${municipalityId}/wards/${slug}/`
+            );
+          }
         });
 
         layer.on("mouseover", (e) => {
@@ -453,8 +465,6 @@ if (mapEl && baseUrl) {
           }
         });
       });
-    } else {
-      //setTimeout(loadMap, 1000);
     }
   };
 
@@ -571,9 +581,17 @@ if (mapEl && baseUrl) {
             });
             //distant neighbours are unclickable because no 'slug' for them from backend
             layer.on("click", (e) => {
-              updateParentOrSelfLocationSearch(
-                `municipalities/${parentAreaId}/wards/${slug}/`
-              );
+              if (
+                window.document.location.pathname.endsWith("ward-councillor")
+              ) {
+                updateParentOrSelfLocationSearch(
+                  `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+                );
+              } else {
+                updateParentOrSelfLocationSearch(
+                  `municipalities/${municipalityId}/wards/${slug}/`
+                );
+              }
             });
 
             layer.on("mouseover", (e) => {
@@ -591,8 +609,18 @@ if (mapEl && baseUrl) {
               });
               e.target.bringToBack();
             });
-          });
+          })
+          .catch((e) => console.log(e));
       }
     });
   };
+
+  //resize embed map on feedback form open
+  const sendFeedbackBtn = document.querySelector("#send-feedback");
+  sendFeedbackBtn &&
+    sendFeedbackBtn.addEventListener("click", () => {
+      setTimeout(function () {
+        map.invalidateSize();
+      }, 200);
+    });
 }

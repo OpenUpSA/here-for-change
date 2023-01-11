@@ -1,13 +1,75 @@
 // for dropDowns
-function dropDownHandler(e, btnId, isLang = false) {
-  const link_text = e.target.innerHTML;
-  const ward_btn = document.getElementById(btnId);
-  if (isLang === false) {
-    ward_btn.getElementsByTagName("span")[0].innerHTML = link_text;
-  } else {
-    lang_abbr = e.target.getAttribute("data-lang");
-    ward_btn.getElementsByTagName("span")[0].innerHTML = lang_abbr;
+const ward_btn = document.querySelector("#ward-button");
+const ward_dropdown = document.querySelector(".dropdown-panel");
+const ward_items = document.querySelectorAll(".ward-item");
+
+if (ward_btn) {
+  ward_btn.addEventListener("click", () => {
+    ward_dropdown.classList.remove("hidden");
+  });
+}
+
+if (ward_items) {
+  ward_items.forEach((ward_item) => {
+    ward_item.addEventListener("click", (e) => {
+      ward_btn.getElementsByTagName("span")[0].textContent = e.target.innerHTML;
+      ward_dropdown.classList.add("hidden");
+    });
+  });
+}
+
+function onVisible(element, callback) {
+  new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.intersectionRatio > 0) {
+        callback(element);
+        // observer.disconnect();
+      }
+    });
+  }).observe(element);
+}
+
+if (ward_dropdown) {
+  onVisible(ward_dropdown, () => {
+    document.addEventListener("click", closeDropdown);
+  });
+}
+
+function closeDropdown() {
+  if (ward_dropdown) {
+    ward_dropdown.classList.add("hidden");
   }
+  if (lang_dropdown) {
+    lang_dropdown.classList.add("hidden");
+  }
+  document.removeEventListener("click", closeDropdown);
+}
+
+const lang_btn = document.querySelector("#lang-button");
+const lang_dropdown = document.querySelector("#lang-dropdown");
+const lang_items = document.querySelectorAll(".lang-item");
+
+if (lang_btn) {
+  lang_btn.addEventListener("click", () => {
+    lang_dropdown.classList.remove("hidden");
+  });
+}
+
+if (lang_items) {
+  lang_items.forEach((lang_item) => {
+    lang_item.addEventListener("click", (e) => {
+      lang_btn.getElementsByTagName(
+        "span"
+      )[0].textContent = e.target.getAttribute("data-lang");
+      lang_dropdown.classList.add("hidden");
+    });
+  });
+}
+
+if (lang_dropdown) {
+  onVisible(lang_dropdown, () => {
+    document.addEventListener("click", closeDropdown);
+  });
 }
 
 const trayTabs = document.getElementsByClassName("tray-tabs");
@@ -219,7 +281,7 @@ const councilNum = document.getElementById("council-num");
 if (councilNum) {
   const councillorPhoneDjango = JSON.parse(councilNum.textContent);
   if (phone && councillorPhoneDjango) {
-    phone.innerHTML = libphonenumber
+    phone.textContent = libphonenumber
       .parsePhoneNumber(councillorPhoneDjango)
       .formatNational();
   }
@@ -235,19 +297,21 @@ if (deputyMayorNum) {
     document.getElementById("sec-dep-mayor-num").textContent
   );
   if (deputyMayorPhone && dmPhoneDjango) {
-    deputyMayorPhone.innerHTML = libphonenumber
+    deputyMayorPhone.textContent = libphonenumber
       .parsePhoneNumber(dmPhoneDjango)
       .formatNational();
   }
 
   if (secDepMayorPhone && secDepPhoneDjango) {
-    secDepMayorPhone.innerHTML = libphonenumber
+    secDepMayorPhone.textContent = libphonenumber
       .parsePhoneNumber(secDepPhoneDjango)
       .formatNational();
   }
 }
 
 const locationModal = document.querySelector("#location-modal");
+const openModalBtn = document.querySelector("#open-modal");
+const closeModalBtn = document.querySelector("#close-modal");
 
 function openModal() {
   if (locationModal) {
@@ -272,19 +336,117 @@ if (locationModal) {
   });
 }
 
-let findCouncillorBtn = document.querySelector("#find-councillor");
+if (openModalBtn) {
+  openModalBtn.addEventListener("click", openModal);
+}
 
-if (findCouncillorBtn) {
-  if (window.document.location.pathname == "/") {
-    findCouncillorBtn.classList.add("hidden");
-  }
+if (closeModalBtn) {
+  closeModalBtn.addEventListener("click", closeModal);
 }
 
 const councillorWard = document.querySelector("#councillor-ward");
-const councilNameEl = document.querySelector("#council-name");
+const councilNameEl = document.querySelectorAll(".ward-name");
+const useLocationLoader = document.querySelector("#use-location-loader");
 if (councillorWard && councilNameEl) {
   const councillorWardName = JSON.parse(councillorWard.textContent);
   let splitWardName = councillorWardName.split("Ward");
   let wardName = `Ward ${splitWardName[1]}, ${splitWardName[0]}`;
-  councilNameEl.innerHTML = wardName;
+  useLocationLoader && useLocationLoader.classList.add("hidden");
+  councilNameEl.forEach((el) => {
+    el.textContent = wardName;
+  });
 }
+
+const embedCard = document.querySelector("#embed-card");
+const closeEmbed = document.querySelector("#close-embed");
+const openEmbed = document.querySelector("#open-embed");
+
+if (embedCard) {
+  openEmbed.addEventListener("click", () => {
+    embedCard.classList.remove("hidden");
+  });
+
+  closeEmbed.addEventListener("click", (e) => {
+    embedCard.classList.add("hidden");
+    e.stopPropagation();
+  });
+}
+
+//Feedback form
+const sendFeedbackBtn = document.querySelector("#send-feedback");
+const submitFeedbackBtn = document.querySelector("#feedback-submit-btn");
+const successDiv = document.querySelector("#feedback-success-div");
+const failureDiv = document.querySelector("#feedback-failure-div");
+const feedbackDiv = document.querySelector("#feedback-div");
+const feedbackForm = document.querySelector("#feedback-form");
+const cancelFeedback = document.querySelector("#cancel-feedback");
+sendFeedbackBtn &&
+  sendFeedbackBtn.addEventListener("click", () => {
+    feedbackDiv.classList.add("hidden");
+    feedbackForm.classList.remove("hidden");
+  });
+
+cancelFeedback &&
+  cancelFeedback.addEventListener("click", () => {
+    feedbackDiv.classList.remove("hidden");
+    feedbackForm.classList.add("hidden");
+  });
+
+async function submitFeedback(data) {
+  const response = await fetch("/feedback", {
+    method: "POST",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": data.csrfmiddlewaretoken,
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+feedbackForm &&
+  feedbackForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitFeedbackBtn.textContent = "Please wait...";
+    const data = {
+      email: feedbackForm.querySelector('input[name="email"]').value,
+      ward: feedbackForm.querySelector('input[name="ward"]').value,
+      feedback: feedbackForm.querySelector('textarea[name="feedback"]').value,
+      csrfmiddlewaretoken: document.querySelector(
+        "input[name='csrfmiddlewaretoken']"
+      ).value,
+    };
+    try {
+      const res = await submitFeedback(data);
+      feedbackForm.classList.add("hidden");
+      successDiv.classList.remove("hidden");
+    } catch (err) {
+      console.log(err);
+      feedbackForm.classList.add("hidden");
+      failureDiv.classList.remove("hidden");
+    }
+  });
+
+  //toggle nav items
+  const hfcTitle =  document.querySelector("#hfc-title")
+  const navSearch = document.querySelector("#nav-search")
+  const navBtnSearch = document.querySelector("#nav-btn-search")
+  const searchX = document.querySelector("#search-x")
+  const searchLens = document.querySelector("#search-lens")
+
+
+  navBtnSearch && navBtnSearch.addEventListener("click", ()=>{
+    navSearch.classList.toggle("hidden")
+    hfcTitle.classList.toggle("hidden")
+    searchX.classList.toggle("hidden")
+    searchLens.classList.toggle("hidden")
+  })
+
+  if (navSearch || navBtnSearch) {
+    if (window.document.location.pathname == "/") {
+      navSearch.setAttribute('style', 'display: none !important')
+      navBtnSearch.setAttribute('style', 'display: none !important')
+    }
+  }
