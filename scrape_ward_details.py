@@ -161,9 +161,7 @@ if __name__=="__main__":
         time.sleep(7)
         data={}
         for province in provinces:
-            print(province)
             data[province[1]]=get_ward_details(driver,province,session)
-            print(data)
             with open("./data.json","w+") as f:
                 f.write(json.dumps(data))
                 f.close()
