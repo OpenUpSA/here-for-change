@@ -26,7 +26,6 @@ def get_municipality_boundary(municipality:Municipality)->MultiPolygon:
 
 if __name__=="__main__":
     for municipality in Municipality.objects.all():
-        print(municipality)
         municipality.boundary=get_municipality_boundary(municipality)
         municipality.save()
 

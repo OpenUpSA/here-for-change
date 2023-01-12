@@ -347,7 +347,6 @@ class RedirectClosestWard(View):
 class Feedback(View):
     def post(self, request):
         form_data = json.loads(request.body)
-        print(form_data)
         form = FindMyWardCouncillorFeedbackForm(form_data)
         if form.is_valid():
             form.save()
@@ -357,8 +356,6 @@ class Feedback(View):
                 "feedback": form_data.get('feedback')
             }
         else:
-            print("invalid")
-            print(form.errors)
             res = {
                 "status": "failed",
                 "error": form.errors
