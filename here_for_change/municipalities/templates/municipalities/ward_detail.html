@@ -178,60 +178,7 @@
             </span>
           </div>
         </div>
-        <!-- email row -->
-        <div class="mt-2 flex shrink-0 flex-wrap items-center text-sm">
-          <div class="flex grow flex-nowrap items-center">
-            <span class="mr-4 ml-2">
-              <i class="fa-solid fa-envelope"></i>
-            </span>
-            <span class="text-sm mr-1 md:mr-5 hover:bg-gray-200 p-2 rounded-md cursor-pointer whitespace-nowrap">
-              {{ward_detail.councillor_contacts_email_primary.value}}
-            </span>
-          </div>
-          <div class="flex items-center">
-            <i
-              class="tooltip fa-solid fa-circle-exclamation mx-2 cursor-pointer text-neutral-300 hover:text-hfc-green-900"
-            >
-              <span class="tooltipText">
-                Report a problem
-                <span class="triangle-down"></span>
-              </span>
-            </i>
-            <span
-              class="voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-green-100 feedback-vote"
-              data-field="councillor_contacts_email_primary"
-              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_email_primary' %}"
-              data-action="positive"
-              data-ward="{{object.slug}}"
-            >
-              <span class="voteTooltipText">
-                This was helpful
-                <span class="triangle-down"></span>
-              </span>
 
-              <span>
-                <i class="fa-solid fa-thumbs-up text-green-600"></i>
-              </span>
-              <span> {{ward_detail.councillor_contacts_email_primary.feedback.positive}} </span>
-            </span>
-            <span
-              class="voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-neutral-100 p-2 hover:bg-red-200 feedback-vote"
-              data-field="councillor_contacts_email_primary"
-              data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_email_primary' %}"
-              data-action="negative"
-              data-ward="{{object.slug}}"
-            >
-              <span class="voteTooltipText">
-                This was not helpful
-                <span class="triangle-down"></span>
-              </span>
-              <span>
-                <i class="fa-solid fa-thumbs-down text-red-600"></i>
-              </span>
-              <span>  {{ward_detail.councillor_contacts_email_primary.feedback.negative}} </span>
-            </span>
-          </div>
-        </div>
       </div>
     </div>
     <!-- right side -->

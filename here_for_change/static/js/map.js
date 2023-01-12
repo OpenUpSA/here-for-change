@@ -35,7 +35,6 @@ if (mapEl) {
     if (current_ward) {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
-      //muniLatlng = [-34.4781, 19.9798];
       muniLatlng = current_ward.coords;
     }
   }
@@ -54,20 +53,20 @@ if (mapEl) {
     //   .catch((e) => console.log(e));
   }
 
-  async function setMuniOfficePin() {
-    var municipalOffice = L.divIcon({
-      className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-      iconAnchor: [52, 48],
-      html: "<div>Municipal office</div>",
-      interactive: false,
-    });
+  // async function setMuniOfficePin() {
+  //   var municipalOffice = L.divIcon({
+  //     className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
+  //     iconAnchor: [52, 48],
+  //     html: "<div>Municipal office</div>",
+  //     interactive: false,
+  //   });
 
-    L.marker(muniLatlng, {
-      icon: municipalOffice,
-      riseOnHover: true,
-      bubblingMouseEvents: true,
-    }).addTo(map);
-  }
+  //   L.marker(muniLatlng, {
+  //     icon: municipalOffice,
+  //     riseOnHover: true,
+  //     bubblingMouseEvents: true,
+  //   }).addTo(map);
+  // }
 
   function getBrowserLocation() {
     if (navigator.geolocation) {
@@ -220,7 +219,7 @@ if (mapEl) {
     if (current_ward) {
       await setBaseIds();
       await getDataFromBackend();
-      await setMuniOfficePin();
+      //await setMuniOfficePin();
       setTimeout(() => {
         loadMap();
       }, 1000);
@@ -376,17 +375,6 @@ if (mapEl) {
         });
 
         if (wardId == slug) {
-          //ward office gotten using randomPointsOnPolygon
-          var wardLatlng = randomPointsOnPolygon(
-            1,
-            layer.feature
-          )[0].geometry.coordinates.reverse();
-
-          var wardOffice = L.divIcon({
-            className: "text-pin",
-            iconAnchor: [40, 48],
-            html: `<div>Ward office</div>`,
-          });
           layer.setStyle({
             weight: 3,
             fillOpacity: 0.05,
@@ -395,11 +383,6 @@ if (mapEl) {
           layer.bringToFront();
           map.fitBounds(layer.getBounds());
 
-          L.marker(wardLatlng, {
-            icon: wardOffice,
-            riseOnHover: true,
-            bubblingMouseEvents: true,
-          }).addTo(map);
         }
 
         layer.on("click", (e) => {
