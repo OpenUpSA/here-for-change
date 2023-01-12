@@ -41,40 +41,6 @@ if (mapEl) {
   }
 
   async function getMapData() {
-    if (
-      window.document.location.pathname == "/" ||
-      window.document.location.pathname == "/find-my-ward-councillor"
-    ) {
-      //get data from json for home map
-      await fetch(
-        `${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          let { neighbours, map_geoJson, name, slug } = data;
-          municipality["municipality_area_number"] =
-            data["municipality"]["area_number"];
-          wardAreaData = JSON.parse(map_geoJson);
-          wardAreaData["name"] = name;
-          wardAreaData["slug"] = slug;
-          wardAreaData["details"] = data["ward_detail"];
-          
-          muniAreaData.push(wardAreaData);
-
-          neighbours.forEach((neighbour) => {
-            neighbourAreaData = JSON.parse(neighbour.map_geoJson);
-            let name = neighbour["name"];
-            let slug = neighbour["slug"];
-            neighbourAreaData["name"] = name;
-            neighbourAreaData["slug"] = slug;
-            neighbourAreaData["details"] = neighbour["ward_detail"]
-            muniAreaData.push(neighbourAreaData);
-          });
-        });
-    } else {
-      getDataFromBackend();
-    }
-
     // await fetch(
     //   "https://mapit.code4sa.org/area/" +
     //     municipality["municipality_area_number"] +
@@ -86,7 +52,6 @@ if (mapEl) {
     //     updateNeighbourMunicipalities();
     //   })
     //   .catch((e) => console.log(e));
-
   }
 
   async function setMuniOfficePin() {
