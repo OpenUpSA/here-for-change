@@ -35,46 +35,11 @@ if (mapEl) {
     if (current_ward) {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
-      //muniLatlng = [-34.4781, 19.9798];
       muniLatlng = current_ward.coords;
     }
   }
 
   async function getMapData() {
-    if (
-      window.document.location.pathname == "/" ||
-      window.document.location.pathname == "/find-my-ward-councillor"
-    ) {
-      //get data from json for home map
-      await fetch(
-        `${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          let { neighbours, map_geoJson, name, slug } = data;
-          municipality["municipality_area_number"] =
-            data["municipality"]["area_number"];
-          wardAreaData = JSON.parse(map_geoJson);
-          wardAreaData["name"] = name;
-          wardAreaData["slug"] = slug;
-          wardAreaData["details"] = data["ward_detail"];
-          
-          muniAreaData.push(wardAreaData);
-
-          neighbours.forEach((neighbour) => {
-            neighbourAreaData = JSON.parse(neighbour.map_geoJson);
-            let name = neighbour["name"];
-            let slug = neighbour["slug"];
-            neighbourAreaData["name"] = name;
-            neighbourAreaData["slug"] = slug;
-            neighbourAreaData["details"] = neighbour["ward_detail"]
-            muniAreaData.push(neighbourAreaData);
-          });
-        });
-    } else {
-      getDataFromBackend();
-    }
-
     // await fetch(
     //   "https://mapit.code4sa.org/area/" +
     //     municipality["municipality_area_number"] +
@@ -86,23 +51,22 @@ if (mapEl) {
     //     updateNeighbourMunicipalities();
     //   })
     //   .catch((e) => console.log(e));
-
   }
 
-  async function setMuniOfficePin() {
-    var municipalOffice = L.divIcon({
-      className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-      iconAnchor: [52, 48],
-      html: "<div>Municipal office</div>",
-      interactive: false,
-    });
+  // async function setMuniOfficePin() {
+  //   var municipalOffice = L.divIcon({
+  //     className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
+  //     iconAnchor: [52, 48],
+  //     html: "<div>Municipal office</div>",
+  //     interactive: false,
+  //   });
 
-    L.marker(muniLatlng, {
-      icon: municipalOffice,
-      riseOnHover: true,
-      bubblingMouseEvents: true,
-    }).addTo(map);
-  }
+  //   L.marker(muniLatlng, {
+  //     icon: municipalOffice,
+  //     riseOnHover: true,
+  //     bubblingMouseEvents: true,
+  //   }).addTo(map);
+  // }
 
   function getBrowserLocation() {
     if (navigator.geolocation) {
@@ -255,7 +219,7 @@ if (mapEl) {
     if (current_ward) {
       await setBaseIds();
       await getDataFromBackend();
-      await setMuniOfficePin();
+      //await setMuniOfficePin();
       setTimeout(() => {
         loadMap();
       }, 1000);
@@ -346,7 +310,6 @@ if (mapEl) {
         var slug = layer.feature.geometry.slug;
         var name = layer.feature.geometry.name;
         var layerCenter = layer.getBounds().getCenter();
-        var politicalParty = politicalParties[random(politicalParties.length)];
         var popup = L.popup({ className: "mapTooltip", closeButton: false });
         popup.setContent(`${name}`);
         layer.bindPopup(popup);
@@ -397,7 +360,13 @@ if (mapEl) {
         );
 
         iconMarker.on("mouseover", (e) => {
-          e.target.setIcon(politicalParty["wardCouncillor"]["icon"]);
+          e.target.setIcon(L.icon({
+            iconUrl: "../../../../static/assets/placeholder-image-1.svg",
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            className: "icon-marker",
+            bubblingMouseEvents: true,
+          }));
         });
 
         iconMarker.on("mouseout", (e) => {
@@ -411,17 +380,6 @@ if (mapEl) {
         });
 
         if (wardId == slug) {
-          //ward office gotten using randomPointsOnPolygon
-          var wardLatlng = randomPointsOnPolygon(
-            1,
-            layer.feature
-          )[0].geometry.coordinates.reverse();
-
-          var wardOffice = L.divIcon({
-            className: "text-pin",
-            iconAnchor: [40, 48],
-            html: `<div>Ward office</div>`,
-          });
           layer.setStyle({
             weight: 3,
             fillOpacity: 0.05,
@@ -430,11 +388,6 @@ if (mapEl) {
           layer.bringToFront();
           map.fitBounds(layer.getBounds());
 
-          L.marker(wardLatlng, {
-            icon: wardOffice,
-            riseOnHover: true,
-            bubblingMouseEvents: true,
-          }).addTo(map);
         }
 
         layer.on("click", (e) => {
@@ -473,75 +426,6 @@ if (mapEl) {
       type: "roadmap",
     })
     .addTo(map);
-
-  var politicalParties = [
-    {
-      wardCouncillor: {
-        name: "Daniel Kapungwe",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/danielkapungwe.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "ANC",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/anc.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-    {
-      wardCouncillor: {
-        name: "Bukelani Zuma",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/bukelanizuma.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "IFP",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/ifp.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-    {
-      wardCouncillor: {
-        name: "Stuart Pringle",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/stuartpringle.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "DA",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/da.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-  ];
 
   var updateNeighbourMunicipalities = function () {
     var neighbourIds = Object.keys(municipality["neighbours"]);
