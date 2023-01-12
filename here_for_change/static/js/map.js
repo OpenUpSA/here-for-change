@@ -310,7 +310,6 @@ if (mapEl) {
         var slug = layer.feature.geometry.slug;
         var name = layer.feature.geometry.name;
         var layerCenter = layer.getBounds().getCenter();
-        var politicalParty = politicalParties[random(politicalParties.length)];
         var popup = L.popup({ className: "mapTooltip", closeButton: false });
         popup.setContent(`${name}`);
         layer.bindPopup(popup);
@@ -361,7 +360,13 @@ if (mapEl) {
         );
 
         iconMarker.on("mouseover", (e) => {
-          e.target.setIcon(politicalParty["wardCouncillor"]["icon"]);
+          e.target.setIcon(L.icon({
+            iconUrl: "../../../../static/assets/placeholder-image-1.svg",
+            iconSize: [40, 40],
+            iconAnchor: [20, 20],
+            className: "icon-marker",
+            bubblingMouseEvents: true,
+          }));
         });
 
         iconMarker.on("mouseout", (e) => {
@@ -421,75 +426,6 @@ if (mapEl) {
       type: "roadmap",
     })
     .addTo(map);
-
-  var politicalParties = [
-    {
-      wardCouncillor: {
-        name: "Daniel Kapungwe",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/danielkapungwe.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "ANC",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/anc.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-    {
-      wardCouncillor: {
-        name: "Bukelani Zuma",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/bukelanizuma.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "IFP",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/ifp.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-    {
-      wardCouncillor: {
-        name: "Stuart Pringle",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/stuartpringle.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "DA",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/da.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-  ];
 
   var updateNeighbourMunicipalities = function () {
     var neighbourIds = Object.keys(municipality["neighbours"]);

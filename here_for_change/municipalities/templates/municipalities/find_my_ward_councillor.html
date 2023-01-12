@@ -65,9 +65,12 @@
     <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 
-    <div class="relative bg-hfc-green-900 w-full p-7 rounded-3xl ">
+    <div class="relative bg-hfc-green-900 w-full p-7 rounded-2xl shadow-xl">
         <div class="lg:max-w-[672px]">
-            <h1 class="fvs-200 benfritz text-white font-normal text-2xl mb-[22px]">Find my ward councillor</h1>
+            <div class="flex items-start mb-[22px]">
+                <h1 class="fvs-200 benfritz text-white font-normal text-2xl">Find my ward councillor</h1>
+                <p class="text-xs bg-[#7f00ff] text-white rounded-sm p-0.5 ml-2">BETA</p>
+            </div>
             <div class="lg:absolute lg:w-[calc(100%-730px)] lg:top-0 lg:bottom-0 lg:right-0">
                 <div id="map" class="relative min-h-[300px] lg:min-h-full rounded-lg lg:rounded-l-none">
                     <p
@@ -91,9 +94,9 @@
                             placeholder="Type your address..." />
                     </div>
                     <div class="w-full mt-2 md:mt-0 md:w-auto md:absolute md:right-2 flex items-center">
-                        <span class="hidden md:block pr-2">OR</span>
+                        <span class="hidden md:block pr-2 text-xs">OR</span>
                         <button id="embed-location-btn"
-                            class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Use
+                            class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-bold bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Use
                             your location
                         </button>
                         <form id="redirect-to-closest-location" action="{% url 'redirect-to-closest-ward' %}" method="get" style="display: none;">

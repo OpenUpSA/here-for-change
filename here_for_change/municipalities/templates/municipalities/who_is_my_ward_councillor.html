@@ -66,9 +66,9 @@
     <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 
-    <div class="relative bg-hfc-green-900 w-full p-7 rounded-3xl ">
+    <div class="relative bg-hfc-green-900 w-full p-7 rounded-2xl shadow-xl">
         <div class="lg:max-w-[672px]">
-            <h1 class="fvs-200 benfritz text-white font-normal text-2xl mb-[31px] lg:hidden">Find my ward councillor
+            <h1 class="fvs-200 benfritz text-white font-normal text-2xl mb-[16px] lg:hidden">Find my ward councillor
             </h1>
             <div class="lg:absolute lg:w-[calc(100%-730px)] lg:top-0 lg:bottom-0 lg:right-0">
                 <div id="map" class="relative min-h-[300px] lg:min-h-full rounded-lg lg:rounded-l-none">
@@ -79,17 +79,17 @@
                     </p>
                 </div>
             </div>
-            <div class="flex flex-col md:flex-row s justify-between my-[31px] gap-y-2 lg:mt-0">
+            <div class="flex flex-col md:flex-row s justify-between my-4 gap-y-2 lg:mt-0">
                 <button
                     class="flex items-center justify-center h-9 px-3 text-sm rounded-md text-black whitespace-nowrap text-center font-medium bg-white">
                     <i class="fa-solid fa-sharp fa-location-pin text-[#7f00ff] pr-2"></i>
-                    <span class="ward-name "></span>
+                    <span class="ward-name"></span>
                 </button>
-                <a href="{% url 'find_councillor' %}"
-                    class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Change
+                <a href="{% url 'home' %}"
+                    class="flex items-center justify-center w-full h-9 md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Change
                     location</a>
             </div>
-            <p class="fvs-200 benfritz text-white font-normal text-3xl mb-[31px]">Your ward councillor is:</p>
+            <p class="fvs-200 benfritz text-white font-normal text-2xl mb-4">Your ward councillor is:</p>
             <div class="relative rounded-lg bg-hfc-green-700 p-4 text-base">
                 <!-- loader -->
                 <div id="use-location-loader"
@@ -106,7 +106,7 @@
                                 <i class="fa-solid fa-user text-white opacity-60"></i>
                             </span>
                             <span
-                                class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
+                                class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md text-white bg-hfc-green-600">
                                 {{ward_detail.councillor_name.value}}
                             </span>
                         </div>
@@ -115,7 +115,7 @@
                                 <i class="fa-solid fa-landmark-flag opacity-60 text-white"></i>
                             </span>
                             <span
-                                class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
+                                class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md text-white bg-hfc-green-600">
                                 {{ward_detail.councillor_political_party.value}}
                             </span>
                         </div>
@@ -124,7 +124,7 @@
                                 <i class="fa-solid fa-sharp fa-location-pin text-white opacity-60"></i>
                             </span>
                             <span
-                                class="ward-name text-sm grow p-2 rounded-md whitespace-nowrap text-white">
+                                class="ward-name text-sm grow p-2 rounded-md text-white">
                                 {{ward.name|json_script:"councillor-ward"}}
                             </span>
                         </div>
