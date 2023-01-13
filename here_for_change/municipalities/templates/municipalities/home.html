@@ -3,3 +3,15 @@
     {% include "./find_my_ward_councillor.html" %}
   </div>
 </section>
+<script>
+  let municipalities= [ 
+
+    {% for municipality in object_list %}
+      {% autoescape off %}
+        {{ municipality.toDict }}
+      {% endautoescape %}
+    {% endfor %}
+
+  ];
+
+</script>
