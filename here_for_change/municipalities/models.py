@@ -126,7 +126,7 @@ def ward_slug(instance):
 
 
 class Ward(BaseModel):
-    name = models.CharField(max_length=255, unique=False,
+    name = models.CharField(max_length=255, unique=True,
                             blank=False, null=False)
     slug = AutoSlugField(populate_from=ward_slug)
     municipality = models.ForeignKey(

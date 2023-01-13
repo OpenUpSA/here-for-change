@@ -45,7 +45,7 @@ def load_ward_details():
         municipalities=Municipality.objects.filter(province=no_white_space_province_name)
         for municipality in municipalities:
             municipality_data=data[province][municipality.name]
-            for ward in municipality_data.keys():
+            for ward in set(municipality_data.keys()):
 
                 ward_name=f"{municipality.name} Ward {int(ward[len(ward)-3:])}" #Assembling ward name to match format stored in db
                 try:
