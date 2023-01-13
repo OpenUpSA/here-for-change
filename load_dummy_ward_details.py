@@ -219,19 +219,19 @@ def create_detail(ward:Ward,data:dict,stage:str="staging"):
             field=data[data_key][field_key]
                 
             if field_key!="contacts":
-                detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}",field_type=field.get("type"),field_value=field.get("value"),updated_at=datetime.strptime(field.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=field.get("feedback"))
+                detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}",field_type=field.get("type"),field_value=field.get("value"),updated_at=datetime.strptime(field.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=field.get("feedback",dict({"positive":0,"negative":0})))
                 detail.save()
             else:
                 for contact_key in field.keys():
 
                     contact=field[contact_key]
                     if contact_key!="email":
-                        detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}_{contact_key}",field_type=contact.get("type"),field_value=contact.get("value"),updated_at=datetime.strptime(contact.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=contact.get("feedback"))
+                        detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}_{contact_key}",field_type=contact.get("type"),field_value=contact.get("value"),updated_at=datetime.strptime(contact.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=contact.get("feedback",dict({"positive":0,"negative":0})))
                         detail.save()
                     else:
                         for email_type in contact.keys():
                             email=contact[email_type]
-                            detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}_{contact_key}_{email_type}",field_type=email.get("type"),field_value=email.get("value"),updated_at=datetime.strptime(email.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=email.get("feedback"))
+                            detail=WardDetail(ward=ward,field_name=f"{data_key}_{field_key}_{contact_key}_{email_type}",field_type=email.get("type"),field_value=email.get("value"),updated_at=datetime.strptime(email.get("updated"),r"%Y/%m/%d %H:%M"),stage=stage,feedback=email.get("feedback",dict({"positive":0,"negative":0})))
                             detail.save()
 
 
