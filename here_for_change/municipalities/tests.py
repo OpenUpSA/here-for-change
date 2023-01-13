@@ -1,5 +1,5 @@
 import json
-from django.test import Client, TestCase
+from django.test import Client, TestCase, TransactionTestCase
 from django.http import JsonResponse
 import html5lib
 from .models import Municipality
@@ -8,7 +8,6 @@ from .models import Ward
 import load_dummy_ward_details,load_wards
 import load_municipality_boundaries
 from django.core.management import call_command
-
 
 class IndexTestCase(TestCase):
     def test_index(self):
@@ -19,7 +18,7 @@ class IndexTestCase(TestCase):
         )
         assertValidHTML(response.content.decode('utf-8'))
 
-class JsonPagesTestCase(TestCase):
+class JsonPagesTestCase(TransactionTestCase):
     keys_in_response_ward=["ward_detail","neighbours"]
     def test_ward_json_pages(self):   
         client=Client()
@@ -47,7 +46,6 @@ def loadDbData():
     """
     #Load fixtures
     call_command('loaddata', 'demo-data.json')
-
     #Load Wards
     load_wards.load_wards()
 
