@@ -13,7 +13,7 @@
     "db-load-municipality-boundaries": "docker-compose run --rm web python load_municipality_boundaries.py",
     "db-load-municipality-details": "docker-compose run --rm web python load_municipality_details.py",
     "db-migrate": "docker-compose run --rm web python manage.py migrate",
-    "dev-init": "yarn install && yarn db-migrate && yarn db-load-demo-data && yarn db-load-wards && yarn db-load-demo-wards-details && db-load-wards-details && yarn db-load-municipality-boundaries && db-load-municipality-details",
+    "dev-init": "yarn install && yarn db-migrate && yarn db-load-demo-data && yarn db-load-wards && yarn db-load-demo-wards-details && yarn db-load-wards-details && yarn db-load-municipality-boundaries && yarn db-load-municipality-details",
     "dev": "yarn tailwind-watch & docker-compose up",
     "dev-reset": "rm -r node_modules & docker-compose down --volumes",
     "test": "cypress run",
