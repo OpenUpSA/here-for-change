@@ -23,6 +23,7 @@ services:
       - DJANGO_SECRET_KEY=not-secret-in-dev
       - DJANGO_WHITENOISE_AUTOREFRESH=True
       - TAG_MANAGER_ENABLED=False
+      - TAG_MANAGER_CONTAINER_ID=dev-container-id
 
   db:
     image: postgis/postgis:14-master
