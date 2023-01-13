@@ -6,6 +6,7 @@ from .models import Municipality
 
 from .models import Ward
 import load_dummy_ward_details,load_wards
+import load_municipality_boundaries
 from django.core.management import call_command
 
 
@@ -55,13 +56,12 @@ def loadDbData():
     
 class MunicipalityTestCase(TestCase):
     def setUp(self):
+        load_municipality_boundaries.load_boundaries()
         Municipality.objects.create(name="City of Cape Town",
                                     municipality_code="CPT",
                                     municipality_type="Metropolitan",
                                     province="WesternCape",
-                                    map_default_zoom=10,
-                                    map_latitude="-33.9249000",
-                                    map_longitude="18.4241000")
+                                    map_default_zoom=10,)
 
     def test_municipality(self):
         m1 = Municipality.objects.get(name="City of Cape Town")
