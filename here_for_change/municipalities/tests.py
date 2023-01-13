@@ -17,7 +17,7 @@ class IndexTestCase(TestCase):
         self.assertContains(
             response, "Here For Change",
         )
-        assertValidHTML(response.content)
+        assertValidHTML(response.content.decode('utf-8'))
 
 class JsonPagesTestCase(TestCase):
     keys_in_response_ward=["ward_detail","neighbours"]
