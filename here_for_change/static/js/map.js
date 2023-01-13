@@ -265,8 +265,9 @@ if (mapEl) {
       types: [
         "street_address",
         "sublocality",
-        "neighborhood",
-        "colloquial_area",
+        "route",
+        "point_of_interest",
+        "postal_code"
       ],
       componentRestrictions: { country: "ZA" },
     };
