@@ -5,6 +5,7 @@
     {% if TAG_MANAGER_ENABLED %}
     <!-- Google Tag Manager -->
     <script>
+<<<<<<< HEAD
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
@@ -25,6 +26,17 @@
     <!-- End Google Tag Manager -->
     {% endif %}
     <link rel="icon" href="{% static 'assets/hereforchange-favicon.png' %}"  />
+=======
+      (
+      function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','{{ TAG_MANAGER_CONTAINER_ID }}');</script>
+      <!-- End Google Tag Manager -->
+    {% endif %} 
+
+>>>>>>> main
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -33,7 +45,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBc15woji15KUqe8SxJoVpwRP4sB7Mtmk&libraries=places"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBc15woji15KUqe8SxJoVpwRP4sB7Mtmk&amp;libraries=places"
     ></script>
     <script
       src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
@@ -81,14 +93,14 @@
   <body>
     {% if TAG_MANAGER_ENABLED %}
     <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id={{ TAG_MANAGER_CONTAINER_ID }}"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
+    <noscript>
+        <iframe 
+          src="https://www.googletagmanager.com/ns.html?id={{ TAG_MANAGER_CONTAINER_ID }}"
+          height="0" 
+          width="0" 
+          style="display:none;visibility:hidden">
+        </iframe>
+    </noscript>
     <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 
@@ -113,7 +125,7 @@
             </div>
             <div class="flex flex-col md:flex-row md:justify-between gap-3.5">
               <button id="close-modal" class="text-sm p-4 text-center w-full cursor-pointer bg-[#1928270d] rounded-lg">Cancel</button>
-              <a target="_blank" rel="noopener noreferrer" class="text-sm whitespace-nowrap p-4 text-center block w-full  cursor-pointer text-white bg-[#192827] rounded-lg" href="https://support.google.com/chrome/answer/142065?hl=en&co=GENIE.Platform%3DDesktop">How to enable location</a>
+              <a target="_blank" rel="noopener noreferrer" class="text-sm whitespace-nowrap p-4 text-center block w-full  cursor-pointer text-white bg-[#192827] rounded-lg" href="https://support.google.com/chrome/answer/142065?hl=en&mp;co=GENIE.Platform%3DDesktop">How to enable location</a>
             </div> 
           </div>
         </div>

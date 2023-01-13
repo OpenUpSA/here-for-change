@@ -9,9 +9,10 @@ from .models import Municipality, Ward
 from .models import WardDetail as WardDetailModel
 
 from .forms import FindMyWardCouncillorFeedbackForm
+from ..mixins import BaseViewContext
 
 
-class Home(ListView):
+class Home(BaseViewContext,ListView):
     model = Municipality
     template_name = "municipalities/home.html"
 
@@ -19,7 +20,7 @@ class Home(ListView):
         return super().get(request, *args, **kwargs)
 
 
-class WardDetail(DetailView):
+class WardDetail(BaseViewContext,DetailView):
     model = Ward
     slug_field = 'slug__iexact'
     slug_url_kwarg = 'slug'
@@ -201,6 +202,7 @@ class WardDetail(DetailView):
         staging = self.request.GET.get("version", "production")
 
         ctx = super().get_context_data(**kwargs)
+        ctx.update(self.tags_object)
         ward = self.get_object()
         ctx['ward_detail'] = {}
 
@@ -266,7 +268,7 @@ class WardDetailJson(DetailView):
         return ctx
 
 
-class MunicipalityDetailJson(DetailView):
+class MunicipalityDetailJson(BaseViewContext,DetailView):
     model = Municipality
     slug_field = 'municipality_code'
     slug_url_kwarg = 'municipality_code'
@@ -279,6 +281,7 @@ class MunicipalityDetailJson(DetailView):
     def get_context_data(self, **kwargs):
         municipality = self.get_object()
         ctx = municipality.toDict()
+        ctx.update(self.tags_object)
         municipality_location = Point(
             (municipality.map_latitude, municipality.map_longitude))
         ctx['neighbours'] = [municipality_neighbor.toDict(
@@ -286,12 +289,12 @@ class MunicipalityDetailJson(DetailView):
         return ctx
 
 
-class FindMyWardCouncillor(ListView):
+class FindMyWardCouncillor(BaseViewContext,ListView):
     template_name = "municipalities/find_my_ward_councillor.html"
     model = Municipality
 
 
-class WhoIsMyWardCouncillor(DetailView):
+class WhoIsMyWardCouncillor(BaseViewContext,DetailView):
     model = Ward
     template_name = "municipalities/who_is_my_ward_councillor.html"
     slug_field = 'slug__iexact'
@@ -302,6 +305,7 @@ class WhoIsMyWardCouncillor(DetailView):
         staging = self.request.GET.get("version", "production")
 
         ctx = super().get_context_data(**kwargs)
+        ctx.update(self.tags_object)
         ward = self.get_object()
         ctx['ward_detail'] = {}
 

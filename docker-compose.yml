@@ -22,7 +22,7 @@ services:
       - DJANGO_DEBUG_TOOLBAR
       - DJANGO_SECRET_KEY=not-secret-in-dev
       - DJANGO_WHITENOISE_AUTOREFRESH=True
-      - TAG_MANAGER_ENABLED=False
+      - TAG_MANAGER_ENABLED=True
 
   db:
     image: postgis/postgis:14-master

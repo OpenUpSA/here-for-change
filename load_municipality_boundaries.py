@@ -1,5 +1,5 @@
 """
-This script is calculates and saves Municipality boundaries
+This script calculates and saves Municipality boundaries
 """
 from django.contrib.gis.geos import MultiPolygon, Polygon
 import os
@@ -23,11 +23,17 @@ def get_municipality_boundary(municipality:Municipality)->MultiPolygon:
         total_boundary=MultiPolygon([total_boundary])
     return total_boundary
 
-
-if __name__=="__main__":
+def load_boundaries():
+    """
+    Gets and saves municipality boundaries
+    """
     for municipality in Municipality.objects.all():
         municipality.boundary=get_municipality_boundary(municipality)
         municipality.save()
+
+
+if __name__=="__main__":
+    load_boundaries()
 
 
 
