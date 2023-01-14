@@ -23,8 +23,7 @@ class Home(BaseViewContext,ListView):
     
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        resultquery = (Q(name__iexact='cape town') | Q(name__iexact='bergrivier'))
-        ctx["object_list"]=Municipality.objects.filter(resultquery)
+        ctx["object_list"]=Municipality.objects.filter(name__in=['City of Cape Town','Bergrivier'])
         return ctx
 
 
