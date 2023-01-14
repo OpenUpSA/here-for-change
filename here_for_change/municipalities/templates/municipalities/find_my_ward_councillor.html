@@ -173,6 +173,15 @@
         <input type="number" name="latitude">
         <input type="text" name="url">
     </form>
+    <script>
+        {% autoescape off %}
+            var homeMapMunis = [];
+            {% for municipality in object_list %}
+                var eachMuni = {{ municipality.toDict }}
+                homeMapMunis.push(eachMuni)
+            {% endfor %}
+        {% endautoescape %}      
+      </script>
     <script src="{% static 'js/here_for_change.js' %}"></script>
     <script src="{% static 'js/map.js' %}"></script>
     <script src="{% static 'js/random-points-on-polygon.js' %}"></script>

@@ -9,7 +9,10 @@ var wardId = "";
 var neighbouring_wards = neighbouring_wards; //global
 var wardAreaData = [];
 var neighbourAreaData = [];
+var homeMapData = [];
 var mapEl = document.querySelector("#map");
+var homeMapMunis = homeMapMunis
+console.log("homeMapMunis", homeMapMunis);
 
 if (mapEl) {
   var map = L.map(mapEl);
@@ -29,6 +32,8 @@ if (mapEl) {
       neighbourAreaData["details"] = neighbour["ward_detail"]
       muniAreaData.push(neighbourAreaData);
     });
+    console.log("ward page data", muniAreaData);
+
   }
 
   async function setBaseIds() {
@@ -39,34 +44,25 @@ if (mapEl) {
     }
   }
 
-  async function getMapData() {
-    // await fetch(
-    //   "https://mapit.code4sa.org/area/" +
-    //     municipality["municipality_area_number"] +
-    //     "/touches"
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     municipality["neighbours"] = data;
-    //     updateNeighbourMunicipalities();
-    //   })
-    //   .catch((e) => console.log(e));
+  async function getHomeMapData() {
+    if (homeMapMunis) {
+      homeMapMunis.forEach((eachMuni) => {
+        homeMapData = JSON.parse(eachMuni.map_geoJson);
+        homeMapData["name"] = eachMuni["name"];
+        // homeMapData["slug"] = eachMuni["slug"];
+        // homeMapData["details"] = eachMuni["ward_detail"]
+        muniAreaData.push(homeMapData);
+      });
+      console.log("Home page Data", muniAreaData);
+
+      setTimeout(() => {
+        loadMap();
+        let zoom = 7
+        muniLatlng = [-33.0182, 18.6782];
+        map.setView(muniLatlng, zoom);
+      }, 1000);
+    }
   }
-
-  // async function setMuniOfficePin() {
-  //   var municipalOffice = L.divIcon({
-  //     className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-  //     iconAnchor: [52, 48],
-  //     html: "<div>Municipal office</div>",
-  //     interactive: false,
-  //   });
-
-  //   L.marker(muniLatlng, {
-  //     icon: municipalOffice,
-  //     riseOnHover: true,
-  //     bubblingMouseEvents: true,
-  //   }).addTo(map);
-  // }
 
   function getBrowserLocation() {
     if (navigator.geolocation) {
@@ -219,7 +215,6 @@ if (mapEl) {
     if (current_ward) {
       await setBaseIds();
       await getDataFromBackend();
-      //await setMuniOfficePin();
       setTimeout(() => {
         loadMap();
       }, 1000);
@@ -233,11 +228,8 @@ if (mapEl) {
       } else {
         getBrowserLocation();
       }
-      await getMapData();
     } else {
-      //Load SA Map in Homepage
-      let zoom = 6;
-      map.setView([-29.68351, 24.70076], zoom);
+      await getHomeMapData();
     }
   }
   mapInit();
@@ -326,59 +318,62 @@ if (mapEl) {
         layer.on("mousemove", function (e) {
           popup.setLatLng(e.latlng).openOn(map);
         });
-        var iconMarker = L.marker(layerCenter, {
-          icon:L.icon({
-            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            className: "icon-marker",
-            bubblingMouseEvents: true,
-          }),
-          riseOnHover: true,
-          bubblingMouseEvents: true,
-        }).addTo(map);
 
-        iconMarker.on("click", (e) => {
-          if (window.document.location.pathname.endsWith("ward-councillor")) {
-            updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
-            );
-          } else {
-            updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/`
-            );
-          }
-        });
-        iconMarker.bindTooltip(
-          `${layer.feature.geometry.details.councillor_political_party.value} - ${layer.feature.geometry.details.councillor_name.value}`,
-          {
-            direction: "top",
-            offset: [0, -20],
-            className: "mapTooltip",
-            permanent: false,
-            opacity: 1,
-          }
-        );
-
-        iconMarker.on("mouseover", (e) => {
-          e.target.setIcon(L.icon({
-            iconUrl: "../../../../static/assets/placeholder-image-1.svg",
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            className: "icon-marker",
+        if (current_ward) {
+          var iconMarker = L.marker(layerCenter, {
+            icon: L.icon({
+              iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
+              className: "icon-marker",
+              bubblingMouseEvents: true,
+            }),
+            riseOnHover: true,
             bubblingMouseEvents: true,
-          }));
-        });
+          }).addTo(map);
 
-        iconMarker.on("mouseout", (e) => {
-          e.target.setIcon(L.icon({
-            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            className: "icon-marker",
-            bubblingMouseEvents: true,
-          }));
-        });
+          iconMarker.on("click", (e) => {
+            if (window.document.location.pathname.endsWith("ward-councillor")) {
+              updateParentOrSelfLocationSearch(
+                `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+              );
+            } else {
+              updateParentOrSelfLocationSearch(
+                `municipalities/${municipalityId}/wards/${slug}/`
+              );
+            }
+          });
+          iconMarker.bindTooltip(
+            `${layer.feature.geometry.details.councillor_political_party.value} - ${layer.feature.geometry.details.councillor_name.value}`,
+            {
+              direction: "top",
+              offset: [0, -20],
+              className: "mapTooltip",
+              permanent: false,
+              opacity: 1,
+            }
+          );
+
+          iconMarker.on("mouseover", (e) => {
+            e.target.setIcon(L.icon({
+              iconUrl: "../../../../static/assets/placeholder-image-1.svg",
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
+              className: "icon-marker",
+              bubblingMouseEvents: true,
+            }));
+          });
+
+          iconMarker.on("mouseout", (e) => {
+            e.target.setIcon(L.icon({
+              iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
+              className: "icon-marker",
+              bubblingMouseEvents: true,
+            }));
+          });
+        }
 
         if (wardId == slug) {
           layer.setStyle({
@@ -427,6 +422,20 @@ if (mapEl) {
       type: "roadmap",
     })
     .addTo(map);
+
+   // async function getMuniNeighboursData() {
+  //   await fetch(
+  //     "https://mapit.code4sa.org/area/" +
+  //       municipality["municipality_area_number"] +
+  //       "/touches"
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       municipality["neighbours"] = data;
+  //       updateNeighbourMunicipalities();
+  //     })
+  //     .catch((e) => console.log(e));
+  // }
 
   var updateNeighbourMunicipalities = function () {
     var neighbourIds = Object.keys(municipality["neighbours"]);
