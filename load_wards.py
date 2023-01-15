@@ -21,14 +21,15 @@ def get_municipality_children(municipality):
     """
     res=requests.get(f"{SOURCE_URL}{municipality.area_number}/children.json")
     children=json.loads(res.content)
-    for area_number in children.keys():
+    municipality_children=list(dict.fromkeys(list(children.keys())))
+    for area_number in municipality_children:
         ward=children[area_number]
         try:
             ward_object=Ward(name=ward.get("name"),municipality=municipality)
             ward_object=load_boundary_in_ward(area_number,ward_object)
             ward_object.save()
         except:
-            continue
+            ...
 
 
 
@@ -45,7 +46,7 @@ def load_boundary_in_ward(area_number:int,ward:Ward)->Ward:
 
 def load_wards():
     Ward.objects.all().delete()
-    for municipality in Municipality.objects.all():
+    for municipality in Municipality.objects.all().order_by("name"):
         if municipality.area_number:
             get_municipality_children(municipality)
 

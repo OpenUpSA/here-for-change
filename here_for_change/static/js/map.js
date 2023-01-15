@@ -9,6 +9,8 @@ var wardId = "";
 var neighbouring_wards = neighbouring_wards; //global
 var wardAreaData = [];
 var neighbourAreaData = [];
+var homeMapData = [];
+var homeMapMunis = homeMapMunis  //global
 var mapEl = document.querySelector("#map");
 
 if (mapEl) {
@@ -35,73 +37,29 @@ if (mapEl) {
     if (current_ward) {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
-      //muniLatlng = [-34.4781, 19.9798];
       muniLatlng = current_ward.coords;
     }
   }
 
-  async function getMapData() {
-    if (
-      window.document.location.pathname == "/" ||
-      window.document.location.pathname == "/find-my-ward-councillor"
-    ) {
-      //get data from json for home map
-      await fetch(
-        `${baseUrl}/municipalities/${municipalityId}/wards/${wardId}.json`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          let { neighbours, map_geoJson, name, slug } = data;
-          municipality["municipality_area_number"] =
-            data["municipality"]["area_number"];
-          wardAreaData = JSON.parse(map_geoJson);
-          wardAreaData["name"] = name;
-          wardAreaData["slug"] = slug;
-          wardAreaData["details"] = data["ward_detail"];
-          
-          muniAreaData.push(wardAreaData);
+  async function getHomeMapData() {
+    if (homeMapMunis) {
+      homeMapMunis.forEach((eachMuni) => {
+        eachMuni.children.forEach((eachWard) => {
+          homeMapData = JSON.parse(eachWard.map_geoJson);
+          homeMapData["name"] = eachWard["name"];
+          homeMapData["slug"] = eachWard["slug"];
+          homeMapData["homeMuniId"] = eachMuni["municipality_code"];
+          muniAreaData.push(homeMapData);
+        })
+      });
 
-          neighbours.forEach((neighbour) => {
-            neighbourAreaData = JSON.parse(neighbour.map_geoJson);
-            let name = neighbour["name"];
-            let slug = neighbour["slug"];
-            neighbourAreaData["name"] = name;
-            neighbourAreaData["slug"] = slug;
-            neighbourAreaData["details"] = neighbour["ward_detail"]
-            muniAreaData.push(neighbourAreaData);
-          });
-        });
-    } else {
-      getDataFromBackend();
+      setTimeout(() => {
+        loadMap();
+        let zoom = 7
+        muniLatlng = [-33.5182, 18.6782];
+        map.setView(muniLatlng, zoom);
+      }, 1000);
     }
-
-    // await fetch(
-    //   "https://mapit.code4sa.org/area/" +
-    //     municipality["municipality_area_number"] +
-    //     "/touches"
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     municipality["neighbours"] = data;
-    //     updateNeighbourMunicipalities();
-    //   })
-    //   .catch((e) => console.log(e));
-
-  }
-
-  async function setMuniOfficePin() {
-    var municipalOffice = L.divIcon({
-      className: "text-pin is-filter-grayscale-bw is-pointer-events-none",
-      iconAnchor: [52, 48],
-      html: "<div>Municipal office</div>",
-      interactive: false,
-    });
-
-    L.marker(muniLatlng, {
-      icon: municipalOffice,
-      riseOnHover: true,
-      bubblingMouseEvents: true,
-    }).addTo(map);
   }
 
   function getBrowserLocation() {
@@ -255,7 +213,6 @@ if (mapEl) {
     if (current_ward) {
       await setBaseIds();
       await getDataFromBackend();
-      await setMuniOfficePin();
       setTimeout(() => {
         loadMap();
       }, 1000);
@@ -269,11 +226,8 @@ if (mapEl) {
       } else {
         getBrowserLocation();
       }
-      await getMapData();
     } else {
-      //Load SA Map in Homepage
-      let zoom = 6;
-      map.setView([-29.68351, 24.70076], zoom);
+      await getHomeMapData();
     }
   }
   mapInit();
@@ -301,8 +255,9 @@ if (mapEl) {
       types: [
         "street_address",
         "sublocality",
-        "neighborhood",
-        "colloquial_area",
+        "route",
+        "point_of_interest",
+        "postal_code"
       ],
       componentRestrictions: { country: "ZA" },
     };
@@ -346,7 +301,6 @@ if (mapEl) {
         var slug = layer.feature.geometry.slug;
         var name = layer.feature.geometry.name;
         var layerCenter = layer.getBounds().getCenter();
-        var politicalParty = politicalParties[random(politicalParties.length)];
         var popup = L.popup({ className: "mapTooltip", closeButton: false });
         popup.setContent(`${name}`);
         layer.bindPopup(popup);
@@ -362,66 +316,64 @@ if (mapEl) {
         layer.on("mousemove", function (e) {
           popup.setLatLng(e.latlng).openOn(map);
         });
-        var iconMarker = L.marker(layerCenter, {
-          icon:L.icon({
-            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            className: "icon-marker",
+
+        if (current_ward) {
+          var iconMarker = L.marker(layerCenter, {
+            icon: L.icon({
+              iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
+              className: "icon-marker",
+              bubblingMouseEvents: true,
+            }),
+            riseOnHover: true,
             bubblingMouseEvents: true,
-          }),
-          riseOnHover: true,
-          bubblingMouseEvents: true,
-        }).addTo(map);
+          }).addTo(map);
 
-        iconMarker.on("click", (e) => {
-          if (window.document.location.pathname.endsWith("ward-councillor")) {
-            updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
-            );
-          } else {
-            updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/`
-            );
-          }
-        });
-        iconMarker.bindTooltip(
-          `${layer.feature.geometry.details.councillor_political_party.value} - ${layer.feature.geometry.details.councillor_name.value}`,
-          {
-            direction: "top",
-            offset: [0, -20],
-            className: "mapTooltip",
-            permanent: false,
-            opacity: 1,
-          }
-        );
+          iconMarker.on("click", (e) => {
+            if (window.document.location.pathname.endsWith("ward-councillor")) {
+              updateParentOrSelfLocationSearch(
+                `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+              );
+            } else {
+              updateParentOrSelfLocationSearch(
+                `municipalities/${municipalityId}/wards/${slug}/`
+              );
+            }
+          });
+          iconMarker.bindTooltip(
+            `${layer.feature.geometry.details.councillor_political_party.value} - ${layer.feature.geometry.details.councillor_name.value}`,
+            {
+              direction: "top",
+              offset: [0, -20],
+              className: "mapTooltip",
+              permanent: false,
+              opacity: 1,
+            }
+          );
 
-        iconMarker.on("mouseover", (e) => {
-          e.target.setIcon(politicalParty["wardCouncillor"]["icon"]);
-        });
+          iconMarker.on("mouseover", (e) => {
+            e.target.setIcon(L.icon({
+              iconUrl: "../../../../static/assets/placeholder-image-1.svg",
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
+              className: "icon-marker",
+              bubblingMouseEvents: true,
+            }));
+          });
 
-        iconMarker.on("mouseout", (e) => {
-          e.target.setIcon(L.icon({
-            iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            className: "icon-marker",
-            bubblingMouseEvents: true,
-          }));
-        });
+          iconMarker.on("mouseout", (e) => {
+            e.target.setIcon(L.icon({
+              iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+              iconSize: [40, 40],
+              iconAnchor: [20, 20],
+              className: "icon-marker",
+              bubblingMouseEvents: true,
+            }));
+          });
+        }
 
         if (wardId == slug) {
-          //ward office gotten using randomPointsOnPolygon
-          var wardLatlng = randomPointsOnPolygon(
-            1,
-            layer.feature
-          )[0].geometry.coordinates.reverse();
-
-          var wardOffice = L.divIcon({
-            className: "text-pin",
-            iconAnchor: [40, 48],
-            html: `<div>Ward office</div>`,
-          });
           layer.setStyle({
             weight: 3,
             fillOpacity: 0.05,
@@ -430,22 +382,20 @@ if (mapEl) {
           layer.bringToFront();
           map.fitBounds(layer.getBounds());
 
-          L.marker(wardLatlng, {
-            icon: wardOffice,
-            riseOnHover: true,
-            bubblingMouseEvents: true,
-          }).addTo(map);
         }
 
+        //Map layer click handler
         layer.on("click", (e) => {
           var slug = e.target.feature.geometry.slug;
+          var muniId = current_ward ? municipalityId : e.target.feature.geometry.homeMuniId;
+
           if (window.document.location.pathname.endsWith("ward-councillor")) {
             updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+              `municipalities/${muniId}/wards/${slug}/ward-councillor`
             );
           } else {
             updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/`
+              `municipalities/${muniId}/wards/${slug}/`
             );
           }
         });
@@ -473,147 +423,6 @@ if (mapEl) {
       type: "roadmap",
     })
     .addTo(map);
-
-  var politicalParties = [
-    {
-      wardCouncillor: {
-        name: "Daniel Kapungwe",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/danielkapungwe.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "ANC",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/anc.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-    {
-      wardCouncillor: {
-        name: "Bukelani Zuma",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/bukelanizuma.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "IFP",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/ifp.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-    {
-      wardCouncillor: {
-        name: "Stuart Pringle",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/stuartpringle.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-      party: {
-        name: "DA",
-        icon: L.icon({
-          iconUrl: "../../../../static/assets/da.png",
-          iconSize: [40, 40],
-          iconAnchor: [20, 20],
-          className: "icon-marker",
-          bubblingMouseEvents: true,
-        }),
-      },
-    },
-  ];
-
-  var updateNeighbourMunicipalities = function () {
-    var neighbourIds = Object.keys(municipality["neighbours"]);
-    neighbourIds.forEach(function (neighbourId) {
-      var neighbour = municipality["neighbours"][neighbourId];
-      var parentAreaId = neighbour["parent_area"];
-
-      if (neighbour["type"] === "WD") {
-        fetch("https://mapit.code4sa.org/area/" + neighbourId + ".geojson")
-          .then((response) => response.json())
-          .then((data) => {
-            var layer = L.geoJSON(data, {
-              style: {
-                color: "#ccc",
-                fillOpacity: 0.01,
-                weight: 2,
-              },
-            }).addTo(map);
-            var popup = L.popup({
-              className: "mapTooltip",
-              closeButton: false,
-            });
-            popup.setContent(neighbour["name"]);
-            layer.bindPopup(popup);
-
-            layer.on("mouseover", function (e) {
-              var popup = e.target.getPopup();
-              popup.setLatLng(e.latlng).openOn(map);
-            });
-
-            layer.on("mouseout", function (e) {
-              e.target.closePopup();
-            });
-
-            layer.on("mousemove", function (e) {
-              popup.setLatLng(e.latlng).openOn(map);
-            });
-            //distant neighbours are unclickable because no 'slug' for them from backend
-            layer.on("click", (e) => {
-              if (
-                window.document.location.pathname.endsWith("ward-councillor")
-              ) {
-                updateParentOrSelfLocationSearch(
-                  `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
-                );
-              } else {
-                updateParentOrSelfLocationSearch(
-                  `municipalities/${municipalityId}/wards/${slug}/`
-                );
-              }
-            });
-
-            layer.on("mouseover", (e) => {
-              e.target.setStyle({
-                color: "#999",
-                fillOpacity: 0.05,
-              });
-              e.target.bringToFront();
-            });
-
-            layer.on("mouseout", (e) => {
-              e.target.setStyle({
-                color: "#ccc",
-                fillOpacity: 0.01,
-              });
-              e.target.bringToBack();
-            });
-          })
-          .catch((e) => console.log(e));
-      }
-    });
-  };
 
   //resize embed map on feedback form open
   const sendFeedbackBtn = document.querySelector("#send-feedback");
