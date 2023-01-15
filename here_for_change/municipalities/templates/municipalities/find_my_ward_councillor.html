@@ -177,8 +177,8 @@
         {% autoescape off %}
             var homeMapMunis = [];
             {% for municipality in object_list %}
-                var eachMuni = {{ municipality.toDict }}
-                homeMapMunis.push(eachMuni)
+                var eachMuni = {{ municipality }};
+                homeMapMunis.push(eachMuni);
             {% endfor %}
         {% endautoescape %}      
       </script>

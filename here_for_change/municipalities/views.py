@@ -11,8 +11,6 @@ from .models import WardDetail as WardDetailModel
 from .forms import FindMyWardCouncillorFeedbackForm
 from ..mixins import BaseViewContext
 
-from django.contrib.gis.db.models import Q
-
 
 class Home(BaseViewContext,ListView):
     model = Municipality
@@ -23,7 +21,7 @@ class Home(BaseViewContext,ListView):
     
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["object_list"]=Municipality.objects.filter(name__in=['City of Cape Town','Bergrivier'])
+        ctx["object_list"]=[municipality.toDict(include_children=True) for municipality in  Municipality.objects.filter(name__in=['City of Cape Town','Bergrivier'])]
         return ctx
 
 

@@ -104,7 +104,7 @@ class Municipality(BaseModel):
     class Meta:
         verbose_name_plural = "Municipalities"
 
-    def toDict(self):
+    def toDict(self,include_children:bool=False)->dict:
         """
         Returns a Dict version of the Municipality
         """
@@ -114,8 +114,12 @@ class Municipality(BaseModel):
             "municipality_type": self.municipality_type, 
             "area_number": self.area_number, 
             "province": self.province,
-            "map_geoJson": self.map_geoJson
+            "map_geoJson": self.map_geoJson,
+            "children": [ward.toDict() for ward in self.get_contained_wards()] if include_children else self.objects.none()
             }
+    
+    def get_contained_wards(self):
+        return Ward.objects.filter(municipality=self)
 
     def __str__(self):
         return self.name
