@@ -68,7 +68,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
     />
   </head>
-  <body>
+  <body style="{% block body_height %} {% endblock %}">
     {% if TAG_MANAGER_ENABLED %}
     <!-- Google Tag Manager (noscript) -->
     <noscript>
@@ -82,36 +82,7 @@
     <!-- End Google Tag Manager (noscript) -->
     {% endif %}
 
-    {% include "./simple_nav.html" %}
-     <!-- find location modal -->
-     <div id="location-modal" class="relative z-[100] hide-modal" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity"></div>
-      <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div id="modal-overlay" class="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
-          <div class="flex flex-col p-8 w-[420px] gap-y-3.5 relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8">
-            <div class="flex items-center">
-              <div class="relative h-10 w-10">
-                <span class="double-bounce-1 absolute bg-[#7f00ff] opacity-60 h-10 w-10 rounded-full"></span>
-                <span class="double-bounce-2 absolute bg-[#7f00ff] opacity-60 h-10 w-10 rounded-full"></span>
-              </div>
-              <p class="leading-8 text-[#192827] ml-3.5 text-3xl font-bold benfritz fvs-200">Please wait, we are<br/> finding your ward!</p>
-            </div>
-            <div class="flex">
-              <p class="text-sm text-[#192827]">
-                Based on the location provided to us by your browser, we are identifying your ward. <strong>Please enable location sharing</strong> for our website to enable this feature.
-              </p>
-            </div>
-            <div class="flex flex-col md:flex-row md:justify-between gap-3.5">
-              <button id="close-modal" class="text-sm p-4 text-center w-full cursor-pointer bg-[#1928270d] rounded-lg">Cancel</button>
-              <a target="_blank" rel="noopener noreferrer" class="text-sm whitespace-nowrap p-4 text-center block w-full  cursor-pointer text-white bg-[#192827] rounded-lg" href="https://support.google.com/chrome/answer/142065?hl=en&mp;co=GENIE.Platform%3DDesktop">How to enable location</a>
-            </div> 
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- end of location modal -->
     {% block content %}{% endblock %}
-    {% include './simple_footer.html' %}
     <script src="{% static 'js/here_for_change.js' %}" ></script>
     <script src="{% static 'js/map.js' %}" ></script>
     {% block scripts %}{% endblock scripts %}

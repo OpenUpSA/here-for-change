@@ -31,8 +31,6 @@ if (mapEl) {
       neighbourAreaData["details"] = neighbour["ward_detail"]
       muniAreaData.push(neighbourAreaData);
     });
-    console.log("ward page data", muniAreaData);
-
   }
 
   async function setBaseIds() {
@@ -54,13 +52,11 @@ if (mapEl) {
           muniAreaData.push(homeMapData);
         })
       });
-      console.log("Home page Data", muniAreaData);
-      console.log("homeMapMunis", homeMapMunis);
 
       setTimeout(() => {
         loadMap();
         let zoom = 7
-        muniLatlng = [-33.0182, 18.6782];
+        muniLatlng = [-33.5182, 18.6782];
         map.setView(muniLatlng, zoom);
       }, 1000);
     }
@@ -427,92 +423,6 @@ if (mapEl) {
       type: "roadmap",
     })
     .addTo(map);
-
-  // async function getMuniNeighboursData() {
-  //   await fetch(
-  //     "https://mapit.code4sa.org/area/" +
-  //       municipality["municipality_area_number"] +
-  //       "/touches"
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       municipality["neighbours"] = data;
-  //       updateNeighbourMunicipalities();
-  //     })
-  //     .catch((e) => console.log(e));
-  // }
-
-  var updateNeighbourMunicipalities = function () {
-    var neighbourIds = Object.keys(municipality["neighbours"]);
-    neighbourIds.forEach(function (neighbourId) {
-      var neighbour = municipality["neighbours"][neighbourId];
-      var parentAreaId = neighbour["parent_area"];
-
-      if (neighbour["type"] === "WD") {
-        fetch("https://mapit.code4sa.org/area/" + neighbourId + ".geojson")
-          .then((response) => response.json())
-          .then((data) => {
-            var layer = L.geoJSON(data, {
-              style: {
-                color: "#ccc",
-                fillOpacity: 0.01,
-                weight: 2,
-              },
-            }).addTo(map);
-            var popup = L.popup({
-              className: "mapTooltip",
-              closeButton: false,
-            });
-            popup.setContent(neighbour["name"]);
-            layer.bindPopup(popup);
-
-            layer.on("mouseover", function (e) {
-              var popup = e.target.getPopup();
-              popup.setLatLng(e.latlng).openOn(map);
-            });
-
-            layer.on("mouseout", function (e) {
-              e.target.closePopup();
-            });
-
-            layer.on("mousemove", function (e) {
-              popup.setLatLng(e.latlng).openOn(map);
-            });
-            //distant neighbours are unclickable because no 'slug' for them from backend
-            layer.on("click", (e) => {
-              if (
-                window.document.location.pathname.endsWith("ward-councillor")
-              ) {
-                updateParentOrSelfLocationSearch(
-                  `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
-                );
-              } else {
-                updateParentOrSelfLocationSearch(
-                  `municipalities/${municipalityId}/wards/${slug}/`
-                );
-              }
-            });
-
-            layer.on("mouseover", (e) => {
-              e.target.setStyle({
-                color: "#999",
-                fillOpacity: 0.05,
-              });
-              e.target.bringToFront();
-            });
-
-            layer.on("mouseout", (e) => {
-              e.target.setStyle({
-                color: "#ccc",
-                fillOpacity: 0.01,
-              });
-              e.target.bringToBack();
-            });
-          })
-          .catch((e) => console.log(e));
-      }
-    });
-  };
 
   //resize embed map on feedback form open
   const sendFeedbackBtn = document.querySelector("#send-feedback");

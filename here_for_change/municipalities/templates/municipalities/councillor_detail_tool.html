@@ -1,0 +1,225 @@
+{% load static %}
+<div class="relative bg-hfc-green-900 w-full p-7 rounded-2xl shadow-xl">
+    <div class="lg:max-w-[612px]">
+        <h1 class="fvs-200 benfritz text-white font-normal text-2xl mb-[16px] lg:hidden">Find my ward councillor
+        </h1>
+        <div class="lg:absolute lg:w-[calc(100%-670px)] lg:top-0 lg:bottom-0 lg:right-0">
+            <div id="map" class="relative min-h-[300px] lg:min-h-full rounded-lg lg:rounded-l-none">
+                <p
+                    class="karla flex items-center absolute top-2 right-2 bg-[#353535] text-white z-[425] rounded-lg p-2  shadow-[0_3px_4px_0_rgba(0,0,0,0.3)]">
+                    <i class="fa-solid fa-arrows-up-down-left-right text-base mr-1"></i>
+                    Tap to select your ward
+                </p>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row s justify-between my-4 gap-y-2 lg:mt-0">
+            <button
+                class="flex items-center justify-center h-9 px-3 text-sm rounded-md text-black whitespace-nowrap text-center font-medium bg-white">
+                <i class="fa-solid fa-sharp fa-location-pin text-[#7f00ff] pr-2"></i>
+                <span class="ward-name"></span>
+            </button>
+            <a href="{% url 'home' %}"
+                class="flex items-center justify-center w-full h-9 md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Change
+                location</a>
+        </div>
+        <p class="fvs-200 benfritz text-white font-normal text-2xl mb-4">Your ward councillor is:</p>
+        <div class="relative rounded-lg bg-hfc-green-700 p-4 text-base">
+            <!-- loader -->
+            <div id="use-location-loader"
+                class="absolute top-0 left-0 z-[50] rounded-md bg-hfc-green-700 h-full w-full flex items-center justify-center">
+                <i class="fa-solid fa-spinner text-white text-base animate-spin px-3"></i>
+                <p class="text-white text-sm">Finding your ward councillor</p>
+            </div>
+            <div class="flex items-start gap-2">
+                <img alt="ward-councillor-picture" class="h-24 w-24 rounded-lg"
+                src="{% static 'assets/placeholder-image.svg' %}"/>
+                <div class="flex flex-col grow gap-y-2">
+                    <div class="flex grow items-center">
+                        <span class="mr-2">
+                            <i class="fa-solid fa-user text-white opacity-60"></i>
+                        </span>
+                        <span
+                            class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md text-white bg-hfc-green-600">
+                            {{ward_detail.councillor_name.value}}
+                        </span>
+                    </div>
+                    <div class="flex grow items-center">
+                        <span class="mr-2">
+                            <i class="fa-solid fa-landmark-flag opacity-60 text-white"></i>
+                        </span>
+                        <span
+                            class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md text-white bg-hfc-green-600">
+                            {{ward_detail.councillor_political_party.value}}
+                        </span>
+                    </div>
+                    <div class="flex grow items-center">
+                        <span class="mr-2">
+                            <i class="fa-solid fa-sharp fa-location-pin text-white opacity-60"></i>
+                        </span>
+                        <span
+                            class="ward-name text-sm grow p-2 rounded-md text-white">
+                            {{ward.name|json_script:"councillor-ward"}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- horizontal divide -->
+            <div class="border-white opacity-10 w-full border-t my-4"></div>
+            <p class="text-sm text-white mb-3">Contact this councillor</p>
+            <!-- tel row -->
+            <div class="flex flex-wrap items-center text-sm gap-2 ">
+                <div class="flex grow items-center">
+                    <span class="mr-2">
+                        <i class="fa-solid fa-phone text-white opacity-60"></i>
+                    </span>
+                    <span id="councillor-phone"
+                        class="text-sm grow hover:bg-hfc-green-500 p-2 rounded-md whitespace-nowrap text-white bg-hfc-green-600">
+                        {{ward_detail.councillor_contacts_phone.value }}
+                    </span>
+                </div>
+                <div class="flex items-center">
+                    <span
+                        class="min-w-[64px] voteTooltip mr-2 flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500 feedback-vote"
+                        data-field="councillor_contacts_phone"
+                        data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_phone' %}"
+                        data-action="positive"
+                        data-ward="{{object.slug}}"
+                        >
+                        <span class="voteTooltipText"
+                        >
+                            This was helpful
+                             <span class="triangle-down"></span>
+                         </span>
+                        <span>
+                            <i class="fa-solid fa-thumbs-up text-[#63ea20]"> </i>
+                        </span>
+                        <span class="text-white"> {{ward_detail.councillor_contacts_phone.feedback.positive}}</span>
+                    </span>
+                    <span
+                        class="min-w-[64px] voteTooltip flex cursor-pointer items-center gap-3 rounded-md bg-hfc-green-600 p-2 hover:bg-hfc-green-500 feedback-vote"
+                        data-field="councillor_contacts_phone"
+                        data-url="{% url 'update_ward_detail_feedback' object.slug 'councillor_contacts_phone' %}"
+                        data-action="negative"
+                        data-ward="{{object.slug}}"
+                        >
+                        <span class="voteTooltipText"
+                        >
+                            This was not helpful
+                             <span class="triangle-down"></span>
+                         </span>
+                        <span>
+                            <i class="fa-solid fa-thumbs-down text-red-600"></i>
+                        </span>
+                        <span class="text-white"> {{ward_detail.councillor_contacts_phone.feedback.negative}}</span>
+                    </span>
+                </div>
+            </div>
+            
+        </div>
+        <!-- send your feedback -->
+        <div id="feedback-div" class="mt-4 flex flex-col md:flex-row justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+            <p>
+                Tell us about your experience! How can we improve?
+            </p>
+            <button
+                id="send-feedback"
+                class="flex items-center justify-center w-full h-9  md:w-[180px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">Send your feedback
+            </button>
+        </div>
+        <!-- feedback success div -->
+        <div id="feedback-success-div" class="hidden mt-4 flex flex-col md:flex-row justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+            <div class="flex min-h-[36px] items-center justify-center w-full bg-[#63ea20] rounded-md text-black">
+                <p class="text-center p-2">
+                    Thank you! Your feedback was submitted!
+                </p>
+            </div>
+        </div>
+        <!-- feedback failure div -->
+        <div id="feedback-failure-div" class="hidden mt-4 flex flex-col md:flex-row justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+            <div class="flex min-h-[36px] items-center justify-center w-full bg-red-900 rounded-md text-white">
+                <p class="text-center p-2">
+                    Oops! Something went wrong while submitting the form.
+                </p>
+            </div>
+        </div>
+        <!-- feedback form -->
+        <form action="{% url 'feedback' %}" method="POST" id="feedback-form" class="hidden mt-4 w-full  justify-between items-center rounded-lg bg-hfc-green-700 p-4 text-sm text-white">
+            {% csrf_token %}
+            <input name="ward" type="hidden" value="{{object.id}}">
+            <div class="w-full mb-2.5">
+                <p class="text-sm mb-1 text-white text-center md:text-left">
+                    Your email address
+                </p>
+                <input type="email" name="email" required class="bg-hfc-green-600 text-[13px] rounded-md p-3 w-full outline-none" placeholder="john@email.com" type="text" />
+            </div>
+            <div class="w-full mb-2.5">
+                <p class="text-sm mb-1 text-white text-center md:text-left">
+                    Your feedback
+                </p>
+                <textarea required rows="5" name="feedback" class="bg-hfc-green-600 text-[13px] rounded-md p-3 w-full outline-none" placeholder="Write your feedback here..." type="text"></textarea>
+            </div>
+            <p class="text-white text-xs opacity-60 mb-4">Your information will not be shared with any third parties.
+            </p>
+            <div class="flex items-center justify-between">
+                <button type="button" id="cancel-feedback" class="flex items-center justify-center w-1/2 h-9  md:w-[100px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-hfc-green-600 transition-[background-color] duration-200 ease hover:bg-hfc-green-500">
+                    Cancel
+                </button>
+                <button id="feedback-submit-btn" type="submit" class="flex items-center justify-center w-1/2 h-9  md:w-[100px] text-sm rounded-md text-white whitespace-nowrap text-center font-medium bg-[#7f00ff] transition-[background-color] duration-200 ease hover:bg-[#4b0097]">
+                    Submit
+                </button>
+            </div>
+        </form>
+        
+        <div class="border-white opacity-10 w-full border-t my-[21px] md:my-[31px]"></div>
+        <div class="gap-y-4 flex flex-col sm:flex-row items-center justify-between">
+            <div class="flex flex-col">
+                <a class="text-lg inline-block benfritz text-white lg:text-[21px] relative" href="#">
+                    <span>HereForChange</span>
+                    <div
+                        class="w-8 h-8 lg:w-[35px] lg:h-[35px] absolute -top-[17px] -right-[22px] lg:-right-[23px] flex items-center justify-center rotate-[-17deg]">
+                        <img alt="South Africa flag" class="w-8 h-8 lg:w-[35px] lg:h-[35px]" src="{% static 'assets/SA-flag.png' %}" />
+                    </div>
+                </a>
+                <p class="text-white text-[11px] opacity-60 -mt-1">
+                    A tool created by <a class="underline" href="https://openup.org.za" target="_blank" rel="noopener noreferrer">OpenUp</a> 
+                </p>
+            </div>
+            <div class="flex items-center gap-x-2">
+                <p class="text-white text-sm opacity-60">Share this tool:</p>
+                <a class="voteTooltip w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://www.facebook.com/sharer/sharer.php?u={{ request.scheme }}://{{ request.get_host }}" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-facebook text-white"></i>
+                    <span class="voteTooltipText">
+                       Share on Facebook
+                        <span class="triangle-down"></span>
+                    </span>
+                </a>
+                <a class="voteTooltip w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://wa.me/?text={{ request.scheme }}://{{ request.get_host }}" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-whatsapp text-white"></i>
+                    <span class="voteTooltipText">
+                        Share on Whatsapp
+                         <span class="triangle-down"></span>
+                    </span>
+                </a>
+                <a class="voteTooltip w-10 h-10 bg-hfc-green-700 flex items-center justify-center rounded-lg" href="https://twitter.com/intent/tweet?url={{ request.scheme }}://{{ request.get_host }}" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-twitter text-white"></i>
+                    <span class="voteTooltipText">
+                        Share on Twitter
+                         <span class="triangle-down"></span>
+                    </span>
+                </a>
+                <div id="open-embed" class="voteTooltip cursor-pointer relative h-10 px-2 bg-hfc-green-700 flex items-center justify-center rounded-lg">
+                    <span class="text-white text-sm font-semibold">Embed</span>
+                    <!-- Embed link card -->
+                    <span class="voteTooltipText">
+                        Embed this widget
+                         <span class="triangle-down"></span>
+                     </span>
+                    <div id="embed-card" class="hidden break-all cursor-text absolute left-[-200px] sm:left-[-340px] bottom-8 bg-white text-black p-4 pt-6 z-[100] rounded-2xl w-auto md:w-[400px]">
+                        &lt;iframe src="{{ request.scheme }}://{{ request.get_host }}{% url 'councillor_info' object.municipality.municipality_code object.slug %}" frameborder="0" width="100%" height="620" allow="clipboard-write"&gt;&lt;/iframe&gt;
+                        <i id="close-embed" class="fa-regular fa-circle-xmark absolute right-2 top-2 cursor-pointer"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
