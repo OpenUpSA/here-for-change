@@ -10,9 +10,8 @@ var neighbouring_wards = neighbouring_wards; //global
 var wardAreaData = [];
 var neighbourAreaData = [];
 var homeMapData = [];
+var homeMapMunis = homeMapMunis  //global
 var mapEl = document.querySelector("#map");
-var homeMapMunis = homeMapMunis
-console.log("homeMapMunis", homeMapMunis);
 
 if (mapEl) {
   var map = L.map(mapEl);
@@ -47,13 +46,16 @@ if (mapEl) {
   async function getHomeMapData() {
     if (homeMapMunis) {
       homeMapMunis.forEach((eachMuni) => {
-        homeMapData = JSON.parse(eachMuni.map_geoJson);
-        homeMapData["name"] = eachMuni["name"];
-        // homeMapData["slug"] = eachMuni["slug"];
-        // homeMapData["details"] = eachMuni["ward_detail"]
-        muniAreaData.push(homeMapData);
+        eachMuni.children.forEach((eachWard) => {
+          homeMapData = JSON.parse(eachWard.map_geoJson);
+          homeMapData["name"] = eachWard["name"];
+          homeMapData["slug"] = eachWard["slug"];
+          homeMapData["homeMuniId"] = eachMuni["municipality_code"];
+          muniAreaData.push(homeMapData);
+        })
       });
       console.log("Home page Data", muniAreaData);
+      console.log("homeMapMunis", homeMapMunis);
 
       setTimeout(() => {
         loadMap();
@@ -386,15 +388,18 @@ if (mapEl) {
 
         }
 
+        //Map layer click handler
         layer.on("click", (e) => {
           var slug = e.target.feature.geometry.slug;
+          var muniId = current_ward ? municipalityId : e.target.feature.geometry.homeMuniId;
+
           if (window.document.location.pathname.endsWith("ward-councillor")) {
             updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+              `municipalities/${muniId}/wards/${slug}/ward-councillor`
             );
           } else {
             updateParentOrSelfLocationSearch(
-              `municipalities/${municipalityId}/wards/${slug}/`
+              `municipalities/${muniId}/wards/${slug}/`
             );
           }
         });
@@ -423,7 +428,7 @@ if (mapEl) {
     })
     .addTo(map);
 
-   // async function getMuniNeighboursData() {
+  // async function getMuniNeighboursData() {
   //   await fetch(
   //     "https://mapit.code4sa.org/area/" +
   //       municipality["municipality_area_number"] +
