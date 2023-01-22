@@ -9,10 +9,9 @@ from .models import Municipality, Ward
 from .models import WardDetail as WardDetailModel
 
 from .forms import FindMyWardCouncillorFeedbackForm
-from ..mixins import BaseViewContext
 
 
-class Home(BaseViewContext,ListView):
+class Home(ListView):
     model = Municipality
     template_name = "municipalities/home.html"
 
@@ -26,7 +25,7 @@ class Home(BaseViewContext,ListView):
 
 
 
-class WardDetail(BaseViewContext,DetailView):
+class WardDetail(DetailView):
     model = Ward
     slug_field = 'slug__iexact'
     slug_url_kwarg = 'slug'
@@ -274,7 +273,7 @@ class WardDetailJson(DetailView):
         return ctx
 
 
-class MunicipalityDetailJson(BaseViewContext,DetailView):
+class MunicipalityDetailJson(DetailView):
     model = Municipality
     slug_field = 'municipality_code'
     slug_url_kwarg = 'municipality_code'
@@ -295,7 +294,7 @@ class MunicipalityDetailJson(BaseViewContext,DetailView):
         return ctx
 
 
-class FindMyWardCouncillor(BaseViewContext,ListView):
+class FindMyWardCouncillor(ListView):
     template_name = "municipalities/find_my_ward_councillor.html"
     model = Municipality
 
@@ -307,7 +306,7 @@ class FindMyWardCouncillor(BaseViewContext,ListView):
         ctx["object_list"]=[municipality.toDict(include_children=True) for municipality in  Municipality.objects.filter(name__in=['City of Cape Town','Bergrivier'])]
         return ctx
 
-class WhoIsMyWardCouncillor(BaseViewContext,DetailView):
+class WhoIsMyWardCouncillor(DetailView):
     model = Ward
     template_name = "municipalities/who_is_my_ward_councillor.html"
     slug_field = 'slug__iexact'
