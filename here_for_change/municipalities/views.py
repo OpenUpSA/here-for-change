@@ -207,7 +207,6 @@ class WardDetail(DetailView):
         staging = self.request.GET.get("version", "production")
 
         ctx = super().get_context_data(**kwargs)
-        ctx.update(self.tags_object)
         ward = self.get_object()
         ctx['ward_detail'] = {}
 
@@ -244,7 +243,6 @@ class WardDetailJson(DetailView):
         return JsonResponse(ctx, safe=False)
 
     def get_context_data(self, **kwargs):
-        # get staging
         staging = self.request.GET.get("version", "production")
         ctx = {}
         ward = self.get_object()
@@ -286,7 +284,6 @@ class MunicipalityDetailJson(DetailView):
     def get_context_data(self, **kwargs):
         municipality = self.get_object()
         ctx = municipality.toDict()
-        ctx.update(self.tags_object)
         municipality_location = Point(
             (municipality.map_latitude, municipality.map_longitude))
         ctx['neighbours'] = [municipality_neighbor.toDict(
@@ -313,11 +310,9 @@ class WhoIsMyWardCouncillor(DetailView):
     slug_url_kwarg = 'slug'
 
     def get_context_data(self, **kwargs):
-        # get staging
         staging = self.request.GET.get("version", "production")
 
         ctx = super().get_context_data(**kwargs)
-        ctx.update(self.tags_object)
         ward = self.get_object()
         ctx['ward_detail'] = {}
 
