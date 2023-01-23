@@ -70,6 +70,51 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+class Province(BaseModel):
+    name = models.CharField(max_length=255, unique=True,
+                            blank=False, null=False)
+    province_code = models.CharField(
+        max_length=6, unique=True, blank=False, null=False)
+    area_number = models.IntegerField(null=True)
+    map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
+
+    boundary = models.MultiPolygonField(_("Province Boundary data"), null=True)
+
+    @property
+    def map_longitude(self):
+        return self.boundary.centroid.coords[0]
+
+    @property
+    def map_latitude(self):
+        return self.boundary.centroid.coords[1]
+
+    @property
+    def map_geoJson(self):
+        return self.boundary.geojson
+
+    class Meta:
+        verbose_name_plural = "Provinces"
+
+    def toDict(self,include_children:bool=False,include_boundary:bool=False, include_children_boundary:bool=False)->dict:
+        """
+        Returns a Dict version of the Province
+        """
+        return {
+            "name": self.name, 
+            "province_code": self.province_code, 
+            "area_number": self.area_number, 
+            "map_geoJson": self.map_geoJson,
+            "children": [municipality.toDict() for municipality in self.get_contained_municipalities()] if include_children else []
+            }
+    
+    def get_contained_municipalities(self):
+        return Municipality.objects.filter(province=self)
+
+    def __str__(self):
+        return self.name
+
+
+
 
 class Municipality(BaseModel):
     name = models.CharField(max_length=255, unique=True,
