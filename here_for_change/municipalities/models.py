@@ -125,8 +125,8 @@ class Municipality(BaseModel):
         max_length=25, choices=MunicipalityTypes.choices, null=False, blank=False
     )
     area_number = models.IntegerField(null=True)
-    province = models.CharField(
-        max_length=25, choices=Provinces.choices, null=False, blank=False
+    province =models.ForeignKey(
+        Province, on_delete=models.CASCADE, null=False, blank=False
     )
     district = models.CharField(max_length=255, null=True, blank=True)
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
