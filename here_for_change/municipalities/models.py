@@ -95,17 +95,25 @@ class Province(BaseModel):
     class Meta:
         verbose_name_plural = "Provinces"
 
-    def toDict(self,include_children:bool=False,include_boundary:bool=False, include_children_boundary:bool=False)->dict:
+    def toDict(self,include_children:bool=False,include_boundary:bool=True, include_children_boundary:bool=False)->dict:
         """
-        Returns a Dict version of the Province
+        Returns a Dict object of the Province
+        :param bool include_children: Specifies if the json object of this instance returned should include children.
+        :param bool include_boundary: Specifies if the json object of this instance returned should include boundary data.
+        :param bool include_children_boundary: Specifies if the json object of this instance returned should include children boundary data.
         """
-        return {
+        data = {
             "name": self.name, 
             "province_code": self.province_code, 
             "area_number": self.area_number, 
-            "map_geoJson": self.map_geoJson,
-            "children": [municipality.toDict() for municipality in self.get_contained_municipalities()] if include_children else []
             }
+        if include_boundary:
+            data.update({"map_geoJson": self.map_geoJson})
+
+        if include_children:
+            data.update({"children": [municipality.toDict(include_boundary=include_children_boundary,include_children_boundary=include_children_boundary) for municipality in self.get_contained_municipalities()]})
+        
+        return data
     
     def get_contained_municipalities(self):
         return Municipality.objects.filter(province=self)
@@ -149,19 +157,27 @@ class Municipality(BaseModel):
     class Meta:
         verbose_name_plural = "Municipalities"
 
-    def toDict(self,include_children:bool=False)->dict:
+    def toDict(self,include_children:bool=True,include_boundary:bool=True, include_children_boundary:bool=True)->dict:
         """
         Returns a Dict version of the Municipality
+        :param bool include_children: Specifies if the json object of this instance returned should include children.
+        :param bool include_boundary: Specifies if the json object of this instance returned should include boundary data.
+        :param bool include_children_boundary: Specifies if the json object of this instance returned should include children boundary data.
         """
-        return {
+        data= {
             "name": self.name, 
             "municipality_code": self.municipality_code, 
             "municipality_type": self.municipality_type, 
             "area_number": self.area_number, 
-            "province": self.province,
-            "map_geoJson": self.map_geoJson,
-            "children": [ward.toDict() for ward in self.get_contained_wards()] if include_children else []
+            "province": self.province.name,
             }
+        if include_boundary:
+            data.update({"map_geoJson": self.map_geoJson})
+
+        if include_children:
+            data.update({"children": [ward.toDict(include_boundary=include_children_boundary) for ward in self.get_contained_wards()]})
+        
+        return data
     
     def get_contained_wards(self):
         return Ward.objects.filter(municipality=self)
@@ -217,20 +233,25 @@ class Ward(BaseModel):
     def get_absolute_url(self):
         return reverse("ward_detail", kwargs={"municipality_code": self.municipality.municipality_code, "slug": self.slug})
 
-    def toDict(self):
+    def toDict(self,include_boundary:bool=True):
         """
         Returns a Dict version of the ward
+        :param bool include_boundary: Specifies if the json object of this instance returned should include boundary data.
         """
-        return {
+        data = {
             "name": self.name, 
             "formatted_name":Ward.format_name(self.name),
             "slug": self.slug, 
             "municipality":self.municipality.name,
-            "map_geoJson": self.map_geoJson,
             "map_default_zoom": self.map_default_zoom,
             "absolute_url":self.get_absolute_url()
             
             }
+
+        if include_boundary:
+            data.update({"map_geoJson": self.map_geoJson})
+        
+        return data
 
     def toJsonUrl(self) -> str:
         """
