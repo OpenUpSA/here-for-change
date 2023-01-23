@@ -115,7 +115,7 @@ class Municipality(BaseModel):
             "area_number": self.area_number, 
             "province": self.province,
             "map_geoJson": self.map_geoJson,
-            "children": [ward.toDict() for ward in self.get_contained_wards()] if include_children else self.objects.none()
+            "children": [ward.toDict() for ward in self.get_contained_wards()] if include_children else []
             }
     
     def get_contained_wards(self):
