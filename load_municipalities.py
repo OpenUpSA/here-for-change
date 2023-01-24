@@ -74,10 +74,10 @@ def load_boundary_in_municipality(boundaries:list,municipality:Municipality,area
         if area_number == int(boundary["properties"]["id"]):
             print(f"{municipality.name} - {area_number}")
             if boundary["geometry"]["type"]=="MultiPolygon":
-                province_boundary=MultiPolygon()
+                municipality_boundary=MultiPolygon()
                 for shape in boundary["geometry"]["coordinates"]:
-                    province_boundary=province_boundary.union(MultiPolygon([ Polygon(polygon) for polygon in shape]))
-                municipality.boundary=province_boundary
+                    municipality_boundary=municipality_boundary.union(MultiPolygon([ Polygon(polygon) for polygon in shape]))
+                municipality.boundary=municipality_boundary
             else:
                 municipality.boundary=MultiPolygon([ Polygon(polygon) for polygon in boundary["geometry"]["coordinates"]])
             break
