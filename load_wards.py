@@ -28,8 +28,8 @@ def get_municipality_children(municipality):
             ward_object=Ward(name=ward.get("name"),municipality=municipality)
             ward_object=load_boundary_in_ward(area_number,ward_object)
             ward_object.save()
-        except:
-            ...
+        except Exception as e:
+            raise e
 
 
 
