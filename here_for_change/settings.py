@@ -87,7 +87,8 @@ WSGI_APPLICATION = "here_for_change.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {"default": env.db("DATABASE_URL")}
 
-DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis" # engine used for postgis
+# engine used for postgis
+DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)  # noqa F405
 
@@ -163,8 +164,10 @@ logging.config.dictConfig(
 TAG_MANAGER_ENABLED = env.bool("TAG_MANAGER_ENABLED", False)
 TAG_MANAGER_CONTAINER_ID = env("TAG_MANAGER_CONTAINER_ID")
 
-GEOIP_PATH =os.path.join('geoip')
+GEOIP_PATH = os.path.join('geoip')
 
-APPEND_SLASH=False
+APPEND_SLASH = False
 
+SECURE_PROXY_SSL_HEADER = (
+    env.str("SECURE_PROXY_SSL_HEADER", "HTTP_X_FORWARDED_PROTO"), 'https')
 SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", False)
