@@ -1,7 +1,6 @@
 """
 Fetches Provinces from mapit and saves to db
 """
-from django.contrib.gis.geos import MultiPolygon,Polygon
 import os
 import django
 import requests
