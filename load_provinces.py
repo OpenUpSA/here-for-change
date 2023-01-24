@@ -19,6 +19,7 @@ def load_provinces():
     """
     Fetches South Africa area children (Provinces) from mapit and saves them to db
     """
+    Province.objects.all().delete()
     res=requests.get(f"{SOURCE_URL}area/{SOUTH_AFRICA_AREA_CODE}/children.json")
     children=json.loads(res.content)
     provinces=list(dict.fromkeys(list(children.keys())))
@@ -63,7 +64,6 @@ def load_boundary_in_province(boundaries:list,province:Province,area_number:int)
     return province
 
 if __name__=="__main__":
-    Province.objects.all().delete()
     load_provinces()
 
 
