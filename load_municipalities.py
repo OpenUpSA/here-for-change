@@ -11,10 +11,12 @@ django.setup()
 
 from here_for_change.municipalities.models import (Province,Municipality)
 from here_for_change.municipalities.enums import MunicipalityTypes
+from django.contrib.gis.geos import MultiPolygon,Polygon
 
-SOURCE_URL="https://mapit.openup.org.za/area/"
 
-def create_municipality(name:str,area_number:int,municipality_code:str,province:Province,district:str=None):
+SOURCE_URL="https://mapit.openup.org.za/"
+
+def create_municipality(name:str,area_number:int,municipality_code:str,province:Province,boundaries:list,district:str=None):
     """
     Creates and saves a municipality
     """
@@ -25,6 +27,7 @@ def create_municipality(name:str,area_number:int,municipality_code:str,province:
             municipality_object.municipality_type=MunicipalityTypes.LOCAL
         else:
             municipality_object.municipality_type=MunicipalityTypes.METRO
+        municipality_object=load_boundary_in_municipality(boundaries,municipality_object,area_number)
         municipality_object.save()
     except Exception as e:
         raise e
@@ -34,21 +37,51 @@ def load_children(parent_area_code:int,province:Province,district:str=None):
     """
     Fetches and saves children of provinces and districts and municipality
     """
-    res=requests.get(f"{SOURCE_URL}{parent_area_code}/children.json")
+    res=requests.get(f"{SOURCE_URL}area/{parent_area_code}/children.json")
     children_dict=json.loads(res.content)
     children=list(dict.fromkeys(list(children_dict.keys())))
-    
+    boundaries=get_boundaries(children)
     for area_number in children:     
         child=children_dict[area_number]
         if child["type_name"]=="District":
             load_children(int(child["id"]), province, child["name"])
         else:
-            create_municipality(child["name"],int(child["id"]),child["codes"]["MDB"],province,district)
+            create_municipality(child["name"],int(child["id"]),child["codes"]["MDB"],province,boundaries,district)
 
 def load_municipalities():
     Municipality.objects.all().delete()
     for province in Province.objects.all().order_by("name"):
         load_children(province.area_number,province)
+
+def get_boundaries(area_numbers:list)->list:
+    """
+    Fetches all boundaries of items in area_numbers list
+    """
+    res=requests.get(f"{SOURCE_URL}areas/{','.join(area_numbers)}.geojson")
+    data=json.loads(res.content)    
+    return data["features"]
+
+
+def load_boundary_in_municipality(boundaries:list,municipality:Municipality,area_number:int)->Municipality:
+    """Load new boundary in Municipality
+    :param list boundaries: List of boundaries which may contain ward boundary
+    :param Municipality municipality: Municipality object new boundaries will be loaded into
+    :param int area_number: area number of Municipality instance boundaries are being loaded in
+    :rtype:Municipality
+    """
+
+    for boundary in boundaries: 
+        if area_number == int(boundary["properties"]["id"]):
+            print(f"{municipality.name} - {area_number}")
+            if boundary["geometry"]["type"]=="MultiPolygon":
+                province_boundary=MultiPolygon()
+                for shape in boundary["geometry"]["coordinates"]:
+                    province_boundary=province_boundary.union(MultiPolygon([ Polygon(polygon) for polygon in shape]))
+                municipality.boundary=province_boundary
+            else:
+                municipality.boundary=MultiPolygon([ Polygon(polygon) for polygon in boundary["geometry"]["coordinates"]])
+            break
+    return municipality
 
 if __name__=="__main__":
     load_municipalities()
