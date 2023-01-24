@@ -17,13 +17,13 @@ class MunicipalityAdmin(admin.ModelAdmin):
     model = Municipality
     list_display = ['name', 'municipality_type',
                     'province', 'district', 'municipality_code']
-    list_filter = ['name', 'municipality_type', 'province']
+    list_filter = ['municipality_type', 'province']
 
 
 class WardAdmin(admin.ModelAdmin):
     model = Ward
     list_display = ['name', 'municipality']
-    list_filter = ['name', 'municipality']
+    list_filter = ['municipality']
 
 class WardDetailAdmin(admin.ModelAdmin):
     model = WardDetail
