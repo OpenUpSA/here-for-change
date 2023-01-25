@@ -250,3 +250,6 @@ dist
 cypress/videos
 cypress/screenshots
 
+# Selenium chromedriver
+chromedriver
+
