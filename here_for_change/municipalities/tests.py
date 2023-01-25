@@ -5,8 +5,6 @@ import html5lib
 from .models import Municipality
 
 from .models import Ward
-import load_dummy_ward_details,load_wards
-import load_municipality_boundaries
 from django.core.management import call_command
 
 class IndexTestCase(TestCase):
