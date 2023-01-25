@@ -426,4 +426,13 @@ class MunicipalityList(View):
         data=[municipality.toDict(include_children=False) for municipality in Municipality.objects.filter(province=province)]
         return JsonResponse({"province":province.name,"municipalities":data})
 
+class WardList(View):
+    def get(self,request,municipality_code):
+        try:
+            municipality=Municipality.objects.get(municipality_code=municipality_code)
+        except Municipality.DoesNotExist:
+            return Http404()
+        data=[ward.toDict(False) for ward in Ward.objects.filter(municipality=municipality)]
+        return JsonResponse({"province":municipality.province.name,"municipality":municipality.name,"wards":data})
+
     
