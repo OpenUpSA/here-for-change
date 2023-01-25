@@ -10,5 +10,7 @@ jobs:
         run: docker-compose up -d
       - name: Docker compose collecstatic
         run: docker-compose run --rm web python manage.py collectstatic --noinput
+      - name: Unzip fixture file
+        run: python -m zipfile -e here_for_change/municipalities/fixtures/data.json.zip here_for_change/municipalities/fixtures/ && rm -rf here_for_change/municipalities/fixtures/__MACOSX
       - name: Docker compose test
         run: docker-compose run --rm web python manage.py test
