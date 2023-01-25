@@ -45,16 +45,10 @@ def loadDbData():
     Loads db with data needed for tests
     """
     #Load fixtures
-    call_command('loaddata', 'demo-data.json')
-    #Load Wards
-    load_wards.load_wards()
-
-    #load Ward details
-    load_dummy_ward_details.load_dummy_ward_details()
+    call_command('loaddata', 'full-data.json')
     
 class MunicipalityTestCase(TestCase):
     def setUp(self):
-        load_municipality_boundaries.load_boundaries()
         Municipality.objects.create(name="City of Cape Town",
                                     municipality_code="CPT",
                                     municipality_type="Metropolitan",
