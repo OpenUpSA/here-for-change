@@ -53,6 +53,7 @@ Make sure to commit updates to pyproject.toml and poetry.lock to git
 
 Development setup
 -----------------
+Uncompress `full-data-json.zip` found in `here_for_change/municipalities/fixtures/`
 
 The first time, or after a reset:
 
@@ -74,6 +75,14 @@ To dump data from your db for updating demo/seed data:
 
      yarn db-dump-demo-data
 
+To fetch and load provinces into db:
+
+     yarn db-load-provinces
+
+To fetch and load municipalities into db:
+
+     yarn db-load-municipalities
+
 To fetch and load wards into db:
 
      yarn db-load-wards
@@ -85,10 +94,6 @@ To load dummy ward details into db:
 To load ward details from json data file:
 
      yarn db-load-wards-details
-
-To load municipality boundaries into db:
-
-     yarn db-load-municipality-boundaries
 
 To load municipality details from json data file:
 
