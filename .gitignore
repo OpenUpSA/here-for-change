@@ -253,3 +253,5 @@ cypress/screenshots
 # Selenium chromedriver
 chromedriver
 
+# Extracted fixture file
+*full-data.json
