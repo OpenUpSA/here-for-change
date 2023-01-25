@@ -1,9 +1,15 @@
 from django.urls import path,re_path
-from .views import Home, WardDetail, WardDetailJson, MunicipalityDetailJson, FindMyWardCouncillor, RedirectClosestWard, WhoIsMyWardCouncillor, Feedback, UpdateWardDetailFeedback
+from .views import (Home, WardDetail, WardDetailJson, 
+                    MunicipalityDetailJson, FindMyWardCouncillor, RedirectClosestWard, 
+                    WhoIsMyWardCouncillor, Feedback, UpdateWardDetailFeedback,
+                    ProvinceList)
 
 
 urlpatterns = [
     path("", Home.as_view(), name="home"),
+    path("provinces/list/", ProvinceList.as_view(), name="list_provinces"),
+    #path("municipalities/list/", .as_view(), name="")
+    #path("/wards/list/", .as_view(), name="")
     re_path(r"municipalities/(?P<municipality_code>[a-zA-Z0-9\-]*)/wards/(?P<slug>[a-zA-Z0-9\-]*).json$", WardDetailJson.as_view(), name="ward_detail_json"),
     re_path(r"municipalities/(?P<municipality_code>[a-zA-Z0-9\-]*).json$", MunicipalityDetailJson.as_view(), name="municipality_detail_json"),
     path("municipalities/<str:municipality_code>/wards/<str:slug>/", WardDetail.as_view(), name="ward_detail"),    

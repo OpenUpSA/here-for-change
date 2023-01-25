@@ -5,7 +5,7 @@ from django.contrib.gis.geos import Point
 from django.http import JsonResponse, HttpResponseBadRequest, Http404
 from django.shortcuts import redirect
 from django.views.generic import DetailView, ListView, View
-from .models import Municipality, Ward
+from .models import Municipality, Ward, Province
 from .models import WardDetail as WardDetailModel
 
 from .forms import FindMyWardCouncillorFeedbackForm
@@ -410,3 +410,11 @@ class UpdateWardDetailFeedback(View):
                 {"action": action, "updated": datetime.now().timestamp()}))
             return response
         return JsonResponse({"updated": updated})
+
+
+class ProvinceList(View):
+    def get(self,request):
+        data=[province.toDict() for province in Province.objects.all()]
+        return JsonResponse({"provinces":data})
+
+    
