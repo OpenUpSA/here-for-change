@@ -53,7 +53,6 @@ Make sure to commit updates to pyproject.toml and poetry.lock to git
 
 Development setup
 -----------------
-Uncompress `full-data-json.zip` found in `here_for_change/municipalities/fixtures/`
 
 The first time, or after a reset:
 
@@ -69,7 +68,7 @@ Migrations can be run:
 
 Demo/seed data can be loaded with:
 
-     yarn db-load-demo-data
+     yarn db-load-full-data
 
 To dump data from your db for updating demo/seed data:
 
