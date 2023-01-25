@@ -417,4 +417,13 @@ class ProvinceList(View):
         data=[province.toDict() for province in Province.objects.all()]
         return JsonResponse({"provinces":data})
 
+class MunicipalityList(View):
+    def get(self,request,province_code):
+        try:
+            province=Province.objects.get(province_code=province_code)
+        except Province.DoesNotExist:
+            return Http404()
+        data=[municipality.toDict(include_children=False) for municipality in Municipality.objects.filter(province=province)]
+        return JsonResponse({"province":province.name,"municipalities":data})
+
     
