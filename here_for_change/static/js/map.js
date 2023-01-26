@@ -30,7 +30,7 @@ if (mapEl) {
     center: [-28.7966, 24.5949],
     zoom: 4,
   });
-  async function getDataFromBackend() {
+  async function getWardDataFromBackend() {
     wardAreaData = current_ward.geometry;
     wardAreaData["name"] = current_ward.name;
     wardAreaData["slug"] = current_ward.slug;
@@ -44,7 +44,6 @@ if (mapEl) {
       neighbourAreaData["details"] = neighbour["ward_detail"];
       mapBoundary.push(neighbourAreaData);
     });
-    console.log("WardmapBoundary", mapBoundary);
   }
 
   async function setBaseIds() {
@@ -66,21 +65,22 @@ if (mapEl) {
           provinces["area_number"] = province["area_number"];
           mapBoundary.push(provinces);
         });
-
+        mapLoader && mapLoader.classList.add("hidden");
         loadMap();
         let zoom = 4;
         centerPosition = [-28.7966, 24.5949];
         map.setView(centerPosition, zoom);
-      });
+      })
+      .catch((e) => console.log(e));
   }
 
   function provinceClickHandler(province_code, coords) {
+    mapLoader && mapLoader.classList.remove("hidden");
     fetch(`${baseUrl}/provinces/${province_code}/municipalities/list/`)
       .then((response) => response.json())
       .then((munis) => {
         map.removeLayer(areas);
         hasMunis = true;
-        // console.log("GOT MUNIS's", munis);
         mapBoundary = [];
 
         munis.municipalities.forEach((muni) => {
@@ -91,17 +91,21 @@ if (mapEl) {
           municipalities["area_number"] = muni["area_number"];
           mapBoundary.push(municipalities);
         });
-
-        // console.log("mapBoundaryMuni", mapBoundary);
+        mapLoader && mapLoader.classList.add("hidden");
 
         loadMap();
         let zoom = 6;
         centerPosition = [coords.lat, coords.lng];
         map.setView(centerPosition, zoom);
+      })
+      .catch((e) => {
+        mapLoader && mapLoader.classList.add("hidden");
+        console.log(e);
       });
   }
 
   function muniClickHandler(municipality_code, coords) {
+    mapLoader && mapLoader.classList.remove("hidden");
     fetch(`${baseUrl}/municipalities/${municipality_code}/wards/list/`)
       .then((response) => response.json())
       .then((wardData) => {
@@ -109,7 +113,6 @@ if (mapEl) {
         hasMunis = false;
         hasWards = true;
         mapBoundary = [];
-        // console.log("GOT WARDS's", wardData);
 
         wardData.wards.forEach((ward) => {
           wards = JSON.parse(ward.map_geoJson);
@@ -119,19 +122,22 @@ if (mapEl) {
           wards["municipality"] = ward["municipality"];
           mapBoundary.push(wards);
         });
-
-        // console.log("wardMapBoundary", mapBoundary);
+        mapLoader && mapLoader.classList.add("hidden");
 
         loadMap();
         let zoom = 8;
         centerPosition = [coords.lat, coords.lng];
         map.setView(centerPosition, zoom);
+      })
+      .catch((e) => {
+        console.log(e);
+        mapLoader && mapLoader.classList.add("hidden");
       });
   }
 
   function wardClickHandler(ward_url) {
+    mapLoader && mapLoader.classList.remove("hidden");
     updateParentOrSelfLocationSearch(ward_url);
-    // map.removeLayer(areas);
   }
 
   function getBrowserLocation() {
@@ -280,8 +286,9 @@ if (mapEl) {
   async function mapInit() {
     if (current_ward) {
       await setBaseIds();
-      await getDataFromBackend();
+      await getWardDataFromBackend();
       setTimeout(() => {
+        mapLoader && mapLoader.classList.add("hidden");
         loadMap();
       }, 1000);
       let zoom = current_ward.defaultZoom;
@@ -299,6 +306,8 @@ if (mapEl) {
     }
   }
   mapInit();
+
+  const mapLoader = document.querySelector("#map-loader");
 
   const locationBtn = document.querySelector("#location-btn");
   if (locationBtn) {
@@ -332,6 +341,7 @@ if (mapEl) {
     if (input) {
       const searchBox = new google.maps.places.Autocomplete(input, options);
       searchBox.addListener("place_changed", () => {
+        mapLoader && mapLoader.classList.remove("hidden");
         const place = searchBox.getPlace();
         if (place.length == 0) {
           return;
@@ -480,7 +490,6 @@ if (mapEl) {
             }
           } else {
             if (municipalities.length === 0) {
-              // console.log("eeeeee", e.latlng)
               provinceClickHandler(
                 e.target.feature.geometry.province_code,
                 e.latlng
