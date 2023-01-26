@@ -432,7 +432,7 @@ class WardList(View):
             municipality=Municipality.objects.get(municipality_code=municipality_code)
         except Municipality.DoesNotExist:
             return Http404()
-        data=[ward.toDict(False) for ward in Ward.objects.filter(municipality=municipality)]
+        data=[ward.toDict() for ward in Ward.objects.filter(municipality=municipality)]
         return JsonResponse({"province":municipality.province.name,"municipality":municipality.name,"wards":data})
 
     
