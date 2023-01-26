@@ -2,14 +2,4 @@
 {% block title %}Find my ward councillor{% endblock %}
 {% block content %} 
 {% include "./find_councillor_tool.html" %}
-
-<script>
-    {% autoescape off %}
-        var homeMapMunis = [];
-        {% for municipality in object_list %}
-            var eachMuni = {{ municipality }}
-            homeMapMunis.push(eachMuni);
-        {% endfor %}
-    {% endautoescape %}      
-</script>
 {% endblock %}
