@@ -196,6 +196,7 @@ class Ward(BaseModel):
     municipality = models.ForeignKey(
         Municipality, on_delete=models.CASCADE, null=False, blank=False
     )
+    area_number = models.IntegerField(null=True)
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
     boundary = models.MultiPolygonField(_("Ward Boundary data"), null=True)
     objects = WardManager()
