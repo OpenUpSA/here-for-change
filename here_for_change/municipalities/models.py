@@ -75,7 +75,7 @@ class Province(BaseModel):
                             blank=False, null=False)
     province_code = models.CharField(
         max_length=6, unique=True, blank=False, null=False)
-    area_number = models.IntegerField(null=True)
+    area_number = models.IntegerField(null=True, unique=True)
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
 
     boundary = models.MultiPolygonField(_("Province Boundary data"), null=True)
@@ -133,7 +133,7 @@ class Municipality(BaseModel):
     municipality_type = models.CharField(
         max_length=25, choices=MunicipalityTypes.choices, null=False, blank=False
     )
-    area_number = models.IntegerField(null=True)
+    area_number = models.IntegerField(null=True, unique=True)
     province =models.ForeignKey(
         Province, on_delete=models.CASCADE, null=False, blank=False
     )
@@ -200,7 +200,7 @@ class Ward(BaseModel):
     municipality = models.ForeignKey(
         Municipality, on_delete=models.CASCADE, null=False, blank=False
     )
-    area_number = models.IntegerField(null=True)
+    area_number = models.IntegerField(null=True, unique=True)
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
     boundary = models.MultiPolygonField(_("Ward Boundary data"), null=True)
     objects = WardManager()
