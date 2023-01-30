@@ -227,6 +227,8 @@ class Ward(BaseModel):
     @staticmethod
     def format_name(name):
         splitted_names=name.split(" ")
+        if len(splitted_names)<3:
+            return name
         return f"{splitted_names[-2]} {splitted_names[-1]}"
         
 
