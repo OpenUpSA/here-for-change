@@ -1,7 +1,7 @@
 """
 This script is responsible for fetching wards and loading the data in Model
 """
-from django.contrib.gis.geos import MultiPolygon,Polygon
+from django.contrib.gis.geos import MultiPolygon,Polygon,GEOSGeometry
 import os
 import django
 import requests
@@ -30,7 +30,6 @@ def get_children_by_province(province:Province):
     with requests.session() as session:
         for municipality in [municipality for municipality in Municipality.objects.filter(province=province)]:
             get_municipality_children(municipality,session)
-            time.sleep(3)
 
 
 def get_municipality_children(municipality:Municipality,session:requests.Session):
@@ -46,7 +45,7 @@ def get_municipality_children(municipality:Municipality,session:requests.Session
     for area_number in municipality_children:
         ward=children[area_number]
         try:
-            ward_object=Ward(name=ward["name"],municipality=municipality)
+            ward_object=Ward(name=ward["name"],municipality=municipality,area_number=int(area_number))
             ward_object=load_boundary_in_ward(boundaries,ward_object,int(area_number))
             ward_object.save()
         except Exception as e:
@@ -71,13 +70,10 @@ def load_boundary_in_ward(boundaries:list,ward:Ward,area_number:int)->Ward:
     """
     for boundary in boundaries: 
         if area_number == int(boundary["properties"]["id"]):
-            if boundary["geometry"]["type"]=="MultiPolygon":
-                ward_boundary=MultiPolygon()
-                for shape in boundary["geometry"]["coordinates"]:
-                    ward_boundary=ward_boundary.union(MultiPolygon([ Polygon(polygon) for polygon in shape]))
-                ward.boundary=ward_boundary
-            else:
-                ward.boundary=MultiPolygon([ Polygon(polygon) for polygon in boundary["geometry"]["coordinates"]])
+            geom=GEOSGeometry(str(boundary["geometry"])).simplify()
+            if geom.__class__==Polygon:
+                geom=MultiPolygon([geom])
+            ward.boundary=geom
             break
     return ward
 

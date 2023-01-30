@@ -10,7 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'here_for_change.settings')
 django.setup()
 
 from here_for_change.municipalities.models import Province
-from django.contrib.gis.geos import MultiPolygon,Polygon
+from django.contrib.gis.geos import MultiPolygon,Polygon, GEOSGeometry
 
 SOURCE_URL="https://mapit.openup.org.za/"
 SOUTH_AFRICA_AREA_CODE="4577"
@@ -53,18 +53,17 @@ def load_boundary_in_province(boundaries:list,province:Province,area_number:int)
     for boundary in boundaries: 
         if area_number == int(boundary["properties"]["id"]):
             print(f"{province.name} - {area_number}")
-            if boundary["geometry"]["type"]=="MultiPolygon":
-                province_boundary=MultiPolygon()
-                for shape in boundary["geometry"]["coordinates"]:
-                    province_boundary=province_boundary.union(MultiPolygon([ Polygon(polygon) for polygon in shape]))
-                province.boundary=province_boundary
-            else:
-                province.boundary=MultiPolygon([ Polygon(polygon) for polygon in boundary["geometry"]["coordinates"]])
-            break
+            geom=GEOSGeometry(str(boundary["geometry"])).simplify(tolerance=0.01)
+            if geom.__class__==Polygon:
+                geom=MultiPolygon([geom])
+            province.boundary=geom
+
     return province
 
 if __name__=="__main__":
     load_provinces()
+
+
 
 
 

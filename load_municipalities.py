@@ -11,7 +11,7 @@ django.setup()
 
 from here_for_change.municipalities.models import (Province,Municipality)
 from here_for_change.municipalities.enums import MunicipalityTypes
-from django.contrib.gis.geos import MultiPolygon,Polygon
+from django.contrib.gis.geos import MultiPolygon,Polygon, GEOSGeometry
 
 
 SOURCE_URL="https://mapit.openup.org.za/"
@@ -73,13 +73,10 @@ def load_boundary_in_municipality(boundaries:list,municipality:Municipality,area
     for boundary in boundaries: 
         if area_number == int(boundary["properties"]["id"]):
             print(f"{municipality.name} - {area_number}")
-            if boundary["geometry"]["type"]=="MultiPolygon":
-                municipality_boundary=MultiPolygon()
-                for shape in boundary["geometry"]["coordinates"]:
-                    municipality_boundary=municipality_boundary.union(MultiPolygon([ Polygon(polygon) for polygon in shape]))
-                municipality.boundary=municipality_boundary
-            else:
-                municipality.boundary=MultiPolygon([ Polygon(polygon) for polygon in boundary["geometry"]["coordinates"]])
+            geom=GEOSGeometry(str(boundary["geometry"])).simplify(tolerance=0.01)
+            if geom.__class__==Polygon:
+                geom=MultiPolygon([geom])
+            municipality.boundary=geom
             break
     return municipality
 
