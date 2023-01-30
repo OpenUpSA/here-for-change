@@ -90,7 +90,9 @@ class Province(BaseModel):
 
     @property
     def map_geoJson(self):
-        return self.boundary.geojson
+        if self.boundary:
+            return self.boundary.geojson
+        return None
 
     class Meta:
         verbose_name_plural = "Provinces"
@@ -151,7 +153,9 @@ class Municipality(BaseModel):
 
     @property
     def map_geoJson(self):
-        return self.boundary.geojson
+        if self.boundary:
+            return self.boundary.geojson
+        return None
 
     class Meta:
         verbose_name_plural = "Municipalities"
@@ -214,7 +218,9 @@ class Ward(BaseModel):
 
     @property
     def map_geoJson(self):
-        return self.boundary.geojson
+        if self.boundary:
+            return self.boundary.geojson
+        return None
 
     @property
     def formatted_name(self):
