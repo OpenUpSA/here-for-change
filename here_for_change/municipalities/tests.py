@@ -3,7 +3,6 @@ from django.test import Client, TestCase, TransactionTestCase
 from django.http import JsonResponse
 import html5lib
 from .models import Municipality,Province,Ward
-from django.core.management import call_command
 
 class IndexTestCase(TestCase):
     fixtures=["test-data.json"]
@@ -37,13 +36,6 @@ def assertValidHTML(string):
     """
     parser = html5lib.HTMLParser(strict=True)
     parser.parse(string)
-
-# def loadDbData():
-#     """
-#     Loads db with data needed for tests
-#     """
-#     #Load fixtures
-#     call_command('loaddata', 'test-data.json')
 
 class ProvincetestCase(TestCase):
     available_apps=["here_for_change.municipalities"]
