@@ -16,7 +16,7 @@
     "db-load-wards-details": "docker-compose run --rm web python load_ward_details_data_file.py",
     "db-load-municipality-details": "docker-compose run --rm web python load_municipality_details.py",
     "db-migrate": "docker-compose run --rm web python manage.py migrate",
-    "dev-init": "yarn install && yarn unzip-full-data && yarn db-migrate && yarn db-load-full-data",
+    "dev-init": "yarn install && yarn unzip-full-data && yarn db-migrate && yarn db-load-full-data && yarn tailwind-watch",
     "dev": "yarn tailwind-watch & docker-compose up",
     "dev-reset": "rm -r node_modules & docker-compose down --volumes",
     "test": "cypress run",
