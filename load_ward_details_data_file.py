@@ -33,7 +33,6 @@ def format_municipality_names(data:dict)->dict:
     return new_data
 
 
-
 def load_ward_details():
     """
     Loads ward details from json data file into database
@@ -41,17 +40,24 @@ def load_ward_details():
     data=load_data()
     data=format_municipality_names(data)
     for province in data.keys():
-        no_white_space_province_name="".join(province.split(" "))
-        municipalities=Municipality.objects.filter(province=no_white_space_province_name)
+        print(f"\n{province}\n")
+        municipalities=Municipality.objects.filter(province__name=province)
         for municipality in municipalities:
-            municipality_data=data[province][municipality.name]
-            for ward in set(municipality_data.keys()):
+            try:
+                municipality_data=data[province][municipality.name]
+            except KeyError:
+                print(f"Couldn't find Municipality: {municipality.name}")
+                continue
+            municipality_data_unique_keys=list(dict.fromkeys(list(municipality_data.keys())))
+            for ward in municipality_data_unique_keys:
 
                 ward_name=f"{municipality.name} Ward {int(ward[len(ward)-3:])}" #Assembling ward name to match format stored in db
                 try:
-                    ward_obj=Ward.objects.get(name=ward_name)
+                    ward_obj=Ward.objects.get(name=ward_name,municipality=municipality)
                 except Ward.DoesNotExist:
+                    print(f"Couldn't find: {ward_name}")
                     continue
+
                 ward_data=municipality_data[ward]
                 # Loading fields into db as ward details
                 for version,_ in WardDetail.VERSION_CHOICES:
@@ -62,6 +68,7 @@ def load_ward_details():
                     detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_party_representative", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["representative"],"field_type":"String"})
                     detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_party_postal_address", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["postal_address"],"field_type":"String"})
                     detail, _=WardDetail.objects.update_or_create(ward=ward_obj,field_name="councillor_website", stage=version,defaults={"field_value":ward_data["councillor"]["party"]["website"],"field_type":"String"})
+                print(f"Saved: {ward_name}")
 
 
 

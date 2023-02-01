@@ -68,11 +68,19 @@ Migrations can be run:
 
 Demo/seed data can be loaded with:
 
-     yarn db-load-demo-data
+     yarn db-load-full-data
 
 To dump data from your db for updating demo/seed data:
 
      yarn db-dump-demo-data
+
+To fetch and load provinces into db:
+
+     yarn db-load-provinces
+
+To fetch and load municipalities into db:
+
+     yarn db-load-municipalities
 
 To fetch and load wards into db:
 
@@ -85,10 +93,6 @@ To load dummy ward details into db:
 To load ward details from json data file:
 
      yarn db-load-wards-details
-
-To load municipality boundaries into db:
-
-     yarn db-load-municipality-boundaries
 
 To load municipality details from json data file:
 

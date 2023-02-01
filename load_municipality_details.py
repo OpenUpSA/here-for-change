@@ -18,7 +18,11 @@ def geocode_address(address: str)->dict:
     """ Converts a text address to an approximate point location using googlemaps API """
     gmaps_key = googlemaps.Client(key=GMAP_API_KEY)
     approximate_location = gmaps_key.geocode(address)
-    return approximate_location[0]["geometry"]["location"]
+    try:
+        address=approximate_location[0]["geometry"]["location"]
+    except IndexError:
+        address=None
+    return address
 
 
 def slugify(string: str) -> str:
@@ -80,7 +84,7 @@ def load_data(data: dict):
     """Loads data file into municipality details table."""
     for municipality in Municipality.objects.all():
         try:
-            municipalty_information = data[municipality.province][municipality.name]
+            municipalty_information = data[municipality.province.name][municipality.name]
         except KeyError:
             print(
                 f"{municipality.name} province or {municipality.name} municipality details not found in data file")
@@ -98,7 +102,9 @@ def load_municipality_details(municipality: Municipality, data: dict):
             field_value = ", ".join(field_value)
         if info == "street_address":
             field_value={"address":field_value}
-            field_value.update(geocode_address(data["municipality"][info]))
+            geocoded_address=geocode_address(data["municipality"][info])
+            if geocoded_address:
+                field_value.update(geocoded_address)
             field_value = json.dumps(field_value)
         municipality_detail, _ = MunicipalityDetail.objects.update_or_create(
             municipality=municipality, field_name=f"municipality_{info}", stage=MunicipalityDetail.PRODUCTION, defaults={"field_value": field_value, "field_type": "String"})

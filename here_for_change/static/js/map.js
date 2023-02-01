@@ -1,35 +1,48 @@
-var municipality = {};
-var muniLatlng = [];
+var mapEl = document.querySelector("#map");
+var centerPosition = [];
 var current_ward = current_ward; //global
 var areas = [];
 var youAreHereLatlng = [];
-var muniAreaData = [];
+var mapBoundary = [];
 var municipalityId = "";
 var wardId = "";
 var neighbouring_wards = neighbouring_wards; //global
 var wardAreaData = [];
 var neighbourAreaData = [];
-var homeMapData = [];
-var homeMapMunis = homeMapMunis  //global
-var mapEl = document.querySelector("#map");
+
+var provinces = [];
+var municipalities = [];
+var wards = [];
+var baseUrl =
+  window.document.location.href.split("/")[0] +
+  "//" +
+  window.document.location.href.split("/")[2];
+var hasMunis = false;
+var hasWards = false;
 
 if (mapEl) {
-  var map = L.map(mapEl);
+  var tiles = L.gridLayer.googleMutant({
+    type: "roadmap",
+  });
 
-  async function getDataFromBackend() {
-    municipality["municipality_area_number"] = current_ward.muniAreaNum;
+  var map = L.map(mapEl, {
+    layers: [tiles],
+    center: [-28.7966, 24.5949],
+    zoom: 4,
+  });
+  async function getWardDataFromBackend() {
     wardAreaData = current_ward.geometry;
     wardAreaData["name"] = current_ward.name;
     wardAreaData["slug"] = current_ward.slug;
     wardAreaData["details"] = current_ward.ward_detail;
-    muniAreaData.push(wardAreaData);
+    mapBoundary.push(wardAreaData);
 
     neighbouring_wards.forEach((neighbour) => {
       neighbourAreaData = neighbour.geometry;
       neighbourAreaData["name"] = neighbour["name"];
       neighbourAreaData["slug"] = neighbour["slug"];
-      neighbourAreaData["details"] = neighbour["ward_detail"]
-      muniAreaData.push(neighbourAreaData);
+      neighbourAreaData["details"] = neighbour["ward_detail"];
+      mapBoundary.push(neighbourAreaData);
     });
   }
 
@@ -37,29 +50,94 @@ if (mapEl) {
     if (current_ward) {
       municipalityId = current_ward.muniCode;
       wardId = current_ward.slug;
-      muniLatlng = current_ward.coords;
+      centerPosition = current_ward.coords;
     }
   }
 
   async function getHomeMapData() {
-    if (homeMapMunis) {
-      homeMapMunis.forEach((eachMuni) => {
-        eachMuni.children.forEach((eachWard) => {
-          homeMapData = JSON.parse(eachWard.map_geoJson);
-          homeMapData["name"] = eachWard["name"];
-          homeMapData["slug"] = eachWard["slug"];
-          homeMapData["homeMuniId"] = eachMuni["municipality_code"];
-          muniAreaData.push(homeMapData);
-        })
-      });
-
-      setTimeout(() => {
+    await fetch(`${baseUrl}/provinces/list/`)
+      .then((response) => response.json())
+      .then((data) => {
+        data.provinces.forEach((province) => {
+          provinces = JSON.parse(province.map_geoJson);
+          provinces["name"] = province["name"];
+          provinces["province_code"] = province["province_code"];
+          provinces["area_number"] = province["area_number"];
+          mapBoundary.push(provinces);
+        });
+        mapLoader && mapLoader.classList.add("hidden");
         loadMap();
-        let zoom = 7
-        muniLatlng = [-33.5182, 18.6782];
-        map.setView(muniLatlng, zoom);
-      }, 1000);
-    }
+        let zoom = 4;
+        centerPosition = [-28.7966, 24.5949];
+        map.setView(centerPosition, zoom);
+      })
+      .catch((e) => console.log(e));
+  }
+
+  function provinceClickHandler(province_code, coords) {
+    mapLoader && mapLoader.classList.remove("hidden");
+    fetch(`${baseUrl}/provinces/${province_code}/municipalities/list/`)
+      .then((response) => response.json())
+      .then((munis) => {
+        map.removeLayer(areas);
+        hasMunis = true;
+        mapBoundary = [];
+
+        munis.municipalities.forEach((muni) => {
+          municipalities = JSON.parse(muni.map_geoJson);
+          municipalities["name"] = muni["name"];
+          municipalities["municipality_code"] = muni["municipality_code"];
+          municipalities["municipality_type"] = muni["municipality_type"];
+          municipalities["area_number"] = muni["area_number"];
+          mapBoundary.push(municipalities);
+        });
+        mapLoader && mapLoader.classList.add("hidden");
+
+        loadMap();
+        let zoom = 6;
+        centerPosition = [coords.lat, coords.lng];
+        map.setView(centerPosition, zoom);
+      })
+      .catch((e) => {
+        mapLoader && mapLoader.classList.add("hidden");
+        console.log(e);
+      });
+  }
+
+  function muniClickHandler(municipality_code, coords) {
+    mapLoader && mapLoader.classList.remove("hidden");
+    fetch(`${baseUrl}/municipalities/${municipality_code}/wards/list/`)
+      .then((response) => response.json())
+      .then((wardData) => {
+        map.removeLayer(areas);
+        hasMunis = false;
+        hasWards = true;
+        mapBoundary = [];
+
+        wardData.wards.forEach((ward) => {
+          wards = JSON.parse(ward.map_geoJson);
+          wards["name"] = ward["name"];
+          wards["slug"] = ward["slug"];
+          wards["absolute_url"] = ward["absolute_url"];
+          wards["municipality"] = ward["municipality"];
+          mapBoundary.push(wards);
+        });
+        mapLoader && mapLoader.classList.add("hidden");
+
+        loadMap();
+        let zoom = 8;
+        centerPosition = [coords.lat, coords.lng];
+        map.setView(centerPosition, zoom);
+      })
+      .catch((e) => {
+        console.log(e);
+        mapLoader && mapLoader.classList.add("hidden");
+      });
+  }
+
+  function wardClickHandler(ward_url) {
+    mapLoader && mapLoader.classList.remove("hidden");
+    updateParentOrSelfLocationSearch(ward_url);
   }
 
   function getBrowserLocation() {
@@ -205,19 +283,16 @@ if (mapEl) {
     }
   };
 
-  var random = function (top = 6) {
-    return Math.floor(Math.random() * top);
-  };
-
   async function mapInit() {
     if (current_ward) {
       await setBaseIds();
-      await getDataFromBackend();
+      await getWardDataFromBackend();
       setTimeout(() => {
+        mapLoader && mapLoader.classList.add("hidden");
         loadMap();
       }, 1000);
       let zoom = current_ward.defaultZoom;
-      map.setView(muniLatlng, zoom);
+      map.setView(centerPosition, zoom);
 
       let userLocation = getCookie("userLoc");
       if (userLocation) {
@@ -231,6 +306,8 @@ if (mapEl) {
     }
   }
   mapInit();
+
+  const mapLoader = document.querySelector("#map-loader");
 
   const locationBtn = document.querySelector("#location-btn");
   if (locationBtn) {
@@ -257,24 +334,23 @@ if (mapEl) {
         "sublocality",
         "route",
         "point_of_interest",
-        "postal_code"
+        "postal_code",
       ],
       componentRestrictions: { country: "ZA" },
     };
     if (input) {
       const searchBox = new google.maps.places.Autocomplete(input, options);
       searchBox.addListener("place_changed", () => {
+        mapLoader && mapLoader.classList.remove("hidden");
         const place = searchBox.getPlace();
         if (place.length == 0) {
           return;
         }
         const form = document.getElementById("redirect-to-closest-ward-form");
-        form.querySelector(
-          'input[name="longitude"]'
-        ).value = place.geometry.location.lng();
-        form.querySelector(
-          'input[name="latitude"]'
-        ).value = place.geometry.location.lat();
+        form.querySelector('input[name="longitude"]').value =
+          place.geometry.location.lng();
+        form.querySelector('input[name="latitude"]').value =
+          place.geometry.location.lat();
         form.querySelector('input[name="url"]').value =
           window.document.location.pathname;
         form.submit();
@@ -282,14 +358,13 @@ if (mapEl) {
     }
   }
   //Home and embed page search
-  googlePlacesAutocomplete("address-search-input")
+  googlePlacesAutocomplete("address-search-input");
   //ward page search
-  googlePlacesAutocomplete("nav-search-input")
-
+  googlePlacesAutocomplete("nav-search-input");
 
   var loadMap = () => {
-    if (muniAreaData.length > 0) {
-      areas = L.geoJSON(muniAreaData, {
+    if (mapBoundary.length > 0) {
+      areas = L.geoJSON(mapBoundary, {
         style: {
           color: "#999",
           fillOpacity: 0.01,
@@ -317,10 +392,20 @@ if (mapEl) {
           popup.setLatLng(e.latlng).openOn(map);
         });
 
-        if (current_ward) {
+        var partyLogoUrl;
+        if (
+          layer.feature.geometry.details &&
+          layer.feature.geometry.details.councillor_political_party_logo_url
+        ) {
+          partyLogoUrl =
+            layer.feature.geometry.details.councillor_political_party_logo_url
+              .value;
+        }
+
+        if (current_ward && partyLogoUrl) {
           var iconMarker = L.marker(layerCenter, {
             icon: L.icon({
-              iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
+              iconUrl: partyLogoUrl,
               iconSize: [40, 40],
               iconAnchor: [20, 20],
               className: "icon-marker",
@@ -353,23 +438,29 @@ if (mapEl) {
           );
 
           iconMarker.on("mouseover", (e) => {
-            e.target.setIcon(L.icon({
-              iconUrl: "../../../../static/assets/placeholder-image-1.svg",
-              iconSize: [40, 40],
-              iconAnchor: [20, 20],
-              className: "icon-marker",
-              bubblingMouseEvents: true,
-            }));
+            e.target.setIcon(
+              L.icon({
+                iconUrl: "../../../../static/assets/placeholder-image-1.svg",
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                className: "icon-marker",
+                bubblingMouseEvents: true,
+              })
+            );
           });
 
           iconMarker.on("mouseout", (e) => {
-            e.target.setIcon(L.icon({
-              iconUrl: layer.feature.geometry.details.councillor_political_party_logo_url.value,
-              iconSize: [40, 40],
-              iconAnchor: [20, 20],
-              className: "icon-marker",
-              bubblingMouseEvents: true,
-            }));
+            e.target.setIcon(
+              L.icon({
+                iconUrl:
+                  layer.feature.geometry.details
+                    .councillor_political_party_logo_url.value,
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                className: "icon-marker",
+                bubblingMouseEvents: true,
+              })
+            );
           });
         }
 
@@ -381,22 +472,38 @@ if (mapEl) {
           });
           layer.bringToFront();
           map.fitBounds(layer.getBounds());
-
         }
 
         //Map layer click handler
         layer.on("click", (e) => {
-          var slug = e.target.feature.geometry.slug;
-          var muniId = current_ward ? municipalityId : e.target.feature.geometry.homeMuniId;
+          if (current_ward) {
+            var slug = e.target.feature.geometry.slug;
 
-          if (window.document.location.pathname.endsWith("ward-councillor")) {
-            updateParentOrSelfLocationSearch(
-              `municipalities/${muniId}/wards/${slug}/ward-councillor`
-            );
+            if (window.document.location.pathname.endsWith("ward-councillor")) {
+              updateParentOrSelfLocationSearch(
+                `municipalities/${municipalityId}/wards/${slug}/ward-councillor`
+              );
+            } else {
+              updateParentOrSelfLocationSearch(
+                `municipalities/${municipalityId}/wards/${slug}/`
+              );
+            }
           } else {
-            updateParentOrSelfLocationSearch(
-              `municipalities/${muniId}/wards/${slug}/`
-            );
+            if (municipalities.length === 0) {
+              provinceClickHandler(
+                e.target.feature.geometry.province_code,
+                e.latlng
+              );
+            }
+            if (municipalities.length !== 0 && hasMunis) {
+              muniClickHandler(
+                e.target.feature.geometry.municipality_code,
+                e.latlng
+              );
+            }
+            if (municipalities.length !== 0 && !hasMunis && hasWards) {
+              wardClickHandler(e.target.feature.geometry.absolute_url);
+            }
           }
         });
 
@@ -417,12 +524,6 @@ if (mapEl) {
       });
     }
   };
-
-  L.gridLayer
-    .googleMutant({
-      type: "roadmap",
-    })
-    .addTo(map);
 
   //resize embed map on feedback form open
   const sendFeedbackBtn = document.querySelector("#send-feedback");

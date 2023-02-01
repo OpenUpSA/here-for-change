@@ -5,7 +5,7 @@ from django.contrib.gis.geos import Point
 from django.http import JsonResponse, HttpResponseBadRequest, Http404
 from django.shortcuts import redirect
 from django.views.generic import DetailView, ListView, View
-from .models import Municipality, Ward
+from .models import Municipality, Ward, Province
 from .models import WardDetail as WardDetailModel
 
 from .forms import FindMyWardCouncillorFeedbackForm
@@ -17,13 +17,6 @@ class Home(ListView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-    
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        ctx["object_list"]=[municipality.toDict(include_children=True) for municipality in  Municipality.objects.filter(name__in=['City of Cape Town','Bergrivier'])]
-        return ctx
-
-
 
 class WardDetail(DetailView):
     model = Ward
@@ -297,11 +290,6 @@ class FindMyWardCouncillor(ListView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-    
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        ctx["object_list"]=[municipality.toDict(include_children=True) for municipality in  Municipality.objects.filter(name__in=['City of Cape Town','Bergrivier'])]
-        return ctx
 
 class WhoIsMyWardCouncillor(DetailView):
     model = Ward
@@ -410,3 +398,29 @@ class UpdateWardDetailFeedback(View):
                 {"action": action, "updated": datetime.now().timestamp()}))
             return response
         return JsonResponse({"updated": updated})
+
+
+class ProvinceList(View):
+    def get(self,request):
+        data=[province.toDict() for province in Province.objects.all()]
+        return JsonResponse({"provinces":data})
+
+class MunicipalityList(View):
+    def get(self,request,province_code):
+        try:
+            province=Province.objects.get(province_code=province_code)
+        except Province.DoesNotExist:
+            return Http404()
+        data=[municipality.toDict(include_children=False) for municipality in Municipality.objects.filter(province=province)]
+        return JsonResponse({"province":province.name,"municipalities":data})
+
+class WardList(View):
+    def get(self,request,municipality_code):
+        try:
+            municipality=Municipality.objects.get(municipality_code=municipality_code)
+        except Municipality.DoesNotExist:
+            return Http404()
+        data=[ward.toDict() for ward in Ward.objects.filter(municipality=municipality)]
+        return JsonResponse({"province":municipality.province.name,"municipality":municipality.name,"wards":data})
+
+    

@@ -162,7 +162,7 @@ if __name__=="__main__":
         data={}
         for province in provinces:
             data[province[1]]=get_ward_details(driver,province,session)
-            with open("./data.json","w+") as f:
+            with open("ward_details/data.json","w+") as f:
                 f.write(json.dumps(data))
                 f.close()
         

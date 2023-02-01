@@ -1,25 +1,29 @@
-from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 
 from .models import (
+    Province,
     Municipality,
     MunicipalityDetail,
     Ward,
     WardDetail,
     FindMyWardCouncillorFeedback)
 
+class ProvinceAdmin(admin.ModelAdmin):
+    model = Province
+    list_display = ['name','province_code']
+
 
 class MunicipalityAdmin(admin.ModelAdmin):
     model = Municipality
     list_display = ['name', 'municipality_type',
                     'province', 'district', 'municipality_code']
-    list_filter = ['name', 'municipality_type', 'province']
+    list_filter = ['municipality_type', 'province']
 
 
 class WardAdmin(admin.ModelAdmin):
     model = Ward
     list_display = ['name', 'municipality']
-    list_filter = ['name', 'municipality']
+    list_filter = ['municipality']
 
 class WardDetailAdmin(admin.ModelAdmin):
     model = WardDetail
@@ -38,6 +42,7 @@ class FindMyWardCouncillorFeedbackAdmin(admin.ModelAdmin):
     list_display = ['ward','email','feedback','created_at','updated_at']
     list_filter = ['email','created_at','updated_at','ward']
 
+admin.site.register(Province, ProvinceAdmin)
 admin.site.register(Municipality, MunicipalityAdmin)
 admin.site.register(Ward, WardAdmin)
 admin.site.register(WardDetail, WardDetailAdmin)

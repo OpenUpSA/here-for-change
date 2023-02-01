@@ -1,9 +1,9 @@
-from .enums import MunicipalityTypes, Provinces
+from .enums import MunicipalityTypes
 from autoslug import AutoSlugField
 from django.utils.translation import gettext_lazy as _
 from django.contrib.gis.db import models
 from django.urls import reverse
-from django.contrib.gis.geos import Point,MultiPolygon
+from django.contrib.gis.geos import Point
 
 def default_feedback():
     return {"positive":0,"negative":0}
@@ -70,18 +70,72 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-
-class Municipality(BaseModel):
+class Province(BaseModel):
     name = models.CharField(max_length=255, unique=True,
                             blank=False, null=False)
+    province_code = models.CharField(
+        max_length=6, unique=True, blank=False, null=False)
+    area_number = models.IntegerField(null=True, unique=True)
+    map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
+
+    boundary = models.MultiPolygonField(_("Province Boundary data"), null=True)
+
+    @property
+    def map_longitude(self):
+        return self.boundary.centroid.coords[0]
+
+    @property
+    def map_latitude(self):
+        return self.boundary.centroid.coords[1]
+
+    @property
+    def map_geoJson(self):
+        if self.boundary:
+            return self.boundary.geojson
+        return None
+
+    class Meta:
+        verbose_name_plural = "Provinces"
+
+    def toDict(self,include_children:bool=False,include_boundary:bool=True, include_children_boundary:bool=False)->dict:
+        """
+        Returns a Dict object of the Province
+        :param bool include_children: Specifies if the json object of this instance returned should include children.
+        :param bool include_boundary: Specifies if the json object of this instance returned should include boundary data.
+        :param bool include_children_boundary: Specifies if the json object of this instance returned should include children boundary data.
+        """
+        data = {
+            "name": self.name, 
+            "province_code": self.province_code, 
+            "area_number": self.area_number, 
+            }
+        if include_boundary:
+            data.update({"map_geoJson": self.map_geoJson})
+
+        if include_children:
+            data.update({"children": [municipality.toDict(include_boundary=include_children_boundary,include_children_boundary=include_children_boundary) for municipality in self.get_contained_municipalities()]})
+        
+        return data
+    
+    def get_contained_municipalities(self):
+        return Municipality.objects.filter(province=self)
+
+    def __str__(self):
+        return self.name
+
+
+
+
+class Municipality(BaseModel):
+    name = models.CharField(max_length=255,blank=False, null=False)
     municipality_code = models.CharField(
         max_length=6, unique=True, blank=False, null=False)
     municipality_type = models.CharField(
         max_length=25, choices=MunicipalityTypes.choices, null=False, blank=False
     )
-    area_number = models.IntegerField(null=True)
-    province = models.CharField(
-        max_length=25, choices=Provinces.choices, null=False, blank=False
+    area_number = models.IntegerField(null=True, unique=True)
+    province =models.ForeignKey(
+        Province, on_delete=models.CASCADE, null=False, blank=False
     )
     district = models.CharField(max_length=255, null=True, blank=True)
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
@@ -99,24 +153,34 @@ class Municipality(BaseModel):
 
     @property
     def map_geoJson(self):
-        return self.boundary.geojson
+        if self.boundary:
+            return self.boundary.geojson
+        return None
 
     class Meta:
         verbose_name_plural = "Municipalities"
 
-    def toDict(self,include_children:bool=False)->dict:
+    def toDict(self,include_children:bool=True,include_boundary:bool=True, include_children_boundary:bool=True)->dict:
         """
         Returns a Dict version of the Municipality
+        :param bool include_children: Specifies if the json object of this instance returned should include children.
+        :param bool include_boundary: Specifies if the json object of this instance returned should include boundary data.
+        :param bool include_children_boundary: Specifies if the json object of this instance returned should include children boundary data.
         """
-        return {
+        data= {
             "name": self.name, 
             "municipality_code": self.municipality_code, 
             "municipality_type": self.municipality_type, 
             "area_number": self.area_number, 
-            "province": self.province,
-            "map_geoJson": self.map_geoJson,
-            "children": [ward.toDict() for ward in self.get_contained_wards()] if include_children else self.objects.none()
+            "province": self.province.name,
             }
+        if include_boundary:
+            data.update({"map_geoJson": self.map_geoJson})
+
+        if include_children:
+            data.update({"children": [ward.toDict(include_boundary=include_children_boundary) for ward in self.get_contained_wards()]})
+        
+        return data
     
     def get_contained_wards(self):
         return Ward.objects.filter(municipality=self)
@@ -130,12 +194,13 @@ def ward_slug(instance):
 
 
 class Ward(BaseModel):
-    name = models.CharField(max_length=255, unique=True,
-                            blank=False, null=False)
+    name = models.CharField(
+        max_length=255,blank=False, null=False)
     slug = AutoSlugField(populate_from=ward_slug)
     municipality = models.ForeignKey(
         Municipality, on_delete=models.CASCADE, null=False, blank=False
     )
+    area_number = models.IntegerField(null=True, unique=True)
     map_default_zoom = models.IntegerField(default=12, null=False, blank=False)
     boundary = models.MultiPolygonField(_("Ward Boundary data"), null=True)
     objects = WardManager()
@@ -153,7 +218,9 @@ class Ward(BaseModel):
 
     @property
     def map_geoJson(self):
-        return self.boundary.geojson
+        if self.boundary:
+            return self.boundary.geojson
+        return None
 
     @property
     def formatted_name(self):
@@ -166,26 +233,33 @@ class Ward(BaseModel):
     @staticmethod
     def format_name(name):
         splitted_names=name.split(" ")
+        if len(splitted_names)<3:
+            return name
         return f"{splitted_names[-2]} {splitted_names[-1]}"
         
 
     def get_absolute_url(self):
         return reverse("ward_detail", kwargs={"municipality_code": self.municipality.municipality_code, "slug": self.slug})
 
-    def toDict(self):
+    def toDict(self,include_boundary:bool=True):
         """
         Returns a Dict version of the ward
+        :param bool include_boundary: Specifies if the json object of this instance returned should include boundary data.
         """
-        return {
+        data = {
             "name": self.name, 
             "formatted_name":Ward.format_name(self.name),
             "slug": self.slug, 
             "municipality":self.municipality.name,
-            "map_geoJson": self.map_geoJson,
             "map_default_zoom": self.map_default_zoom,
             "absolute_url":self.get_absolute_url()
             
             }
+
+        if include_boundary:
+            data.update({"map_geoJson": self.map_geoJson})
+        
+        return data
 
     def toJsonUrl(self) -> str:
         """
