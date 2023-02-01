@@ -10,7 +10,9 @@ jobs:
         run: docker-compose up -d
       - name: Docker compose collecstatic
         run: docker-compose run --rm web python manage.py collectstatic --noinput
-      - name: Docker compose tailwind watch
-        run: docker-compose run --rm web yarn run tailwind-watch
+      - name: Docker compose install yarn dependencies
+        run: docker-compose run --rm web yarn
+      - name: Docker compose tailwind build
+        run: docker-compose run --rm web yarn run tailwind-build
       - name: Docker compose test
         run: docker-compose run --rm web python manage.py test
