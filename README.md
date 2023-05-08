@@ -1,21 +1,5 @@
-[![Build Status](https://travis-ci.org/paulmwatson/here_for_change.png)](https://travis-ci.org/paulmwatson/here_for_change)
-
 Here For Change
 ===============================
-
-
-Complete project setup
-----------------------
-
-- [ ] Initialise a git repository in this directory
-  - [ ] Explicitly add directories needed for collectstatic to work: `git add -f staticfiles/.gitkeep here_for_change/static/.gitkeep`
-- [ ] Create a repository on [GitHub](https://github.com/OpenUpSA) and add as a remote to this repository
-  - e.g. `git remote add origin git@github.com:OpenUpSA/here_for_change.git`
-- [ ] Enable Continuous Integration checks for the GitHub Repository at [travis-ci.org](https://travis-ci.org)
-  - [ ] Enable periodic builds, e.g. weekly, to detect when dependency changes break your builds before they hurt you.
-  - [ ] Enable GitHub integration - it automatically configures Travis-CI and shows coverage diffs in pull requests
-  - [ ] Verify that you see coverage % on the Commits tab for the project. If it's just zero, check for errors by clicking a commit item.
-- [ ] Clean up this checklist - your project is set up now and you don't need it any more.
 
 
 Project Layout
