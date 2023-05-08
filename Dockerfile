@@ -19,8 +19,6 @@ RUN set -ex; \
   apt-get install -y binutils; \
   apt-get install -y libgeos++-dev libgeos-c1v5 libgeos-dev;\
   apt-get install -y postgresql;\
-  # git for codecov file listing \
-  apt-get install -y git; \
   # cleaning up unused files \
   apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
   rm -rf /var/lib/apt/lists/*
